@@ -1,0 +1,46 @@
+{
+  "title": "Who We Serve",
+  "subtitle": "Serving visionary individuals and families dedicated to building lasting legacies through tailored, strategic wealth management.",
+  "items": [
+    {
+      "id": "HNWIs",
+      "label": "HNWIs",
+      "title": "High-Net-Worth Individuals",
+      "eyebrow": "Private Clients",
+      "content": "Holistic wealth management solutions including multi-generational planning, bespoke portfolios, offshore structuring, non-financial asset management, and education planning — building a future-ready financial ecosystem aligned to lifestyle and legacy goals.",
+      "imageKey": "profile"
+    },
+    {
+      "id": "founders",
+      "label": "Founder & Owners",
+      "title": "Founders & Business Owners",
+      "eyebrow": "Entrepreneurial Leaders",
+      "content": "Content for Founders & Owners coming soon...",
+      "imageKey": "profile"
+    },
+    {
+      "id": "cxos",
+      "label": "CXOs & Professionals",
+      "title": "CXOs & Professionals",
+      "eyebrow": "Corporate Leaders",
+      "content": "Content for CXOs & Professionals coming soon...",
+      "imageKey": "profile"
+    },
+    {
+      "id": "nris",
+      "label": "NRIs",
+      "title": "NRIs",
+      "eyebrow": "Global Citizens",
+      "content": "Content for NRIs coming soon...",
+      "imageKey": "profile"
+    },
+    {
+      "id": "family",
+      "label": "Family Offices",
+      "title": "Family Offices",
+      "eyebrow": "Legacy Custodians",
+      "content": "Content for Family Offices coming soon...",
+      "imageKey": "profile"
+    }
+  ]
+}

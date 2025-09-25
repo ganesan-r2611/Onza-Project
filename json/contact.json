@@ -1,0 +1,12 @@
+{
+  "title": "Get In Touch",
+  "subtitle": "Your financial journey deserves a clear path forward. Share a few details, and our team will connect with you to explore how we can help.",
+  "emailLabel": "For specific queries, reach out to:",
+  "email": "hello@onza.com",
+  "form": {
+    "namePlaceholder": "Your Name *",
+    "emailPlaceholder": "you@company.com",
+    "messagePlaceholder": "Write your message here...",
+    "submitText": "Send Message"
+  }
+}

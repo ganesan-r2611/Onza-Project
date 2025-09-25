@@ -1,0 +1,37 @@
+{
+  "title": "Frequently Asked Questions",
+  "subtitle": "Find answers to common questions about our services and process.",
+  "imageKey": "meditation",
+  "items": [
+    {
+      "id": 1,
+      "question": "What services do you provide?",
+      "answer": "Holistic wealth management, multi-generational planning, bespoke portfolios, offshore structuring, non-financial asset management, and lifestyle advisory."
+    },
+    {
+      "id": 2,
+      "question": "How do you onboard new clients?",
+      "answer": "We begin with a confidential discovery session, followed by a tailored proposal and phased onboarding plan to align on objectives, timelines and reporting."
+    },
+    {
+      "id": 3,
+      "question": "What are your fees?",
+      "answer": "Fees depend on service scope and assets under management. We offer transparent fee schedules and bespoke proposals — please contact us for a quote."
+    },
+    {
+      "id": 4,
+      "question": "Do you offer international structuring?",
+      "answer": "Yes — we advise on cross-border solutions, tax-efficient ownership structures, and compliant international wealth planning with trusted partners."
+    },
+    {
+      "id": 5,
+      "question": "How do you protect client privacy?",
+      "answer": "Client confidentiality is paramount. We use encrypted communication, strict access controls, and limited-disclosure engagements to protect client information."
+    },
+    {
+      "id": 6,
+      "question": "Can I change my service package later?",
+      "answer": "Absolutely — our services are modular and can be adjusted as your needs evolve. We review plans regularly to ensure alignment with your goals."
+    }
+  ]
+}

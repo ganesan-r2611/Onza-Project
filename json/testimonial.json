@@ -1,0 +1,33 @@
+{
+  "title": "Why Choose Us?",
+  "subtitle": "Behind every strategy we create is a story of ambition, trust, and success. Here's what some of our valued clients have shared about their journey with Onza.",
+  "values": [
+    { "label": "Ambition", "icon": "flag" },
+    { "label": "Trust", "icon": "shield" },
+    { "label": "Success", "icon": "vector" }
+  ],
+  "items": [
+    {
+      "id": 1,
+      "text": "Prospect replaced three tools we were duct-taping together and does the job better. It's fast, elegant, and genuinely understands how we work. We spend less time managing systems and more time making real progress.",
+      "author": "Cassandra H.",
+      "position": "HR Director, Continuum",
+      "imageKey": "testimonial1"
+    },
+    {
+      "id": 2,
+      "text": "Onza provided unmatched wealth strategies that perfectly aligned with our family goals.",
+      "author": "Michael T.",
+      "position": "Founder, BrightPath",
+      "imageKey": "testimonial2"
+    },
+    {
+      "id": 3,
+      "text": "Their team truly understands long-term planning. Highly recommended.",
+      "author": "Sophia K.",
+      "position": "CFO, GrowthCorp",
+      "imageKey": "testimonial3"
+    }
+  ],
+  "partnerLogos": ["testimonial1","testimonial2","testimonial3","testimonial4"]
+}

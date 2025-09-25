@@ -1,0 +1,16 @@
+{
+  "sectionTitle": "Insights Unlocked",
+  "sectionSubtitle": "Fresh ideas, sharp strategies, and stories that move brands forward.",
+  "cta": {
+    "label": "View All Blogs",
+    "href": "/blogs"
+  },
+  "posts": [
+    { "id": 1, "category": "Wealth", "title": "The Onza Journal", "excerpt": "Lorem ipsum dolor sit amet...", "imageKey": "blog1" },
+    { "id": 2, "category": "Wealth", "title": "Title", "excerpt": "Lorem ipsum dolor sit amet...", "imageKey": "blog2" },
+    { "id": 3, "category": "Growth", "title": "Clarity & Legacy", "excerpt": "Lorem ipsum dolor sit amet...", "imageKey": "blog3" },
+    { "id": 4, "category": "Wealth", "title": "Title", "excerpt": "Lorem ipsum dolor sit amet...", "imageKey": "blog4" },
+    { "id": 5, "category": "Wealth", "title": "Title", "excerpt": "Lorem ipsum dolor sit amet...", "imageKey": "blog5" },
+    { "id": 6, "category": "Wealth", "title": "Title", "excerpt": "Lorem ipsum dolor sit amet...", "imageKey": "blog6" }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "nav": [
+    { "label": "Services", "href": "/services", "children": [ { "label": "Strategy", "href": "/services/strategy" }, { "label": "Advisory", "href": "/services/advisory" } ] },
+    { "label": "About Us", "href": "/about" },
+    { "label": "Blog", "href": "/blog" },
+    { "label": "Contact Us", "href": "/contact" }
+  ],
+  "cta": {
+    "label": "Speak To Advisor",
+    "href": "/contact"
+  },
+  "hero": {
+    "title": "Crafting Pathways,\nThat Endure",
+    "subtitle": "Discreet and discerning guidance for those whose decisions define tomorrow’s world."
+  }
+}

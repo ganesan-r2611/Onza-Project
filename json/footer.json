@@ -1,0 +1,32 @@
+{
+  "description": "Lorem ipsum dolor sit amet consectetur. Dui felis lacus ut egestas sit at nunc ultrices netus.",
+  "contactText": "Contact Us",
+  "address": "753 Joshua Pines, Tatum borough 68760-9731",
+  "socials": [
+    { "icon": "facebook", "href": "https://www.facebook.com/" },
+    { "icon": "instagram", "href": "https://www.instagram.com/" },
+    { "icon": "linkedin", "href": "https://www.linkedin.com/" }
+  ],
+  "links": {
+    "general": [
+      { "label": "About Us", "href": "/about" },
+      { "label": "Blogs", "href": "/blogs" },
+      { "label": "Contact Us", "href": "/contact" }
+    ],
+    "services": [
+      { "label": "Wealth & Investment Advisory", "href": "/services/wealth" },
+      { "label": "Legacy Protection & Succession Planning", "href": "/services/legacy" },
+      { "label": "Offshore Wealth Management", "href": "/services/offshore" },
+      { "label": "Lifestyle & Ease of Living Services", "href": "/services/lifestyle" },
+      { "label": "Real Estate Advisory", "href": "/services/real-estate" },
+      { "label": "Private Equity", "href": "/services/private-equity" }
+    ]
+  },
+  "legal": [
+    { "label": "Privacy Policy", "href": "/privacy" },
+    { "label": "Terms of Service", "href": "/terms" }
+  ],
+  "icons": {
+    "location": "location"
+  }
+}

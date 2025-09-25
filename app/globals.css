@@ -1,26 +1,274 @@
-@import "tailwindcss";
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* page base */
+html,
+body,
+#__next {
+  height: 100vh;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #000;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
 }
+
+/* small custom helper for glass outline */
+.glass-border {
+  border: 2px solid rgba(255, 255, 255, 0.404);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.02),
+    rgba(255, 255, 255, 0.01)
+  );
+  backdrop-filter: blur(6px);
+}
+
+.glass-border-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  /* sizing - adjust if you use Tailwind padding props too */
+  width: 100%;
+  padding: 22px 34px;
+  border: 2px solid rgba(255, 255, 255, 0.404);
+  border-radius: 9999px; /* full pill */
+
+  /* create an inner gradient (button face) and outer gradient (border) */
+  /* first gradient is the face (padding-box), second is the border (border-box) */
+  background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.03),
+        rgba(255, 255, 255, 0.01)
+      )
+      padding-box,
+    /* linear-gradient(
+        90deg,
+        #37ffdc 0%,
+        #ff502f 25%
+        #51dacf 50%,
+        #73ffd6 75%,
+        #9ef5cf 100%,
+      ) */
+      border-box;
+
+  /* make the outer gradient visible as a border */
+  box-shadow: inset 0 10px 30px rgba(48, 90, 82, 0.12),
+    0 4px 18px rgba(0, 0, 0, 0.25);
+
+  /* text */
+  color: #ffffff;
+  font-size: 20px;
+  line-height: 27px;
+  font-weight: 400;
+  text-transform: none;
+
+  /* smooth transitions */
+  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* optional hover / active states */
+.glass-border-button:hover {
+  transform: translateY(-2px);
+  opacity: 0.98;
+  box-shadow: inset 0 10px 30px rgba(48, 90, 82, 0.14),
+    0 8px 30px rgba(0, 0, 0, 0.32);
+}
+
+.glass-border-button:active {
+  transform: translateY(0);
+  box-shadow: inset 0 8px 20px rgba(48, 90, 82, 0.1),
+    0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* accessibility: maintain focus outline */
+.glass-border-button:focus {
+  outline: 3px solid rgba(255, 220, 129, 0.14);
+  outline-offset: 2px;
+}
+
+.glass-btn {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.02)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02),
+    0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+/* subtle bright rim around card (use on container) */
+.card-border {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+/* decorative border ring (fades out with gradient) */
+.card-border::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -40px 60px rgba(0, 0, 0, 0.45);
+  mix-blend-mode: normal;
+}
+
+/* inner soft highlight at top-left */
+.card-highlight {
+  position: absolute;
+  left: -20%;
+  top: -10%;
+  width: 80%;
+  height: 60%;
+  background: radial-gradient(
+    circle at 20% 20%,
+    rgba(255, 255, 255, 0.04),
+    transparent 30%
+  );
+  pointer-events: none;
+}
+
+/* small pill tag (category) */
+.card-tag {
+  width: fit-content;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.02)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  backdrop-filter: blur(6px);
+}
+
+/* card overlay to darken image for text readability */
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.36));
+}
+
+/* Insights fixed grid helpers */
+
+/* A centered wrapper with fixed grid columns sizes.
+   Adjust the numeric px widths below to change the layout globally. */
+.insights-container {
+  display: grid;
+  gap: 24px; /* grid gap (matches tailwind gap-6) */
+  justify-content: center; /* horizontally center the grid inside parent */
+}
+
+/* Desktop: 3 fixed columns */
+@media (min-width: 1024px) {
+  .insights-container {
+    grid-template-columns: 360px 420px 360px; /* left / middle / right fixed widths */
+  }
+
+  .insights-column-left,
+  .insights-column-middle,
+  .insights-column-right {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+}
+
+/* Tablet: 2 fixed columns (centered) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .insights-container {
+    grid-template-columns: 420px 420px; /* two columns */
+  }
+
+  .insights-column-left,
+  .insights-column-middle,
+  .insights-column-right {
+    display: contents; /* allow cards to fill flowing rows */
+  }
+}
+
+/* Mobile: single fixed column; allow horizontal scroll if viewport smaller than card */
+@media (max-width: 767px) {
+  .insights-container {
+    grid-template-columns: 320px; /* mobile fixed card width */
+    justify-items: center;
+  }
+}
+
+/* keep the whole area horizontally scroll-free but allow inner area to scroll if device narrower */
+.insights-scrollwrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 6px; /* small breathing room for scroll */
+}
+
+/* remove default scrollbar (optional) */
+.insights-scrollwrap::-webkit-scrollbar {
+  height: 8px;
+}
+.insights-scrollwrap::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 9999px;
+}
+
+/* pill rounding on mobile */
+@media (max-width: 640px) {
+  .nav-pill {
+    border-radius: 9999px;
+  }
+}
+
+/* hero circular frame - no images required for background */
+.hero-frame {
+  background: radial-gradient(
+    circle at 30% 20%,
+    rgba(14, 116, 116, 0.22),
+    rgba(14, 116, 116, 0.08),
+    transparent 60%
+  );
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  box-shadow: inset 0 10px 30px rgba(0, 0, 0, 0.6),
+    0 12px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* decorative inner shape */
+.inner-shape {
+  width: 260px;
+  height: 260px;
+  border-radius: 36% 64% 64% 36% / 36% 36% 64% 64%;
+  background: linear-gradient(
+    180deg,
+    rgba(250, 240, 225, 0.95),
+    rgba(245, 235, 220, 0.98)
+  );
+  box-shadow: 0 15px 30px rgba(5, 10, 10, 0.4);
+}
+
+/* hide scrollbar for horizontal scroll (mobile tabs row) */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
