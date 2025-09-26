@@ -1,0 +1,27 @@
+{
+  "nav": [
+    {
+      "label": "Services",
+      "href": "/services",
+      "children": [
+        { "label": "Wealth & Investment Advisory", "href": "/services/wealth" },
+        { "label": "Legacy Protection & Succession Planning", "href": "/services/legacy" },
+        { "label": "Offshore Wealth Management", "href": "/services/offshore" },
+        { "label": "Lifestyle & Ease of Living Services", "href": "/services/lifestyle" },
+        { "label": "Real Estate Advisory", "href": "/services/real-estate" },
+        { "label": "Private Equity", "href": "/services/private-equity" }
+      ]
+    },
+    { "label": "About Us", "href": "/about" },
+    { "label": "Blogs", "href": "/blogs" },
+    { "label": "Contact Us", "href": "/contact" }
+  ],
+  "cta": {
+    "label": "Speak To Advisor",
+    "href": "/contact"
+  },
+  "hero": {
+    "title": "Crafting Pathways,\nThat Endure",
+    "subtitle": "Discreet and discerning guidance for those whose decisions define tomorrow’s world."
+  }
+}
