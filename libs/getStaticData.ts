@@ -1,0 +1,61 @@
+export async function getStaticData() {
+  const base = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
+  const [
+    navbarRes,
+    servicesRes,
+    blogsRes,
+    faqRes,
+    testimonialRes,
+    contactRes,
+    footerRes,
+  ] = await Promise.all([
+    fetch(`${base}/json/navbar.json`, { next: { revalidate: 3600 } }),
+    fetch(`${base}/json/who-we-serve.json`, { next: { revalidate: 3600 } }),
+    fetch(`${base}/json/insight-blog.json`, { next: { revalidate: 3600 } }),
+    fetch(`${base}/json/faq.json`, { next: { revalidate: 3600 } }),
+    fetch(`${base}/json/testimonial.json`, { next: { revalidate: 3600 } }),
+    fetch(`${base}/json/contact.json`, { next: { revalidate: 3600 } }),
+    fetch(`${base}/json/footer.json`, { next: { revalidate: 3600 } }),
+  ]);
+
+  if (
+    !navbarRes.ok ||
+    !servicesRes.ok ||
+    !blogsRes.ok ||
+    !faqRes.ok ||
+    !testimonialRes.ok ||
+    !contactRes.ok ||
+    !footerRes.ok
+  ) {
+    throw new Error("Failed to load static data");
+  }
+
+  const [
+    navbarData,
+    servicesData,
+    blogsData,
+    faqData,
+    testimonialData,
+    contactData,
+    footerData,
+  ] = await Promise.all([
+    navbarRes.json(),
+    servicesRes.json(),
+    blogsRes.json(),
+    faqRes.json(),
+    testimonialRes.json(),
+    contactRes.json(),
+    footerRes.json(),
+  ]);
+
+  return {
+    navbarData,
+    servicesData,
+    blogsData,
+    faqData,
+    testimonialData,
+    contactData,
+    footerData,
+  };
+}
