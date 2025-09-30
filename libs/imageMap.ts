@@ -5,6 +5,9 @@ import logo from "@/assets/onza-logo.png";
 import bannerContact from "@/assets/banner-contact.png";
 import profile from "@/assets/profile.png";
 
+import cardbg1 from "@/assets/Card_Background_1.png";
+import cardbg2 from "@/assets/Card_Background_2.png";
+
 import blog1 from "@/assets/blog-1.png";
 import blog2 from "@/assets/blog-2.png";
 import blog3 from "@/assets/blog-3.png";
@@ -34,9 +37,26 @@ export const imageMap: Record<string, StaticImageData> = {
   logo,
   bannerContact,
   profile,
-  blog1, blog2, blog3, blog4, blog5, blog6,
-  testimonial1, testimonial2, testimonial3, testimonial4,
-  btnPrev, btnNext,
-  flag, shield, meditation, vector,
-  facebook, instagram, linkedin, location,
+  blog1,
+  blog2,
+  blog3,
+  blog4,
+  blog5,
+  blog6,
+  testimonial1,
+  testimonial2,
+  testimonial3,
+  testimonial4,
+  btnPrev,
+  btnNext,
+  flag,
+  shield,
+  meditation,
+  vector,
+  facebook,
+  instagram,
+  linkedin,
+  location,
+  cardbg1,
+  cardbg2,
 };

@@ -1,0 +1,26 @@
+{
+  "eyebrow": "Our expertise is built around four essential pillars, each crafted to help you protect, grow, and preserve your legacy. These services work in harmony to create a wealth strategy as distinctive as you are.",
+  "cta": { "label": "Our Services", "href": "/services" },
+  "items": [
+    {
+      "title": "Highly Personalised",
+      "desc": "No cookie-cutter solutions, every plan is unique.",
+      "imageKey": "cardbg1"
+    },
+    {
+      "title": "Transparent",
+      "desc": "You always know where your money is, why it’s there, and how it’s performing.",
+      "imageKey": "cardbg2"
+    },
+    {
+      "title": "Merit-Based",
+      "desc": "Every investment stands on its own merit, free from product bias.",
+      "imageKey": "cardbg1"
+    },
+    {
+      "title": "Proactively Risk-Managed",
+      "desc": "Rigorous downside protection built into every decision.",
+      "imageKey": "cardbg2"
+    }
+  ]
+}

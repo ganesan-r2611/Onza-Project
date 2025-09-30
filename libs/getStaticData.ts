@@ -3,6 +3,7 @@ export async function getStaticData() {
 
   const [
     navbarRes,
+    heroSectionRes,
     servicesRes,
     blogsRes,
     faqRes,
@@ -11,6 +12,7 @@ export async function getStaticData() {
     footerRes,
   ] = await Promise.all([
     fetch(`${base}/json/navbar.json`, { next: { revalidate: 3600 } }),
+    fetch(`${base}/json/hero-service.json`, { next: { revalidate: 3600 } }),
     fetch(`${base}/json/who-we-serve.json`, { next: { revalidate: 3600 } }),
     fetch(`${base}/json/insight-blog.json`, { next: { revalidate: 3600 } }),
     fetch(`${base}/json/faq.json`, { next: { revalidate: 3600 } }),
@@ -21,6 +23,7 @@ export async function getStaticData() {
 
   if (
     !navbarRes.ok ||
+    !heroSectionRes.ok ||
     !servicesRes.ok ||
     !blogsRes.ok ||
     !faqRes.ok ||
@@ -33,6 +36,7 @@ export async function getStaticData() {
 
   const [
     navbarData,
+    heroSectionData,
     servicesData,
     blogsData,
     faqData,
@@ -41,6 +45,7 @@ export async function getStaticData() {
     footerData,
   ] = await Promise.all([
     navbarRes.json(),
+    heroSectionRes.json(),
     servicesRes.json(),
     blogsRes.json(),
     faqRes.json(),
@@ -51,6 +56,7 @@ export async function getStaticData() {
 
   return {
     navbarData,
+    heroSectionData,
     servicesData,
     blogsData,
     faqData,

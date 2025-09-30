@@ -59,7 +59,7 @@ export default function ContactForm({
         text_font_size="text-[18px] sm:text-[20px]"
         text_font_weight="font-normal"
         text_line_height="leading-[27px]"
-        text_color="text-[#fff]"
+        text_color="text-white"
         border_border_radius="rounded-full"
         layout_width="100%"
         padding="20px 30px"
