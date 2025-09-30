@@ -3,9 +3,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { imageMap } from "@/libs/imageMap";
 
+export interface BlogPost {
+  id: number;
+  title: string;
+  excerpt: string;
+  category: string;
+  imageKey: keyof typeof imageMap;
+}
+export interface BlogsData {
+  sectionTitle: string;
+  sectionSubtitle: string;
+  cta?: { label: string; href: string };
+  posts: BlogPost[];
+}
+
 const CARD_H = "h-[460px]";
 
-function Card({ post }: { post: any }) {
+function Card({ post }: { post: BlogPost }) {
   const img = imageMap[post.imageKey];
   return (
     <article className="relative rounded-[18px] overflow-hidden card-border">
@@ -37,7 +51,7 @@ function Card({ post }: { post: any }) {
   );
 }
 
-export default function InsightsSection({ blogs }: { blogs: any }) {
+export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
   const posts = blogs.posts || [];
   const p = (i: number) => posts[i] ?? null;
 

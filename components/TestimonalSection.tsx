@@ -3,7 +3,23 @@ import { useState } from "react";
 import Image from "next/image";
 import { imageMap } from "@/libs/imageMap";
 
-export default function TestimonialsSection({ data }: { data: any }) {
+export interface TestimonialItem {
+  text: string;
+  author: string;
+  position: string;
+}
+export interface ValueItem {
+  icon: keyof typeof imageMap;
+  label: string;
+}
+export interface TestimonialsData {
+  subtitle: string;
+  items: TestimonialItem[];
+  values: ValueItem[];
+  partnerLogos: (keyof typeof imageMap)[];
+}
+
+export default function TestimonialsSection({ data }: { data: TestimonialsData }) {
   const items = data.items || [];
   const values = data.values || [];
   const partnerLogos = data.partnerLogos || [];
@@ -26,7 +42,7 @@ export default function TestimonialsSection({ data }: { data: any }) {
 
             {/* Values icons */}
             <div className="flex flex-wrap gap-8 mt-8">
-              {values.map((v: any) => (
+              {values.map((v: ValueItem) => (
                 <div key={v.label} className="flex flex-col items-center gap-3">
                   <div className="w-12 h-12 rounded-md bg-[#eafefe] flex items-center justify-center">
                     <Image

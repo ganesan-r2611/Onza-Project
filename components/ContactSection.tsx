@@ -3,7 +3,21 @@ import Image from "next/image";
 import { imageMap } from "@/libs/imageMap";
 import ContactForm from "./ui/ContactForm.client";
 
-export default function ContactSection({ data }: { data: any }) {
+export interface ContactFormData {
+  namePlaceholder: string;
+  emailPlaceholder: string;
+  messagePlaceholder: string;
+  submitText: string;
+}
+export interface ContactData {
+  title: string;
+  subtitle: string;
+  emailLabel: string;
+  email: string;
+  form: ContactFormData;
+}
+
+export default function ContactSection({ data }: { data: ContactData }) {
   return (
     <section className="relative w-full" data-theme="dark">
       {/* Background */}
