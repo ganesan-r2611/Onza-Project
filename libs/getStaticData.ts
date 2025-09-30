@@ -1,4 +1,5 @@
 import navbarData from "@/public/json/navbar.json";
+import heroSectionData from "@/public/json/hero-service.json";
 import servicesData from "@/public/json/who-we-serve.json";
 import blogsData from "@/public/json/insight-blog.json";
 import faqData from "@/public/json/faq.json";
@@ -9,6 +10,7 @@ import footerData from "@/public/json/footer.json";
 export async function getStaticData() {
   return {
     navbarData,
+    heroSectionData,
     servicesData,
     blogsData,
     faqData,
