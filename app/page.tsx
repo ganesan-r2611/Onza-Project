@@ -8,10 +8,12 @@ import ContactSection from "@/components/ContactSection";
 import FAQSection from "@/components/FAQSection";
 import InsightsSection from "@/components/InsightSection";
 import Footer from "@/components/Footer";
+import ServicesCarouselSection from "@/components/ServiceCarousel";
 
 export default async function HomePage() {
   const {
     navbarData,
+    heroSectionData,
     servicesData,
     blogsData,
     faqData,
@@ -29,6 +31,7 @@ export default async function HomePage() {
         {/* Hero Section */}
         <section data-theme="dark">
           <Hero hero={navbarData.hero} />
+          <ServicesCarouselSection data={heroSectionData} />
         </section>
 
         {/* Who We Serve */}
