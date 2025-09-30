@@ -1,6 +1,12 @@
-import ServicesTabs from "./ui/Tabs";
+import ServicesTabs, { ServiceTab } from "./ui/Tabs";
 
-export default function ServicesSection({ services }: { services: any }) {
+export interface ServicesData {
+  title: string;
+  subtitle: string;
+  items: ServiceTab[];
+}
+
+export default function ServicesSection({ services }: { services: ServicesData }) {
   const tabs = services.items;
 
   return (
