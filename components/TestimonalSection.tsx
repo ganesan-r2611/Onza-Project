@@ -19,7 +19,11 @@ export interface TestimonialsData {
   partnerLogos: (keyof typeof imageMap)[];
 }
 
-export default function TestimonialsSection({ data }: { data: TestimonialsData }) {
+export default function TestimonialsSection({
+  data,
+}: {
+  data: TestimonialsData;
+}) {
   const items = data.items || [];
   const values = data.values || [];
   const partnerLogos = data.partnerLogos || [];
@@ -66,13 +70,27 @@ export default function TestimonialsSection({ data }: { data: TestimonialsData }
             {/* Testimonial card */}
             <div className="w-full md:w-3/4 lg:w-[520px]">
               <div
-                className="rounded-xl border border-[#cdeff0] p-6 bg-white shadow-md transition-all duration-500"
+                className="
+        rounded-xl border border-[#cdeff0] bg-white shadow-md transition-all duration-300 p-6
+        flex flex-col justify-between
+        h-[260px] sm:h-[280px] md:h-[280px]
+      "
                 style={{ borderColor: "rgba(11,134,134,0.18)" }}
               >
-                <p className="text-base leading-7 text-gray-700 italic">
+                <p
+                  className="text-base leading-7 text-gray-700 italic"
+                  style={{
+                    display: "-webkit-box",
+                    WebkitLineClamp: 6,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                  }}
+                >
                   “{items[index].text}”
                 </p>
-                <div className="mt-6">
+
+                {/* Author */}
+                <div className="pt-4">
                   <span className="text-cyan-600 font-medium">
                     {items[index].author}
                   </span>
