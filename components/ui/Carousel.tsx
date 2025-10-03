@@ -36,7 +36,7 @@ export default function Carousel({ items }: { items: Item[] }) {
             "
           >
             <div className="rounded-[18px] overflow-hidden shadow-md border border-black/10 bg-white/70">
-              <div className="relative h-[50vh] sm:h-[55vh] lg:h-[60vh]">
+              <div className="relative h-[50vh] sm:h-[40vh] lg:h-[60vh]">
                 <Image
                   src={imageMap[it.imageKey]}
                   alt={it.title}

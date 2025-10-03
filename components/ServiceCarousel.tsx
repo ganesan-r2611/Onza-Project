@@ -31,7 +31,7 @@ export default function ServicesCarouselSection({ data }: Props) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
           {/* Left copy */}
           <div className="lg:col-span-5">
-            <p className="text-[22px] md:text-[26px] leading-[1.5] text-[#fff] whitespace-pre-line">
+            <p className="text-3xl md:text-[26px] leading-[1.5] text-[#fff] whitespace-pre-line">
               {eyebrow}
             </p>
 
@@ -45,7 +45,7 @@ export default function ServicesCarouselSection({ data }: Props) {
           </div>
 
           {/* Right carousel */}
-          <div className="lg:col-span-7">
+          <div className=" lg:col-span-7">
             <Carousel items={items} />
           </div>
         </div>

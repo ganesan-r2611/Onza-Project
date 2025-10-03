@@ -10,7 +10,7 @@ export default function ServicesSection({ services }: { services: ServicesData }
   const tabs = services.items;
 
   return (
-    <section className="py-[80px]">
+    <section className="lg:pt-[80px]">
       <div className="mx-auto px-6 sm:px-8">
         <div className="flex flex-col gap-[64px] items-center">
           <div className="flex flex-col lg:flex-row justify-between items-start w-full mt-[64px]">
