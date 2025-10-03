@@ -1,14 +1,14 @@
+// app/page.tsx
 import { getStaticData } from "@/libs/getStaticData";
-
 import NavBar from "@/components/NavBar";
-import Hero from "@/components/Hero";
+import ScrollZoomComponent from '@/components/Scroll';
+import ServicesCarouselSection from "@/components/ServiceCarousel";
 import ServicesSection from "@/components/Service";
 import TestimonialsSection from "@/components/TestimonalSection";
 import ContactSection from "@/components/ContactSection";
 import FAQSection from "@/components/FAQSection";
 import InsightsSection from "@/components/InsightSection";
 import Footer from "@/components/Footer";
-import ServicesCarouselSection from "@/components/ServiceCarousel";
 
 export default async function HomePage() {
   const {
@@ -24,15 +24,21 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Navbar stays client — receives data */}
+      {/* Navbar - will appear over scroll component */}
       <NavBar data={navbarData} />
 
-      <main className="pt-28">
-        {/* Hero Section */}
+      <main>
+        {/* Scroll Hero Section - NO pt-28, starts at top */}
+        <div className="relative">
         <section data-theme="dark">
-          <Hero hero={navbarData.hero} />
-          <ServicesCarouselSection data={heroSectionData} />
+          <ScrollZoomComponent data={heroSectionData}/>
         </section>
+          </div>
+<div className="relative">
+        {/* Services Carousel - immediately after scroll */}
+        {/* <section data-theme="light">
+          <ServicesCarouselSection data={heroSectionData} />
+        </section> */}
 
         {/* Who We Serve */}
         <section data-theme="dark">
@@ -58,7 +64,9 @@ export default async function HomePage() {
         <section data-theme="light">
           <InsightsSection blogs={blogsData} />
         </section>
+        </div>
       </main>
+      
 
       <Footer data={footerData} />
     </>

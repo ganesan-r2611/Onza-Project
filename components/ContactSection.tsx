@@ -30,7 +30,7 @@ export default function ContactSection({ data }: { data: ContactData }) {
           priority
         />
       </div>
-      <div className="absolute inset-0 -z-10 bg-black/30" />
+      <div className="absolute inset-0 -z-20 bg-black/30" />
 
       {/* Content Wrapper */}
       <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-14 pt-[70px] pb-[70px]">

@@ -17,7 +17,7 @@ export default function ServicesCarouselSection({ data }: Props) {
 
   return (
     <section
-      className="w-full bg-[#e9e1d2] text-[#1a1a1a] min-h-screen flex items-center"
+      className="w-full text-[#1a1a1a] min-h-screen flex items-center"
       data-theme="light"
     >
       {/* Content container */}
@@ -31,13 +31,13 @@ export default function ServicesCarouselSection({ data }: Props) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
           {/* Left copy */}
           <div className="lg:col-span-5">
-            <p className="text-[22px] md:text-[26px] leading-[1.5] text-[#000] whitespace-pre-line">
+            <p className="text-[22px] md:text-[26px] leading-[1.5] text-[#fff] whitespace-pre-line">
               {eyebrow}
             </p>
 
             <div className="mt-8">
               <Link href={cta.href} className="inline-block">
-                <button className="glass-border-button border border-black/10 rounded-full px-6 py-3 text-[16px] text-[#000]">
+                <button className="glass-border-button border border-black/10 rounded-full px-6 py-3 text-[16px] text-[#fff]">
                   {cta.label}
                 </button>
               </Link>
