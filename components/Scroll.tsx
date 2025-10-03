@@ -125,7 +125,7 @@ export default function ScrollZoomComponent({ data }: Props) {
   // =========================
   const getViewportH = () => {
     if (typeof window === "undefined") return 1000; // SSR-safe default
-    const vv = (window as any).visualViewport?.height;
+    const vv = (window as Window).visualViewport?.height;
     return vv ? Math.round(vv) : window.innerHeight;
   };
 
@@ -449,7 +449,7 @@ export default function ScrollZoomComponent({ data }: Props) {
             <div className="relative">
               <p className="text-4xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl drop-shadow-lg mb-4 text-black">
                 Our approach begins with your real-life goals, not just
-                financial metrics. Whether it's legacy building, education,
+                financial metrics. Whether it&apos;s legacy building, education,
                 lifestyle security, or intergenerational wealth, our strategies
                 are:
               </p>
@@ -460,7 +460,7 @@ export default function ScrollZoomComponent({ data }: Props) {
                 }}
               >
                 Our approach begins with your real-life goals, not just
-                financial metrics. Whether it's legacy building, education,
+                financial metrics. Whether it&apos;s legacy building legacy building, education,
                 lifestyle security, or intergenerational wealth, our strategies
                 are:
               </p>
