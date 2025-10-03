@@ -460,7 +460,7 @@ export default function ScrollZoomComponent({ data }: Props) {
                 }}
               >
                 Our approach begins with your real-life goals, not just
-                financial metrics. Whether it&apos;s legacy building legacy building, education,
+                financial metrics. Whether it&apos;s legacy building, education,
                 lifestyle security, or intergenerational wealth, our strategies
                 are:
               </p>
