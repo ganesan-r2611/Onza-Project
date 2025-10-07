@@ -21,86 +21,179 @@ interface FlarePosition {
 }
 
 export default function ScrollZoomComponent({ data }: Props) {
-  const [scrollY, setScrollY] = useState(0);
-  const [targetScrollY, setTargetScrollY] = useState(0);
+  // Single state object to prevent flickering
+// Replace the existing scrollState declaration
+const [scrollState, setScrollState] = useState({
+  scrollY: 0,
+  targetScrollY: 0,
+  section2Progress: 0,
+  section3Progress: 0,
+  targetSection2Progress: 0, // Add these
+  targetSection3Progress: 0, // Add these
+});
+
   const containerRef = useRef<HTMLDivElement>(null);
+  const section2Ref = useRef<HTMLDivElement>(null);
+  const section3Ref = useRef<HTMLDivElement>(null);
+
   const [flarePositions, setFlarePositions] = useState<FlarePosition[]>([
     { x: 20, y: 30, time: 0 },
     { x: 60, y: 50, time: (2 * Math.PI) / 3 },
     { x: 40, y: 70, time: (4 * Math.PI) / 3 },
   ]);
 
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+// After the mounted state, add mobile detection
+const [mounted, setMounted] = useState(false);
+const [isMobile, setIsMobile] = useState(false);
 
-  // Find the actual scrolling element
-  useEffect(() => {
-    const findScrollParent = () => {
-      let element: HTMLElement | null = containerRef.current;
-      while (element) {
-        const style = window.getComputedStyle(element);
-        const overflowY = style.overflowY;
-        const scrollHeight = element.scrollHeight;
-        const clientHeight = element.clientHeight;
+useEffect(() => {
+  setMounted(true);
+  setIsMobile(window.innerWidth < 768);
+}, []);
 
-        if (
-          (overflowY === "auto" || overflowY === "scroll") &&
-          scrollHeight > clientHeight
-        ) {
-          return element;
-        }
-        element = element.parentElement;
+  // Consolidated RAF loop for all scroll calculations
+useEffect(() => {
+  const findScrollParent = () => {
+    let element: HTMLElement | null = containerRef.current;
+    while (element) {
+      const style = window.getComputedStyle(element);
+      const overflowY = style.overflowY;
+      const scrollHeight = element.scrollHeight;
+      const clientHeight = element.clientHeight;
+
+      if (
+        (overflowY === "auto" || overflowY === "scroll") &&
+        scrollHeight > clientHeight
+      ) {
+        return element;
       }
-      return window;
-    };
+      element = element.parentElement;
+    }
+    return window;
+  };
 
-    const scrollElement = findScrollParent();
-    let rafId: number;
+  const scrollElement = findScrollParent();
+  let rafId: number;
 
-    const checkScroll = () => {
-      let scrollTop = 0;
+  const updateAllScrollValues = () => {
+  // 1. Update scroll position
+  let scrollTop = 0;
+  if (scrollElement === window) {
+    scrollTop =
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop;
+  } else if (scrollElement instanceof HTMLElement) {
+    scrollTop = scrollElement.scrollTop;
+  }
 
-      if (scrollElement === window) {
-        scrollTop =
-          window.pageYOffset ||
-          document.documentElement.scrollTop ||
-          document.body.scrollTop;
-      } else if (scrollElement instanceof HTMLElement) {
-        scrollTop = scrollElement.scrollTop;
-      }
+  let newTargetScrollY = 0;
+  if (containerRef.current) {
+    const rect = containerRef.current.getBoundingClientRect();
+    const relativeScroll = Math.max(0, -rect.top);
+    newTargetScrollY = relativeScroll;
+  }
 
-      if (!containerRef.current) {
-        rafId = requestAnimationFrame(checkScroll);
-        return;
-      }
+  // 2. Calculate section2Progress
+  let newSection2Progress = 0;
+  if (section2Ref.current) {
+    const rect = section2Ref.current.getBoundingClientRect();
+    const elementCenter = rect.top + rect.height / 2;
+    const viewportCenter = window.innerHeight / 2;
+    const distance = elementCenter - viewportCenter;
+    const transitionRange = isMobile ? 300 : 600; // Faster on mobile
+    newSection2Progress = Math.max(
+      0,
+      Math.min(1, (transitionRange - distance) / (transitionRange * 2))
+    );
+  }
 
-      const rect = containerRef.current.getBoundingClientRect();
-      const relativeScroll = Math.max(0, -rect.top);
-      setTargetScrollY(relativeScroll);
+  // 3. Calculate section3Progress
+  let newSection3Progress = 0;
+  if (section3Ref.current) {
+    const rect = section3Ref.current.getBoundingClientRect();
+    const elementCenter = rect.top + rect.height / 2;
+    const viewportCenter = window.innerHeight / 2;
+    const distance = elementCenter - viewportCenter;
+    const transitionRange = isMobile ? 300 : 600; // Faster on mobile
+    newSection3Progress = Math.max(
+      0,
+      Math.min(1, (transitionRange - distance) / (transitionRange * 2))
+    );
+  }
 
-      rafId = requestAnimationFrame(checkScroll);
-    };
+  // Single state update
+  setScrollState((prev) => ({
+    ...prev,
+    targetScrollY: newTargetScrollY,
+    targetSection2Progress: newSection2Progress,
+    targetSection3Progress: newSection3Progress,
+  }));
 
-    rafId = requestAnimationFrame(checkScroll);
-    return () => cancelAnimationFrame(rafId);
-  }, []);
+  // Continue the loop
+  rafId = requestAnimationFrame(updateAllScrollValues);
+};
+
+  rafId = requestAnimationFrame(updateAllScrollValues);
+  return () => cancelAnimationFrame(rafId);
+}, []);
 
   // Smooth scroll with delay using RAF
-  useEffect(() => {
-    let rafId: number;
-    const smoothScroll = () => {
-      setScrollY((prev) => {
-        const diff = targetScrollY - prev;
-        const speed = diff * 0.03;
-        if (Math.abs(diff) < 0.5) return targetScrollY;
-        return prev + speed;
-      });
-      rafId = requestAnimationFrame(smoothScroll);
-    };
-
+useEffect(() => {
+  let rafId: number;
+  const smoothScroll = () => {
+    setScrollState((prev) => {
+      const diff = prev.targetScrollY - prev.scrollY;
+      const speed = diff * (isMobile ? 0.2 : 0.03); // Faster on mobile
+      if (Math.abs(diff) < 0.5) {
+        return { ...prev, scrollY: prev.targetScrollY };
+      }
+      return { ...prev, scrollY: prev.scrollY + speed };
+    });
     rafId = requestAnimationFrame(smoothScroll);
-    return () => cancelAnimationFrame(rafId);
-  }, [targetScrollY]);
+  };
+
+  rafId = requestAnimationFrame(smoothScroll);
+  return () => cancelAnimationFrame(rafId);
+}, [isMobile]);
+
+    // Smooth text transition progress (rubber band effect)
+// Smooth text transition progress (rubber band effect)
+useEffect(() => {
+  let rafId: number;
+  const smoothTransition = () => {
+    setScrollState((prev) => {
+      const section2Diff = prev.targetSection2Progress - prev.section2Progress;
+      const section3Diff = prev.targetSection3Progress - prev.section3Progress;
+      const speed = isMobile ? 0.25 : 0.08; // Faster on mobile
+
+      let newSection2Progress = prev.section2Progress;
+      let newSection3Progress = prev.section3Progress;
+
+      if (Math.abs(section2Diff) > 0.001) {
+        newSection2Progress = prev.section2Progress + section2Diff * speed;
+      } else {
+        newSection2Progress = prev.targetSection2Progress;
+      }
+
+      if (Math.abs(section3Diff) > 0.001) {
+        newSection3Progress = prev.section3Progress + section3Diff * speed;
+      } else {
+        newSection3Progress = prev.targetSection3Progress;
+      }
+
+      return {
+        ...prev,
+        section2Progress: newSection2Progress,
+        section3Progress: newSection3Progress,
+      };
+    });
+    rafId = requestAnimationFrame(smoothTransition);
+  };
+
+  rafId = requestAnimationFrame(smoothTransition);
+  return () => cancelAnimationFrame(rafId);
+}, [isMobile]);
 
   // Animate lens flares
   useEffect(() => {
@@ -124,7 +217,7 @@ export default function ScrollZoomComponent({ data }: Props) {
   // Viewport + 4-stage scaling (mobile-safe)
   // =========================
   const getViewportH = () => {
-    if (typeof window === "undefined") return 1000; // SSR-safe default
+    if (typeof window === "undefined") return 1000;
     const vv = (window as Window).visualViewport?.height;
     return vv ? Math.round(vv) : window.innerHeight;
   };
@@ -132,35 +225,30 @@ export default function ScrollZoomComponent({ data }: Props) {
   const viewportH = getViewportH();
   const viewportW = typeof window !== "undefined" ? window.innerWidth : 1600;
 
-  const isMobile = viewportW < 768;
+  // const isMobile = viewportW < 768;
 
-  // Base circle size: Tailwind handles actual element size;
-  // this is only for computing the cover scale.
   const baseCircleSize = isMobile
     ? Math.min(Math.max(viewportW * 0.7, 260), 500)
     : Math.min(viewportW * 0.4, 500);
 
-  // Scale so the circle fully covers viewport at Stage 4
   const viewportDiagonal =
     typeof window !== "undefined"
       ? Math.sqrt(viewportW * viewportW + viewportH * viewportH)
       : 1800;
 
-  const coverScale = Math.max(1, (viewportDiagonal * 1.02) / baseCircleSize);
+  const coverScale = Math.max(1, (viewportDiagonal * 1.1) / baseCircleSize);
 
-  // Component height: 400 * safe vh
-  const stageCount = 3; // or 4 if you really need four scroll stages
+  const stageCount = 4;
   const componentHeight = viewportH * stageCount;
   const stageHeight = componentHeight / 4;
 
-  const clampedScroll = Math.max(0, Math.min(scrollY, componentHeight));
+  const clampedScroll = Math.max(0, Math.min(scrollState.scrollY, componentHeight));
   const currentStage = Math.min(Math.floor(clampedScroll / stageHeight), 3);
   const stageProgress = Math.min(
     1,
     Math.max(0, (clampedScroll - currentStage * stageHeight) / stageHeight)
   );
 
-  // Stage scales: 1 → coverScale
   const s1 = 1;
   const s2 = s1 + (coverScale - s1) / 3;
   const s3 = s1 + ((coverScale - s1) * 2) / 3;
@@ -173,34 +261,60 @@ export default function ScrollZoomComponent({ data }: Props) {
   const easeInOut = (t: number) =>
     t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 
-  const imageScale =
-    currentStage === 3
-      ? s4
-      : startScale + (endScale - startScale) * easeInOut(stageProgress);
+  // Separate progress for image zoom (faster)
+  const imageStageHeight = componentHeight / 3;
+  const imageClampedScroll = Math.max(0, Math.min(scrollState.scrollY, componentHeight));
+  const imageCurrentStage = Math.min(Math.floor(imageClampedScroll / imageStageHeight), 2);
+  const imageStageProgress = Math.min(
+    1,
+    Math.max(0, (imageClampedScroll - imageCurrentStage * imageStageHeight) / imageStageHeight)
+  );
 
-  // Background opacity (hidden during Stage 4)
+  const imageStageScales = [s1, s3, s4];
+  const imageStartScale = imageStageScales[imageCurrentStage];
+  const imageEndScale = imageStageScales[Math.min(imageCurrentStage + 1, 2)];
+
+  const imageScale =
+    imageCurrentStage === 2
+      ? s4
+      : imageStartScale + (imageEndScale - imageStartScale) * easeInOut(imageStageProgress);
+
+  const textStageHeight = componentHeight / 4;
+  const textClampedScroll = Math.max(0, Math.min(scrollState.scrollY, componentHeight));
+  const textCurrentStage = Math.min(Math.floor(textClampedScroll / textStageHeight), 3);
+  const textStageProgress = Math.min(
+    1,
+    Math.max(0, (textClampedScroll - textCurrentStage * textStageHeight) / textStageHeight)
+  );
+// Replace the image opacity calculation section with this:
+
+// Image opacity - fade out only at the very end, when approaching "Who We Serve"
+let imageOpacity = 1;
+
+// Calculate when we're near the end of the scroll component
+const scrollProgress = scrollState.scrollY / componentHeight;
+
+// Start fading when we're 85% through the scroll component
+// Fully faded by 95%
+const fadeStartProgress = 0.85;
+const fadeEndProgress = 0.95;
+
+if (scrollProgress < fadeStartProgress) {
+  imageOpacity = 1;
+} else if (scrollProgress < fadeEndProgress) {
+  const fadeProgress = (scrollProgress - fadeStartProgress) / (fadeEndProgress - fadeStartProgress);
+  imageOpacity = 1 - easeInOut(fadeProgress);
+} else {
+  imageOpacity = 0;
+}
+
   let fixedOpacity = 1;
-  if (currentStage < 3) {
+  if (textCurrentStage < 3) {
     fixedOpacity = 1;
   } else {
-    const fade = 1 - easeInOut(stageProgress);
+    const fade = 1 - easeInOut(textStageProgress);
     fixedOpacity = Math.max(0, Math.min(1, fade * 0.2));
   }
-
-  // Section color transitions (unchanged)
-  const section2Start = viewportH * 0.5;
-  const section2Transition = viewportH * 0.4;
-  const section2Progress = Math.max(
-    0,
-    Math.min(1, (clampedScroll - section2Start) / section2Transition)
-  );
-
-  const section3Start = viewportH * 1.5;
-  const section3Transition = viewportH * 0.4;
-  const section3Progress = Math.max(
-    0,
-    Math.min(1, (clampedScroll - section3Start) / section3Transition)
-  );
 
   return (
     <div
@@ -215,9 +329,7 @@ export default function ScrollZoomComponent({ data }: Props) {
         style={{
           background:
             "radial-gradient(ellipse at 50% 30%, #0f3333, #0a2828, #051a1a, #020f0f)",
-          opacity: fixedOpacity,
           pointerEvents: fixedOpacity === 0 ? "none" : "auto",
-          visibility: fixedOpacity === 0 ? "hidden" : "visible",
         }}
       >
         {/* Lens flares */}
@@ -266,8 +378,8 @@ export default function ScrollZoomComponent({ data }: Props) {
       <div
         className="fixed inset-0 flex items-center justify-center pointer-events-none overflow-hidden -z-30 transition-opacity duration-500"
         style={{
-          opacity: fixedOpacity,
-          visibility: fixedOpacity === 0 ? "hidden" : "visible",
+          opacity: imageOpacity,
+          visibility: imageOpacity === 0 ? "hidden" : "visible",
         }}
       >
         <div
@@ -278,7 +390,7 @@ export default function ScrollZoomComponent({ data }: Props) {
           "
           style={{
             transform: `scale(${imageScale})`,
-            transition: "transform 0.1s linear",
+            // transition: "transform 0.1s linear",
           }}
         >
           {/* Overlays */}
@@ -335,39 +447,39 @@ export default function ScrollZoomComponent({ data }: Props) {
       {/* Content container */}
       <div className="relative z-20">
         {/* Section 1 */}
-        <div
-          className="
-            relative flex flex-col md:flex-row 
-            items-start md:items-center 
-            justify-end md:justify-between 
-            z-10 px-6 sm:px-8 
-            text-left 
-            gap-6 md:gap-8
-          "
-          style={{ minHeight: "100svh" }}
-        >
-          <div className="text-white max-w-lg">
-            <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl leading-relaxed drop-shadow-2xl">
-              <span className="inline lg:block">Crafting</span>
-              <span className="inline lg:hidden">&nbsp;</span>
-              <span className="inline lg:block">Pathways,</span>
-              <span className="block">That&nbsp;Endure</span>
-            </h2>
-          </div>
+<div
+  className="
+    relative flex flex-col md:flex-row 
+    items-start md:items-center 
+    justify-end md:justify-between 
+    z-10 px-6 sm:px-8 
+    text-left 
+    gap-6 md:gap-8
+  "
+  style={{ minHeight: isMobile ? "100svh" : "120svh" }}
+>
+  <div className="text-white max-w-lg">
+    <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-5xl xl:text-6xl leading-relaxed drop-shadow-2xl">
+      <span className="inline lg:block">Crafting</span>
+      <span className="inline lg:hidden">&nbsp;</span>
+      <span className="inline lg:block">Pathways,</span>
+      <span className="block">That&nbsp;Endure</span>
+    </h2>
+  </div>
 
-          <div className="text-white max-w-md md:self-end md:pb-8">
-            <p
-              className="
-                text-lg md:text-xl lg:text-2xl 
-                drop-shadow-lg leading-relaxed 
-                text-[#ffdc81]
-              "
-            >
-              Discreet and discerning guidance for those whose decisions define
-              tomorrow&apos;s world.
-            </p>
-          </div>
-        </div>
+  <div className="text-white max-w-md md:self-end md:pb-8">
+    <p
+      className="
+        text-lg sm:text-lg md:text-xl lg:text-2xl 
+        drop-shadow-lg leading-relaxed 
+        text-[#ffdc81]
+      "
+    >
+      Discreet and discerning guidance for those whose decisions define
+      tomorrow&apos;s world.
+    </p>
+  </div>
+</div>
 
         {/* Section 2 */}
         <div
@@ -384,89 +496,90 @@ export default function ScrollZoomComponent({ data }: Props) {
           "
         >
           <div className="max-w-5xl pt-[25vh] pb-[22vh]">
-            <div className="relative">
-              <p className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl drop-shadow-lg text-black">
-                Our Ethos
-              </p>
-              <p
-                className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl drop-shadow-lg mb-4 text-white absolute top-0 left-0"
-                style={{
-                  clipPath: `inset(0 ${100 - section2Progress * 100}% 0 0)`,
-                }}
-              >
-                Our Ethos
-              </p>
-            </div>
+            {/* Section 2 */}
+<div className="relative" ref={section2Ref}>
+  <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl drop-shadow-lg text-black">
+    Our Ethos
+  </p>
+  <p
+    className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl drop-shadow-lg mb-4 text-white absolute top-0 left-0"
+    style={{
+      clipPath: `inset(0 ${100 - scrollState.section2Progress * 100}% 0 0)`,
+    }}
+  >
+    Our Ethos
+  </p>
+</div>
 
-            <div className="relative mt-10">
-              <p className="text-4xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl drop-shadow-lg mb-4 text-black">
-                Lorem ipsum dolor sit amet consectetur. Egestas urna faucibus
-                sit nibh augue morbi diam aliquet aenean. Mattis volutpat
-                maecenas placerat orci. Sapien morbi ut tempus facilisis.
-              </p>
-              <p
-                className="text-4xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl drop-shadow-lg mb-4 text-white absolute top-0 left-0"
-                style={{
-                  clipPath: `inset(0 ${100 - section2Progress * 100}% 0 0)`,
-                }}
-              >
-                Lorem ipsum dolor sit amet consectetur. Egestas urna faucibus
-                sit nibh augue morbi diam aliquet aenean. Mattis volutpat
-                maecenas placerat orci. Sapien morbi ut tempus facilisis.
-              </p>
-            </div>
+<div className="relative mt-10">
+  <p className="text-3xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl drop-shadow-lg mb-4 text-black">
+    Lorem ipsum dolor sit amet consectetur. Egestas urna faucibus
+    sit nibh augue morbi diam aliquet aenean. Mattis volutpat
+    maecenas placerat orci. Sapien morbi ut tempus facilisis.
+  </p>
+  <p
+    className="text-3xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl drop-shadow-lg mb-4 text-white absolute top-0 left-0"
+    style={{
+      clipPath: `inset(0 ${100 - scrollState.section2Progress * 100}% 0 0)`,
+    }}
+  >
+    Lorem ipsum dolor sit amet consectetur. Egestas urna faucibus
+    sit nibh augue morbi diam aliquet aenean. Mattis volutpat
+    maecenas placerat orci. Sapien morbi ut tempus facilisis.
+  </p>
+</div>
           </div>
         </div>
 
         {/* Section 3 */}
-        <div
-          className="
-            relative flex flex-col
-            items-start justify-start
-            md:items-center md:justify-center
-            z-10
-            pl-6 sm:pl-8
-            text-left
-            min-h-0 md:min-h-[100svh]
-            py-6 md:py-0
-          "
-        >
-          <div className="max-w-5xl pt-[25vh] pb-[22vh]">
-            <div className="relative">
-              <p className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl drop-shadow-lg mb-4 text-black">
-                Our Advisory Philosophy
-              </p>
-              <p
-                className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl drop-shadow-lg mb-4 text-white absolute top-0 left-0"
-                style={{
-                  clipPath: `inset(0 ${100 - section3Progress * 100}% 0 0)`,
-                }}
-              >
-                Our Advisory Philosophy
-              </p>
-            </div>
+<div
+  className="
+    relative flex flex-col
+    items-start justify-start
+    md:items-center md:justify-center
+    z-10
+    pl-6 sm:pl-8
+    text-left
+    min-h-0 md:min-h-[100svh]
+    py-6 md:py-0
+  "
+>
+  <div className="max-w-5xl pt-[25vh] pb-[22vh]">
+    <div className="relative" ref={section3Ref}>
+      <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl drop-shadow-lg mb-4 text-black">
+        Our Advisory Philosophy
+      </p>
+      <p
+        className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl drop-shadow-lg mb-4 text-white absolute top-0 left-0"
+        style={{
+          clipPath: `inset(0 ${100 - scrollState.section3Progress * 100}% 0 0)`,
+        }}
+      >
+        Our Advisory Philosophy
+      </p>
+    </div>
 
-            <div className="relative">
-              <p className="text-4xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl drop-shadow-lg mb-4 text-black">
-                Our approach begins with your real-life goals, not just
-                financial metrics. Whether it&apos;s legacy building, education,
-                lifestyle security, or intergenerational wealth, our strategies
-                are:
-              </p>
-              <p
-                className="text-4xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl drop-shadow-lg mb-4 text-white absolute top-0 left-0"
-                style={{
-                  clipPath: `inset(0 ${100 - section3Progress * 100}% 0 0)`,
-                }}
-              >
-                Our approach begins with your real-life goals, not just
-                financial metrics. Whether it&apos;s legacy building, education,
-                lifestyle security, or intergenerational wealth, our strategies
-                are:
-              </p>
-            </div>
-          </div>
-        </div>
+    <div className="relative mt-10">
+      <p className="text-3xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl drop-shadow-lg mb-4 text-black">
+        Our approach begins with your real-life goals, not just
+        financial metrics. Whether it&apos;s legacy building, education,
+        lifestyle security, or intergenerational wealth, our strategies
+        are:
+      </p>
+      <p
+        className="text-3xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl drop-shadow-lg mb-4 text-white absolute top-0 left-0"
+        style={{
+          clipPath: `inset(0 ${100 - scrollState.section3Progress * 100}% 0 0)`,
+        }}
+      >
+        Our approach begins with your real-life goals, not just
+        financial metrics. Whether it&apos;s legacy building, education,
+        lifestyle security, or intergenerational wealth, our strategies
+        are:
+      </p>
+    </div>
+  </div>
+</div>
       </div>
 
       {/* Services */}
