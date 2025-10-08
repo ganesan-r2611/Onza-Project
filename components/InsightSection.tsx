@@ -59,14 +59,14 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
     <section className="bg-[#121819] pt-16 pb-20" data-theme="light">
       <div className="mx-auto px-6">
         {/* Mobile Layout (flex-col) */}
-        <div className="block lg:hidden flex flex-col gap-6">
+        <div className="lg:hidden flex flex-col gap-6">
           {/* Title */}
-          <h2 className="text-[34px] md:text-[38px] font-light text-white leading-tight">
+          <h2 className="text-[34px] md:text-[38px] lg:text-[38px] font-light text-[#FBFBFB] leading-tight">
             {blogs.sectionTitle}
           </h2>
 
           {/* Subtitle */}
-          <p className="text-[15px] text-white/70 max-w-[420px]">
+          <p className="text-[20px] text-[#bbbbbb] max-w-[362px]">
             {blogs.sectionSubtitle}
           </p>
 
@@ -89,8 +89,9 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
         <div className="hidden lg:grid grid-cols-3 gap-8 mx-auto">
           {/* Column 1 */}
           <div className="flex flex-col gap-6">
-            <h2 className="text-[34px] md:text-[38px] font-light text-white leading-tight">
-              {blogs.sectionTitle}
+            <h2 className="text-[34px] md:text-[38px] lg:text-[38px] font-light text-[#FBFBFB] leading-tight max-w-[437px] pb-6" >
+              <span className="block">Insights</span>
+              <span className="block">Unlocked</span>
             </h2>
             {p(0) && <Card post={p(0)} />}
             {p(1) && <Card post={p(1)} />}
@@ -113,7 +114,7 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
 
           {/* Column 3 */}
           <div className="flex flex-col gap-6">
-            <p className="text-[15px] text-white/70 max-w-[420px]">
+            <p className="text-[20px] text-[#bbbbbb] max-w-[362px]">
               {blogs.sectionSubtitle}
             </p>
             {p(4) && <Card post={p(4)} />}

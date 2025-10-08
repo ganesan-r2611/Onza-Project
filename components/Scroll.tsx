@@ -84,7 +84,7 @@ function useScaleStages(category: string) {
   // Base scales for your 4 sections; tune as needed
   const base = {
     mobile:       [1.2, 4, 7, 20],
-    mobileShort:  [0.9, 4.3, 5.8, 7.8],
+    mobileShort:  [1.2, 4, 7, 20],
     tablet:       [1.0, 4.2, 5.8, 8.2],
     tabletShort:  [0.95, 3.8, 5.2, 7.4],
     desktop:      [1.0, 3.5, 6.0, 9.0],

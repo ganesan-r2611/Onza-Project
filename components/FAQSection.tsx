@@ -28,10 +28,10 @@ export default function FAQSection({ data }: { data: FAQData }) {
         <div className="mx-auto">
           {/* Header */}
           <div className="flex flex-col gap-4 mb-10">
-            <h2 className="text-[20px] font-normal text-[#ffdc81]">
+            <h2 className="text-[20px] font-regular text-[#ffdc81]">
               {data.title}
             </h2>
-            <p className="text-[20px] md:text-[26px] font-light text-[#bbbbbb] w-full lg:w-[48%]">
+            <p className="text-[20px] md:text-[38px] font-light text-[#bbbbbb] w-full lg:w-[48%]">
               {data.subtitle}
             </p>
           </div>
@@ -45,9 +45,7 @@ export default function FAQSection({ data }: { data: FAQData }) {
                   <Image
                     src={illustration}
                     alt="FAQ Illustration"
-                    width={652}
-                    height={444}
-                    className="w-full h-auto object-cover rounded-[24px]"
+                    className="lg:w-[652px] lg:h-[525px] w-full h-auto object-cover rounded-[24px]"
                     priority
                   />
                 </div>
