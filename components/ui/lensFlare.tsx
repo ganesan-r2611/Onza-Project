@@ -4,25 +4,13 @@ import React, { useEffect, useMemo, useState } from "react";
 
 type FlarePosition = { x: number; y: number; t: number };
 
-type FlareStyle = {
-  /** radial-gradient(...) string */
-  gradient: string;
-};
-
 export type LensFlareBackgroundProps = {
-  /** Number of flares to orbit (3 by default) */
   count?: number;
-  /** Orbit radius in viewport-% units (centered on 50%/50%) */
-  radius?: number; // default 65
-  /** How fast the flares orbit; higher = faster */
-  speed?: number; // default 0.015
-  /** Interval in ms for animation ticks (50–80 looks good) */
-  tickMs?: number; // default 50
-  /** Custom gradients per flare (fallback to defaults if not enough provided) */
+  radius?: number;
+  speed?: number;
+  tickMs?: number;
   gradients?: string[];
-  /** Additional className to position/layer this background */
   className?: string;
-  /** Whether to render the background “space” gradient as well */
   withSpaceGradient?: boolean;
 };
 

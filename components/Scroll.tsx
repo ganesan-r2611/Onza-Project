@@ -22,7 +22,7 @@ interface FlarePosition {
 }
 
 /** Debounce helper */
-function debounce<T extends (...args: any[]) => void>(fn: T, ms: number) {
+function debounce<T extends (...args: unknown[]) => void>(fn: T, ms: number) {
   let t: number | undefined;
   return (...args: Parameters<T>) => {
     if (t) window.clearTimeout(t);

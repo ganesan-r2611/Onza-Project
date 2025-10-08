@@ -6,7 +6,13 @@ import Image from "next/image";
 import { imageMap } from "@/libs/imageMap";
 
 type Pillar = { title: string; desc: string; imageKey: keyof typeof imageMap };
-type Props = { data: { eyebrow: string; cta: { label: string; href: string }; items: Pillar[] } };
+type Props = {
+  data: {
+    eyebrow: string;
+    cta: { label: string; href: string };
+    items: Pillar[];
+  };
+};
 
 export default function ServicesCarouselSection({ data }: Props) {
   const { eyebrow, cta, items } = data;
@@ -16,14 +22,18 @@ export default function ServicesCarouselSection({ data }: Props) {
   const [currentHorizontalScroll, setCurrentHorizontalScroll] = useState(0);
   const [mounted, setMounted] = useState(false);
 
-  const isMobileDevice = typeof window !== "undefined" && window.innerWidth < 768;
+  const isMobileDevice =
+    typeof window !== "undefined" && window.innerWidth < 768;
   useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (!mounted) return;
     let rafId: number;
     const tick = () => {
-      if (!sectionRef.current || !carouselRef.current) { rafId = requestAnimationFrame(tick); return; }
+      if (!sectionRef.current || !carouselRef.current) {
+        rafId = requestAnimationFrame(tick);
+        return;
+      }
       const rect = sectionRef.current.getBoundingClientRect();
       const sectionTop = rect.top;
       const sectionHeight = rect.height;
@@ -32,7 +42,8 @@ export default function ServicesCarouselSection({ data }: Props) {
 
       if (sectionTop <= 0 && Math.abs(sectionTop) <= scrollable) {
         const progress = Math.abs(sectionTop) / scrollable;
-        const maxScroll = carouselRef.current.scrollWidth - carouselRef.current.clientWidth;
+        const maxScroll =
+          carouselRef.current.scrollWidth - carouselRef.current.clientWidth;
         setTargetHorizontalScroll(progress * maxScroll);
       }
       rafId = requestAnimationFrame(tick);
@@ -45,9 +56,10 @@ export default function ServicesCarouselSection({ data }: Props) {
     if (!mounted) return;
     let rafId: number;
     const smooth = () => {
-      setCurrentHorizontalScroll(prev => {
+      const isMobile = window.innerWidth < 768;
+      setCurrentHorizontalScroll((prev) => {
         const diff = targetHorizontalScroll - prev;
-        const speed = isMobileDevice ? 0.20 : 0.10;
+        const speed = isMobile ? 0.2 : 0.1;
         if (Math.abs(diff) < 0.5) return targetHorizontalScroll;
         return prev + diff * speed;
       });
@@ -58,21 +70,23 @@ export default function ServicesCarouselSection({ data }: Props) {
   }, [mounted, targetHorizontalScroll]);
 
   useEffect(() => {
-    if (carouselRef.current) carouselRef.current.scrollLeft = currentHorizontalScroll;
+    if (carouselRef.current)
+      carouselRef.current.scrollLeft = currentHorizontalScroll;
   }, [currentHorizontalScroll]);
 
   const CARD_W_DESKTOP = 322;
-  const CARD_H_DESKTOP = 438;
 
   const getSectionHeight = () => {
     if (typeof window === "undefined") return "100vh";
+    const isMobile = window.innerWidth < 768; // ✅ inline
     const gap = 24;
-    const itemWidth = isMobileDevice ? 280 : CARD_W_DESKTOP;
-    const totalCarouselWidth = items.length * itemWidth + (items.length - 1) * gap;
-    const viewportWidthRatio = isMobileDevice ? 0.95 : 0.5; // a touch more visible on phones
+    const itemWidth = isMobile ? 280 : CARD_W_DESKTOP;
+    const totalCarouselWidth =
+      items.length * itemWidth + (items.length - 1) * gap;
+    const viewportWidthRatio = isMobile ? 0.95 : 0.5;
     const viewportWidth = window.innerWidth * viewportWidthRatio;
     const scrollableDistance = Math.max(0, totalCarouselWidth - viewportWidth);
-    const buffer = isMobileDevice ? 1200 : 800;
+    const buffer = isMobile ? 1200 : 800;
     return `${scrollableDistance + window.innerHeight + buffer}px`;
   };
 
@@ -80,7 +94,9 @@ export default function ServicesCarouselSection({ data }: Props) {
     <section
       ref={sectionRef}
       className="relative text-[#1a1a1a]"
-      style={mounted ? { minHeight: getSectionHeight() } : { minHeight: "100svh" }}
+      style={
+        mounted ? { minHeight: getSectionHeight() } : { minHeight: "100svh" }
+      }
       data-theme="light"
     >
       <div className="sticky top-0 flex items-center overflow-hidden">
@@ -142,7 +158,6 @@ export default function ServicesCarouselSection({ data }: Props) {
                 ))}
               </div>
             </div>
-
           </div>
         </div>
       </div>
