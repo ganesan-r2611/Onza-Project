@@ -66,11 +66,12 @@ function useViewportCategory() {
     const isDesktop = w > 1180 && ar <= 2.0;
     const isUltraWide = w > 1440 && ar > 2.0;
 
-    // Height-aware modifiers (landscape/short viewports)
-    const isShort = h < 720; // e.g., 13" laptops, landscape phones
+    // Height-aware flags (kept in case you use later)
+    const isShort = h < 720;
     const isVeryShort = h < 600;
 
-    if (isMobile) return isShort ? "mobile-short" : "mobile";
+    // ✨ Only one mobile category
+    if (isMobile) return "mobile";
     if (isTablet) return isShort ? "tablet-short" : "tablet";
     if (isUltraWide) return isVeryShort ? "ultrawide-very-short" : "ultrawide";
     return isShort ? "desktop-short" : isDesktop ? "desktop" : "desktop";
@@ -84,9 +85,9 @@ function useScaleStages(category: string) {
   // Base scales for your 4 sections; tune as needed
   const base = {
     mobile:       [1.2, 4, 7, 20],
-    mobileShort:  [1.2, 4, 7, 20],
+    // mobileShort:  [1.2, 4, 7, 20],
     tablet:       [1.0, 4.2, 5.8, 8.2],
-    tabletShort:  [0.95, 3.8, 5.2, 7.4],
+    // tabletShort:  [0.95, 3.8, 5.2, 7.4],
     desktop:      [1.0, 3.5, 6.0, 9.0],
     desktopShort: [0.95, 3.2, 5.4, 8.2],
     ultrawide:    [1.0, 3.2, 5.4, 8.4],
@@ -95,16 +96,15 @@ function useScaleStages(category: string) {
 
   switch (category) {
     case "mobile": return base.mobile;
-    case "mobile-short": return base.mobileShort;
+    // case "mobile-short": return base.mobileShort; // unused now, safe to keep
     case "tablet": return base.tablet;
-    case "tablet-short": return base.tabletShort;
+    // case "tablet-short": return base.tabletShort;
     case "desktop": return base.desktop;
     case "desktop-short": return base.desktopShort;
     case "ultrawide": return base.ultrawide;
     case "ultrawide-very-short": return base.ultraVery;
     case "server":
     default:
-      // During SSR, return conservative desktop scales to avoid hydration drift
       return base.desktop;
   }
 }
@@ -172,9 +172,53 @@ export default function SectionZoomComponent({ data }: Props) {
 
   const { category, mounted, height } = useViewportCategory();
   const stages = useScaleStages(category);
+  const isMobileCat = category === "mobile";
+  const [effectiveSection, setEffectiveSection] = useState(0);
+  const downshiftTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!isMobileCat) {
+      if (downshiftTimerRef.current) {
+        window.clearTimeout(downshiftTimerRef.current);
+        downshiftTimerRef.current = null;
+      }
+      setEffectiveSection(activeSection);
+      return;
+    }
+
+    setEffectiveSection((curr) => {
+      if (activeSection > curr) {
+        if (downshiftTimerRef.current) {
+          window.clearTimeout(downshiftTimerRef.current);
+          downshiftTimerRef.current = null;
+        }
+        return activeSection;
+      }
+
+      if (activeSection < curr) {
+        if (downshiftTimerRef.current) {
+          window.clearTimeout(downshiftTimerRef.current);
+        }
+        downshiftTimerRef.current = window.setTimeout(() => {
+          setEffectiveSection(activeSection);
+          downshiftTimerRef.current = null;
+        }, 140);
+      }
+
+      return curr;
+    });
+  }, [activeSection, isMobileCat]);
+
+  useEffect(() => {
+    return () => {
+      if (downshiftTimerRef.current) {
+        window.clearTimeout(downshiftTimerRef.current);
+      }
+    };
+  }, []);
 
   const shortBoost = mounted && height < 640 ? 0.92 : 1;
-  const imageScale = (stages[activeSection] ?? 1) * shortBoost;
+  const imageScale = (stages[effectiveSection] ?? 1) * shortBoost;
 
   return (
     <div ref={containerRef} className="relative w-full">

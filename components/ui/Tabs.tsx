@@ -72,10 +72,10 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
   };
 
   return (
-    <div className="w-full mx-auto lg:px-20 xl:pb-24">
+    <div className="w-full mx-auto lg:px-7 xl:pb-24">
       {/* --- Tabs Navigation (glassy) --- */}
       <div className="relative bg-[#ffffff26] border border-[#ffffff21] md:rounded-t-[16px] lg:rounded-t-[16px] shadow-[0px_4px_176px_#888888ff] ">
-        <div className="flex flex-colw-full h-[51px] lg:h-full px-5 pt-2">
+        <div className="flex flex-col w-full h-[51px] lg:h-full px-5 pt-2">
           {/* OUTER scroller */}
           <div
             ref={scrollerRef}
@@ -83,7 +83,7 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
             style={{ overscrollBehaviorX: "contain" }}
             role="tablist"
           >
-            <div className="relative flex gap-2 sm:gap-8 md:gap-12 lg:gap-20 w-max">
+            <div className="relative flex gap-2 sm:gap-8 md:gap-12 lg:gap-24 w-max">
               {tabs.map((tab) => (
                 <TabButton
                   key={tab.id}
