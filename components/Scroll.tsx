@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import ServicesCarouselSection from "./ServiceCarousel";
 import { imageMap } from "@/libs/imageMap";
 
@@ -20,571 +21,267 @@ interface FlarePosition {
   time: number;
 }
 
-export default function ScrollZoomComponent({ data }: Props) {
-  // Single state object to prevent flickering
-// Replace the existing scrollState declaration
-const [scrollState, setScrollState] = useState({
-  scrollY: 0,
-  targetScrollY: 0,
-  section2Progress: 0,
-  section3Progress: 0,
-  targetSection2Progress: 0, // Add these
-  targetSection3Progress: 0, // Add these
-});
+/** Debounce helper */
+function debounce<T extends (...args: any[]) => void>(fn: T, ms: number) {
+  let t: number | undefined;
+  return (...args: Parameters<T>) => {
+    if (t) window.clearTimeout(t);
+    t = window.setTimeout(() => fn(...args), ms);
+  };
+}
 
+/** Viewport classifier */
+function useViewportCategory() {
+  const [vp, setVp] = useState<{ w: number; h: number; ar: number; mounted: boolean }>({
+    w: 0,
+    h: 0,
+    ar: 1,
+    mounted: false,
+  });
+
+  useEffect(() => {
+    const update = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      setVp({ w, h, ar: w / Math.max(1, h), mounted: true });
+    };
+    const run = debounce(update, 120);
+    update(); // initial after mount
+    window.addEventListener("resize", run);
+    window.addEventListener("orientationchange", run);
+    return () => {
+      window.removeEventListener("resize", run);
+      window.removeEventListener("orientationchange", run);
+    };
+  }, []);
+
+  // Categories
+  const category = useMemo(() => {
+    if (!vp.mounted) return "server"; // avoid SSR mismatch
+    const { w, h, ar } = vp;
+
+    // Base buckets
+    const isMobile = w <= 768;
+    const isTablet = w > 768 && w <= 1180;
+    const isDesktop = w > 1180 && ar <= 2.0;
+    const isUltraWide = w > 1440 && ar > 2.0;
+
+    // Height-aware modifiers (landscape/short viewports)
+    const isShort = h < 720; // e.g., 13" laptops, landscape phones
+    const isVeryShort = h < 600;
+
+    if (isMobile) return isShort ? "mobile-short" : "mobile";
+    if (isTablet) return isShort ? "tablet-short" : "tablet";
+    if (isUltraWide) return isVeryShort ? "ultrawide-very-short" : "ultrawide";
+    return isShort ? "desktop-short" : isDesktop ? "desktop" : "desktop";
+  }, [vp]);
+
+  return { category, mounted: vp.mounted, width: vp.w, height: vp.h, aspect: vp.ar };
+}
+
+/** Choose per-section scale arrays based on viewport category */
+function useScaleStages(category: string) {
+  // Base scales for your 4 sections; tune as needed
+  const base = {
+    mobile:       [1.2, 4, 7, 20],
+    mobileShort:  [0.9, 4.3, 5.8, 7.8],
+    tablet:       [1.0, 4.2, 5.8, 8.2],
+    tabletShort:  [0.95, 3.8, 5.2, 7.4],
+    desktop:      [1.0, 3.5, 6.0, 9.0],
+    desktopShort: [0.95, 3.2, 5.4, 8.2],
+    ultrawide:    [1.0, 3.2, 5.4, 8.4],
+    ultraVery:    [0.92, 3.0, 5.0, 7.8],
+  } as const;
+
+  switch (category) {
+    case "mobile": return base.mobile;
+    case "mobile-short": return base.mobileShort;
+    case "tablet": return base.tablet;
+    case "tablet-short": return base.tabletShort;
+    case "desktop": return base.desktop;
+    case "desktop-short": return base.desktopShort;
+    case "ultrawide": return base.ultrawide;
+    case "ultrawide-very-short": return base.ultraVery;
+    case "server":
+    default:
+      // During SSR, return conservative desktop scales to avoid hydration drift
+      return base.desktop;
+  }
+}
+
+export default function SectionZoomComponent({ data }: Props) {
+  const [activeSection, setActiveSection] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  const section2Ref = useRef<HTMLDivElement>(null);
-  const section3Ref = useRef<HTMLDivElement>(null);
 
+  // 🔹 Lens flare animation
   const [flarePositions, setFlarePositions] = useState<FlarePosition[]>([
     { x: 20, y: 30, time: 0 },
     { x: 60, y: 50, time: (2 * Math.PI) / 3 },
     { x: 40, y: 70, time: (4 * Math.PI) / 3 },
   ]);
 
-// After the mounted state, add mobile detection
-const [mounted, setMounted] = useState(false);
-const [isMobile, setIsMobile] = useState(false);
-
-useEffect(() => {
-  setMounted(true);
-  setIsMobile(window.innerWidth < 768);
-}, []);
-
-  // Consolidated RAF loop for all scroll calculations
-useEffect(() => {
-  const findScrollParent = () => {
-    let element: HTMLElement | null = containerRef.current;
-    while (element) {
-      const style = window.getComputedStyle(element);
-      const overflowY = style.overflowY;
-      const scrollHeight = element.scrollHeight;
-      const clientHeight = element.clientHeight;
-
-      if (
-        (overflowY === "auto" || overflowY === "scroll") &&
-        scrollHeight > clientHeight
-      ) {
-        return element;
-      }
-      element = element.parentElement;
-    }
-    return window;
-  };
-
-  const scrollElement = findScrollParent();
-  let rafId: number;
-
-  const updateAllScrollValues = () => {
-  // 1. Update scroll position
-  let scrollTop = 0;
-  if (scrollElement === window) {
-    scrollTop =
-      window.pageYOffset ||
-      document.documentElement.scrollTop ||
-      document.body.scrollTop;
-  } else if (scrollElement instanceof HTMLElement) {
-    scrollTop = scrollElement.scrollTop;
-  }
-
-  let newTargetScrollY = 0;
-  if (containerRef.current) {
-    const rect = containerRef.current.getBoundingClientRect();
-    const relativeScroll = Math.max(0, -rect.top);
-    newTargetScrollY = relativeScroll;
-  }
-
-  // 2. Calculate section2Progress
-  let newSection2Progress = 0;
-  if (section2Ref.current) {
-    const rect = section2Ref.current.getBoundingClientRect();
-    const elementCenter = rect.top + rect.height / 2;
-    const viewportCenter = window.innerHeight / 2;
-    const distance = elementCenter - viewportCenter;
-    const transitionRange = isMobile ? 300 : 600; // Faster on mobile
-    newSection2Progress = Math.max(
-      0,
-      Math.min(1, (transitionRange - distance) / (transitionRange * 2))
-    );
-  }
-
-  // 3. Calculate section3Progress
-  let newSection3Progress = 0;
-  if (section3Ref.current) {
-    const rect = section3Ref.current.getBoundingClientRect();
-    const elementCenter = rect.top + rect.height / 2;
-    const viewportCenter = window.innerHeight / 2;
-    const distance = elementCenter - viewportCenter;
-    const transitionRange = isMobile ? 300 : 600; // Faster on mobile
-    newSection3Progress = Math.max(
-      0,
-      Math.min(1, (transitionRange - distance) / (transitionRange * 2))
-    );
-  }
-
-  // Single state update
-  setScrollState((prev) => ({
-    ...prev,
-    targetScrollY: newTargetScrollY,
-    targetSection2Progress: newSection2Progress,
-    targetSection3Progress: newSection3Progress,
-  }));
-
-  // Continue the loop
-  rafId = requestAnimationFrame(updateAllScrollValues);
-};
-
-  rafId = requestAnimationFrame(updateAllScrollValues);
-  return () => cancelAnimationFrame(rafId);
-}, []);
-
-  // Smooth scroll with delay using RAF
-useEffect(() => {
-  let rafId: number;
-  const smoothScroll = () => {
-    setScrollState((prev) => {
-      const diff = prev.targetScrollY - prev.scrollY;
-      const speed = diff * (isMobile ? 0.2 : 0.03); // Faster on mobile
-      if (Math.abs(diff) < 0.5) {
-        return { ...prev, scrollY: prev.targetScrollY };
-      }
-      return { ...prev, scrollY: prev.scrollY + speed };
-    });
-    rafId = requestAnimationFrame(smoothScroll);
-  };
-
-  rafId = requestAnimationFrame(smoothScroll);
-  return () => cancelAnimationFrame(rafId);
-}, [isMobile]);
-
-    // Smooth text transition progress (rubber band effect)
-// Smooth text transition progress (rubber band effect)
-useEffect(() => {
-  let rafId: number;
-  const smoothTransition = () => {
-    setScrollState((prev) => {
-      const section2Diff = prev.targetSection2Progress - prev.section2Progress;
-      const section3Diff = prev.targetSection3Progress - prev.section3Progress;
-      const speed = isMobile ? 0.25 : 0.08; // Faster on mobile
-
-      let newSection2Progress = prev.section2Progress;
-      let newSection3Progress = prev.section3Progress;
-
-      if (Math.abs(section2Diff) > 0.001) {
-        newSection2Progress = prev.section2Progress + section2Diff * speed;
-      } else {
-        newSection2Progress = prev.targetSection2Progress;
-      }
-
-      if (Math.abs(section3Diff) > 0.001) {
-        newSection3Progress = prev.section3Progress + section3Diff * speed;
-      } else {
-        newSection3Progress = prev.targetSection3Progress;
-      }
-
-      return {
-        ...prev,
-        section2Progress: newSection2Progress,
-        section3Progress: newSection3Progress,
-      };
-    });
-    rafId = requestAnimationFrame(smoothTransition);
-  };
-
-  rafId = requestAnimationFrame(smoothTransition);
-  return () => cancelAnimationFrame(rafId);
-}, [isMobile]);
-
-  // Animate lens flares
   useEffect(() => {
-    const interval = setInterval(() => {
+    const id = setInterval(() => {
       setFlarePositions((prev) =>
-        prev.map((flare, index) => {
-          const speed = 0.015;
-          const newTime = flare.time + speed;
-          const baseAngle = index * ((2 * Math.PI) / 3) + newTime;
-          const orbitRadius = 65;
-          const x = 50 + Math.cos(baseAngle) * orbitRadius;
-          const y = 50 + Math.sin(baseAngle) * orbitRadius;
-          return { x, y, time: newTime };
+        prev.map((f, i) => {
+          const speed = 0.012;
+          const t = f.time + speed;
+          const baseAngle = i * ((2 * Math.PI) / 3) + t;
+          const radius = 65;
+          return {
+            x: 50 + Math.cos(baseAngle) * radius,
+            y: 50 + Math.sin(baseAngle) * radius,
+            time: t,
+          };
         })
       );
-    }, 50);
-    return () => clearInterval(interval);
+    }, 80);
+    return () => clearInterval(id);
   }, []);
 
-  // =========================
-  // Viewport + 4-stage scaling (mobile-safe)
-  // =========================
-  const getViewportH = () => {
-    if (typeof window === "undefined") return 1000;
-    const vv = (window as Window).visualViewport?.height;
-    return vv ? Math.round(vv) : window.innerHeight;
-  };
+  // 🔹 Track active section
+  useEffect(() => {
+    const rootEl = containerRef.current;
+    if (!rootEl) return;
 
-  const viewportH = getViewportH();
-  const viewportW = typeof window !== "undefined" ? window.innerWidth : 1600;
+    const sections = Array.from(
+      rootEl.querySelectorAll<HTMLElement>(".scroll-section")
+    );
 
-  // const isMobile = viewportW < 768;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
 
-  const baseCircleSize = isMobile
-    ? Math.min(Math.max(viewportW * 0.7, 260), 500)
-    : Math.min(viewportW * 0.4, 500);
+        if (visible) {
+          const idx = Number(visible.target.getAttribute("data-index"));
+          setActiveSection(idx);
+        }
+      },
+      {
+        root: null,
+        threshold: Array.from({ length: 11 }, (_, i) => i / 10),
+        rootMargin: "0px 0px -30% 0px",
+      }
+    );
 
-  const viewportDiagonal =
-    typeof window !== "undefined"
-      ? Math.sqrt(viewportW * viewportW + viewportH * viewportH)
-      : 1800;
+    sections.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
-  const coverScale = Math.max(1, (viewportDiagonal * 1.1) / baseCircleSize);
+  const { category, mounted, height } = useViewportCategory();
+  const stages = useScaleStages(category);
 
-  const stageCount = 4;
-  const componentHeight = viewportH * stageCount;
-  const stageHeight = componentHeight / 4;
-
-  const clampedScroll = Math.max(0, Math.min(scrollState.scrollY, componentHeight));
-  const currentStage = Math.min(Math.floor(clampedScroll / stageHeight), 3);
-  const stageProgress = Math.min(
-    1,
-    Math.max(0, (clampedScroll - currentStage * stageHeight) / stageHeight)
-  );
-
-  const s1 = 1;
-  const s2 = s1 + (coverScale - s1) / 3;
-  const s3 = s1 + ((coverScale - s1) * 2) / 3;
-  const s4 = coverScale;
-  const stageScales = [s1, s2, s3, s4];
-
-  const startScale = stageScales[currentStage];
-  const endScale = stageScales[Math.min(currentStage + 1, 3)];
-
-  const easeInOut = (t: number) =>
-    t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-
-  // Separate progress for image zoom (faster)
-  const imageStageHeight = componentHeight / 3;
-  const imageClampedScroll = Math.max(0, Math.min(scrollState.scrollY, componentHeight));
-  const imageCurrentStage = Math.min(Math.floor(imageClampedScroll / imageStageHeight), 2);
-  const imageStageProgress = Math.min(
-    1,
-    Math.max(0, (imageClampedScroll - imageCurrentStage * imageStageHeight) / imageStageHeight)
-  );
-
-  const imageStageScales = [s1, s3, s4];
-  const imageStartScale = imageStageScales[imageCurrentStage];
-  const imageEndScale = imageStageScales[Math.min(imageCurrentStage + 1, 2)];
-
-  const imageScale =
-    imageCurrentStage === 2
-      ? s4
-      : imageStartScale + (imageEndScale - imageStartScale) * easeInOut(imageStageProgress);
-
-  const textStageHeight = componentHeight / 4;
-  const textClampedScroll = Math.max(0, Math.min(scrollState.scrollY, componentHeight));
-  const textCurrentStage = Math.min(Math.floor(textClampedScroll / textStageHeight), 3);
-  const textStageProgress = Math.min(
-    1,
-    Math.max(0, (textClampedScroll - textCurrentStage * textStageHeight) / textStageHeight)
-  );
-// Replace the image opacity calculation section with this:
-
-// Image opacity - fade out only at the very end, when approaching "Who We Serve"
-let imageOpacity = 1;
-
-// Calculate when we're near the end of the scroll component
-const scrollProgress = scrollState.scrollY / componentHeight;
-
-// Start fading when we're 85% through the scroll component
-// Fully faded by 95%
-const fadeStartProgress = 0.85;
-const fadeEndProgress = 0.95;
-
-if (scrollProgress < fadeStartProgress) {
-  imageOpacity = 1;
-} else if (scrollProgress < fadeEndProgress) {
-  const fadeProgress = (scrollProgress - fadeStartProgress) / (fadeEndProgress - fadeStartProgress);
-  imageOpacity = 1 - easeInOut(fadeProgress);
-} else {
-  imageOpacity = 0;
-}
-
-  let fixedOpacity = 1;
-  if (textCurrentStage < 3) {
-    fixedOpacity = 1;
-  } else {
-    const fade = 1 - easeInOut(textStageProgress);
-    fixedOpacity = Math.max(0, Math.min(1, fade * 0.2));
-  }
+  const shortBoost = mounted && height < 640 ? 0.92 : 1;
+  const imageScale = (stages[activeSection] ?? 1) * shortBoost;
 
   return (
-    <div
-      ref={containerRef}
-      id="scroll-zoom-container"
-      className="relative"
-      style={mounted ? { minHeight: `${componentHeight}px` } : undefined}
-      suppressHydrationWarning
-    >
+    <div ref={containerRef} className="relative w-full">
+      {/* 🔹 Gradient background */}
       <div
-        className="fixed inset-0 -z-30 transition-opacity duration-500"
+        className="fixed inset-0 -z-50 transition-opacity duration-1000 ease-in-out"
         style={{
           background:
-            "radial-gradient(ellipse at 50% 30%, #0f3333, #0a2828, #051a1a, #020f0f)",
-          pointerEvents: fixedOpacity === 0 ? "none" : "auto",
+            "radial-gradient(ellipse at 50% 30%, #0f3333 0%, #0a2828 50%, #051a1a 80%, #020f0f 100%)",
         }}
-      >
-        {/* Lens flares */}
-        <div
-          className="absolute rounded-full blur-3xl opacity-70 z-0"
-          style={{
-            width: "clamp(750px, 75vw, 1200px)",
-            height: "clamp(750px, 75vw, 1200px)",
-            left: `${flarePositions[0].x}%`,
-            top: `${flarePositions[0].y}%`,
-            transform: "translate(-50%, -50%)",
-            background:
-              "radial-gradient(circle, rgba(120, 240, 240, 0.8) 0%, rgba(100, 220, 220, 0.6) 30%, rgba(80, 180, 180, 0.3) 60%, transparent 80%)",
-            transition: "all 0.5s ease-out",
-          }}
-        />
-        <div
-          className="absolute rounded-full blur-3xl opacity-60 z-0"
-          style={{
-            width: "clamp(750px, 75vw, 1200px)",
-            height: "clamp(750px, 75vw, 1200px)",
-            left: `${flarePositions[1].x}%`,
-            top: `${flarePositions[1].y}%`,
-            transform: "translate(-50%, -50%)",
-            background:
-              "radial-gradient(circle, rgba(140, 250, 250, 0.7) 0%, rgba(120, 230, 230, 0.5) 30%, rgba(90, 190, 190, 0.3) 60%, transparent 80%)",
-            transition: "all 0.5s ease-out",
-          }}
-        />
-        <div
-          className="absolute rounded-full blur-3xl opacity-50 z-0"
-          style={{
-            width: "clamp(750px, 75vw, 1200px)",
-            height: "clamp(750px, 75vw, 1200px)",
-            left: `${flarePositions[2].x}%`,
-            top: `${flarePositions[2].y}%`,
-            transform: "translate(-50%, -50%)",
-            background:
-              "radial-gradient(circle, rgba(100, 220, 220, 0.6) 0%, rgba(80, 200, 200, 0.4) 30%, rgba(70, 170, 170, 0.2) 60%, transparent 80%)",
-            transition: "all 0.5s ease-out",
-          }}
-        />
-      </div>
+      />
 
-      {/* Image section - circular, zooms to fill viewport */}
-      <div
-        className="fixed inset-0 flex items-center justify-center pointer-events-none overflow-hidden -z-30 transition-opacity duration-500"
-        style={{
-          opacity: imageOpacity,
-          visibility: imageOpacity === 0 ? "hidden" : "visible",
-        }}
-      >
-        <div
-          className="
-            relative overflow-hidden rounded-full shadow-2xl
-            w-[40vw] h-[40vw] max-w-[500px] max-h-[500px]
-            sm:w-[70vw] sm:h-[70vw]
-          "
-          style={{
-            transform: `scale(${imageScale})`,
-            // transition: "transform 0.1s linear",
-          }}
-        >
-          {/* Overlays */}
+      {/* 🔹 Lens flares */}
+      <div className="fixed inset-0 -z-40 pointer-events-none transition-all duration-700 ease-in-out">
+        {flarePositions.map((f, idx) => (
           <div
-            className="absolute inset-0"
+            key={idx}
+            className="absolute rounded-full blur-3xl opacity-60 transition-transform duration-700 ease-in-out"
             style={{
-              background: "linear-gradient(135deg, #3cc2cc 0%, #13181c 100%)",
-              mixBlendMode: "multiply",
-              opacity: 0.7,
-            }}
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background: "linear-gradient(225deg, #3cc2cc 0%, #13181c 100%)",
-              mixBlendMode: "multiply",
-              opacity: 0.7,
-            }}
-          />
-          <div
-            className="absolute inset-0"
-            style={{
+              width: "clamp(750px, 75vw, 1200px)",
+              height: "clamp(750px, 75vw, 1200px)",
+              left: `${f.x}%`,
+              top: `${f.y}%`,
+              transform: "translate(-50%, -50%)",
               background:
-                "radial-gradient(ellipse 120% 80% at 50% 0%, #3cc2cc 0%, rgba(60, 194, 204, 0.5) 40%, transparent 70%)",
-              mixBlendMode: "lighten",
-              opacity: 0.8,
+                idx === 0
+                  ? "radial-gradient(circle, rgba(120,240,240,0.65) 0%, rgba(100,220,220,0.45) 35%, rgba(80,180,180,0.25) 60%, transparent 80%)"
+                  : idx === 1
+                  ? "radial-gradient(circle, rgba(140,250,250,0.55) 0%, rgba(110,230,230,0.4) 35%, rgba(90,190,190,0.22) 60%, transparent 80%)"
+                  : "radial-gradient(circle, rgba(100,220,220,0.5) 0%, rgba(80,200,200,0.35) 35%, rgba(70,170,170,0.18) 60%, transparent 80%)",
             }}
           />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(ellipse 50% 35% at 50% 100%, #3cc2cc 0%, rgba(60, 194, 204, 0.7) 20%, rgba(60, 194, 204, 0.4) 40%, rgba(60, 194, 204, 0.15) 65%, transparent 85%)",
-              mixBlendMode: "lighten",
-              opacity: 0.8,
-            }}
-          />
-          {/* Diamond */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div
-              style={{
-                width: "65%",
-                height: "65%",
-                background:
-                  "linear-gradient(135deg, rgb(59, 104, 108) 0%, rgb(39, 84, 88) 50%, rgb(19, 64, 68) 100%)",
-                transform: "rotate(45deg)",
-                borderRadius: "8%",
-              }}
-            />
-          </div>
-        </div>
+        ))}
       </div>
 
-      {/* Content container */}
-      <div className="relative z-20">
-        {/* Section 1 */}
-<div
-  className="
-    relative flex flex-col md:flex-row 
-    items-start md:items-center 
-    justify-end md:justify-between 
-    z-10 px-6 sm:px-8 
-    text-left 
-    gap-6 md:gap-8
-  "
-  style={{ minHeight: isMobile ? "100svh" : "120svh" }}
->
-  <div className="text-white max-w-lg">
-    <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-5xl xl:text-6xl leading-relaxed drop-shadow-2xl">
-      <span className="inline lg:block">Crafting</span>
-      <span className="inline lg:hidden">&nbsp;</span>
-      <span className="inline lg:block">Pathways,</span>
-      <span className="block">That&nbsp;Endure</span>
-    </h2>
-  </div>
-
-  <div className="text-white max-w-md md:self-end md:pb-8">
-    <p
-      className="
-        text-lg sm:text-lg md:text-xl lg:text-2xl 
-        drop-shadow-lg leading-relaxed 
-        text-[#ffdc81]
-      "
-    >
-      Discreet and discerning guidance for those whose decisions define
-      tomorrow&apos;s world.
-    </p>
-  </div>
-</div>
-
-        {/* Section 2 */}
-        <div
-          className="
-            relative flex flex-col
-            items-start justify-start
-            md:items-center md:justify-center
-            z-10
-            pl-6 sm:pl-8
-            text-left
-            min-h-0 md:min-h-[100svh]
-            py-6 md:py-0
-            md:mt-[10vh]
-          "
-        >
-          <div className="max-w-5xl pt-[25vh] pb-[22vh]">
-            {/* Section 2 */}
-<div className="relative" ref={section2Ref}>
-  <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl drop-shadow-lg text-black">
-    Our Ethos
-  </p>
-  <p
-    className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl drop-shadow-lg mb-4 text-white absolute top-0 left-0"
-    style={{
-      clipPath: `inset(0 ${100 - scrollState.section2Progress * 100}% 0 0)`,
-    }}
-  >
-    Our Ethos
-  </p>
-</div>
-
-<div className="relative mt-10">
-  <p className="text-3xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl drop-shadow-lg mb-4 text-black">
-    Lorem ipsum dolor sit amet consectetur. Egestas urna faucibus
-    sit nibh augue morbi diam aliquet aenean. Mattis volutpat
-    maecenas placerat orci. Sapien morbi ut tempus facilisis.
-  </p>
-  <p
-    className="text-3xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl drop-shadow-lg mb-4 text-white absolute top-0 left-0"
-    style={{
-      clipPath: `inset(0 ${100 - scrollState.section2Progress * 100}% 0 0)`,
-    }}
-  >
-    Lorem ipsum dolor sit amet consectetur. Egestas urna faucibus
-    sit nibh augue morbi diam aliquet aenean. Mattis volutpat
-    maecenas placerat orci. Sapien morbi ut tempus facilisis.
-  </p>
-</div>
-          </div>
-        </div>
-
-        {/* Section 3 */}
-<div
-  className="
-    relative flex flex-col
-    items-start justify-start
-    md:items-center md:justify-center
-    z-10
-    pl-6 sm:pl-8
-    text-left
-    min-h-0 md:min-h-[100svh]
-    py-6 md:py-0
-  "
->
-  <div className="max-w-5xl pt-[25vh] pb-[22vh]">
-    <div className="relative" ref={section3Ref}>
-      <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl drop-shadow-lg mb-4 text-black">
-        Our Advisory Philosophy
-      </p>
-      <p
-        className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl drop-shadow-lg mb-4 text-white absolute top-0 left-0"
-        style={{
-          clipPath: `inset(0 ${100 - scrollState.section3Progress * 100}% 0 0)`,
-        }}
-      >
-        Our Advisory Philosophy
-      </p>
-    </div>
-
-    <div className="relative mt-10">
-      <p className="text-3xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl drop-shadow-lg mb-4 text-black">
-        Our approach begins with your real-life goals, not just
-        financial metrics. Whether it&apos;s legacy building, education,
-        lifestyle security, or intergenerational wealth, our strategies
-        are:
-      </p>
-      <p
-        className="text-3xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl drop-shadow-lg mb-4 text-white absolute top-0 left-0"
-        style={{
-          clipPath: `inset(0 ${100 - scrollState.section3Progress * 100}% 0 0)`,
-        }}
-      >
-        Our approach begins with your real-life goals, not just
-        financial metrics. Whether it&apos;s legacy building, education,
-        lifestyle security, or intergenerational wealth, our strategies
-        are:
-      </p>
-    </div>
-  </div>
-</div>
+      {/* 🔹 Scalable image */}
+      <div className="fixed inset-0 -z-30 flex items-center justify-center transition-all duration-[1200ms] ease-[cubic-bezier(0.45,0,0.25,1)] pointer-events-none">
+        <Image
+          src={imageMap.onzaLgBG}
+          alt="Onza Background"
+          priority
+          className="transition-all duration-[1200ms] ease-[cubic-bezier(0.45,0,0.25,1)] object-contain"
+          style={{
+            transform: mounted ? `scale(${imageScale})` : "scale(1)",
+            width: "min(65vw, 520px)",
+            height: "auto",
+            filter: "drop-shadow(0 12px 30px rgba(0,0,0,0.35))",
+          }}
+        />
       </div>
 
-      {/* Services */}
-      <section data-theme="light">
-        <ServicesCarouselSection data={data} />
+      {/* 🔹 Section 1 */}
+      <section
+        data-index={0}
+        className="scroll-section snap-start relative flex flex-col md:flex-row justify-end md:justify-between items-start md:items-center min-h-screen transition-all duration-1000 ease-in-out"
+      >
+        <div className="text-white max-w-lg px-6">
+          <h2 className="text-4xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-6xl leading-relaxed drop-shadow-2xl pt-24">
+            <span className="inline lg:block">Crafting</span>
+            <span className="inline lg:hidden">&nbsp;</span>
+            <span className="inline lg:block">Pathways,</span>
+            <span className="block">That&nbsp;Endure</span>
+          </h2>
+        </div>
+        <div className="max-w-md md:self-end px-6 md:pb-8 mt-12 md:mt-0">
+          <p className="text-lg md:text-xl lg:text-2xl drop-shadow-lg leading-relaxed text-[#ffdc81]">
+            Discreet and discerning guidance for those whose decisions define tomorrow&apos;s world.
+          </p>
+        </div>
+      </section>
+
+      {/* 🔹 Section 2 */}
+      <section
+        data-index={1}
+        className="scroll-section snap-start flex flex-col justify-center items-center min-h-screen text-white transition-all duration-1000 ease-in-out"
+      >
+        <div className="max-w-8xl lg:max-w-7xl p-[40px] lg:p-[230px]">
+          <p className="text-[18px] md:text-[24px] lg:text-xl  font-regular lg:font-light mb-6 text-[#606060]">Our Ethos</p>
+          <p className="text-[32px] md:text-2xl lg:text-6xl font-light text-[#000000]">
+            Lorem ipsum dolor sit amet consectetur. Egestas urna faucibus sit nibh augue morbi diam aliquet aenean.
+            Mattis volutpat maecenas placerat orci. Sapien morbi ut tempus facilisis.
+          </p>
+        </div>
+      </section>
+
+      {/* 🔹 Section 3 */}
+      <section
+        data-index={2}
+        className="scroll-section snap-start flex flex-col justify-center min-h-screen text-white transition-all duration-1000 ease-in-out"
+      >
+        <div className=" max-w-8xl lg:max-w-7xl p-[40px] lg:p-[230px]">
+          <p className="text-[18px] md:text-[24px] lg:text-xlfont-regular lg:font-light mb-6 text-[#606060]">Our Advisory Philosophy</p>
+          <p className="text-[32px] md:text-2xl lg:text-6xl font-light text-[#000000]">
+            Our approach begins with your real-life goals, not just financial metrics. <br />
+            Whether it&apos;s legacy building, education, lifestyle security, or intergenerational wealth, our strategies are:
+          </p>
+        </div>
+      </section>
+
+      {/* 🔹 Section 4 (Services) */}
+      <section
+        data-index={3}
+        className="scroll-section snap-start flex flex-col justify-center min-h-screen text-white transition-all duration-1000 ease-in-out"
+      >
+        <div className="relative z-10">
+          <ServicesCarouselSection data={data} />
+        </div>
       </section>
     </div>
   );

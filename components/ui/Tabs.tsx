@@ -2,13 +2,13 @@
 
 import React, {
   useEffect,
-  useLayoutEffect,
   useRef,
   useState,
   useCallback,
+  useLayoutEffect,
 } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { imageMap } from "@/libs/imageMap";
 import TabButton from "./TabsButton";
 
@@ -26,38 +26,25 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
   const [activeId, setActiveId] = useState(tabs[0]?.id ?? "");
   const activeTab = tabs.find((t) => t.id === activeId);
 
-  const [underline, setUnderline] = useState({ left: 0, width: 0 });
-
-  const navRef = useRef<HTMLDivElement | null>(null);
+  const scrollerRef = useRef<HTMLDivElement | null>(null);
   const btnRefs = useRef<ButtonRefMap>({});
   const hasMounted = useRef(false);
 
-  /** ✅ Center active tab & move underline */
+  /** Center the active tab horizontally inside the scroller */
   const centerActiveInContainer = useCallback(() => {
-    const container = navRef.current;
+    const container = scrollerRef.current;
     const el = btnRefs.current[activeId];
     if (!container || !el) return;
 
     const { offsetLeft, offsetWidth } = el;
-    setUnderline({ left: offsetLeft, width: offsetWidth });
-
-    // Center active tab horizontally
     const desired = offsetLeft - (container.clientWidth - offsetWidth) / 2;
     const maxScroll = container.scrollWidth - container.clientWidth;
     const clamped = Math.max(0, Math.min(desired, maxScroll));
-
     container.scrollTo({ left: clamped, behavior: "smooth" });
   }, [activeId]);
 
-  /** ✅ Position underline on first render (no scroll) */
-  useLayoutEffect(() => {
-    const el = btnRefs.current[activeId];
-    const container = navRef.current;
-    if (!container || !el) return;
-    setUnderline({ left: el.offsetLeft, width: el.offsetWidth });
-  }, [activeId]);
+  useLayoutEffect(() => {}, [activeId]);
 
-  /** ✅ Scroll only after mount (avoid auto scroll to section) */
   useEffect(() => {
     if (!hasMounted.current) {
       hasMounted.current = true;
@@ -66,19 +53,13 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
     centerActiveInContainer();
   }, [activeId, centerActiveInContainer]);
 
-  /** ✅ Update underline on window resize */
   useEffect(() => {
-    const handleResize = () => {
-      const el = btnRefs.current[activeId];
-      const container = navRef.current;
-      if (!container || !el) return;
-      setUnderline({ left: el.offsetLeft, width: el.offsetWidth });
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [activeId]);
+    const onResize = () => centerActiveInContainer();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [centerActiveInContainer]);
 
-  /** ✅ Swipe gesture for mobile */
+  /** Swipe gesture for mobile (content area) */
   const startX = useRef(0);
   const onStart = (e: React.TouchEvent) => {
     startX.current = e.touches[0].clientX;
@@ -91,71 +72,84 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
   };
 
   return (
-    <div className="w-full mx-auto">
-      {/* --- Tabs Navigation --- */}
-      <div className="bg-[#ffffff26] border border-[#ffffff21] rounded-t-[16px] shadow-[0px_4px_176px_#888888ff]">
-        <div className="flex flex-col w-full px-5 pt-2">
+    <div className="w-full mx-auto lg:px-20 xl:pb-24">
+      {/* --- Tabs Navigation (glassy) --- */}
+      <div className="relative bg-[#ffffff26] border border-[#ffffff21] md:rounded-t-[16px] lg:rounded-t-[16px] shadow-[0px_4px_176px_#888888ff] ">
+        <div className="flex flex-colw-full h-[51px] lg:h-full px-5 pt-2">
+          {/* OUTER scroller */}
           <div
-            ref={navRef}
-            className="relative flex w-full gap-6 overflow-x-auto scrollbar-hide"
+            ref={scrollerRef}
+            className="w-full overflow-x-auto scrollbar-hide"
             style={{ overscrollBehaviorX: "contain" }}
+            role="tablist"
           >
-            {tabs.map((tab) => (
-              <TabButton
-                key={tab.id}
-                id={tab.id}
-                label={tab.label}
-                active={tab.id === activeId}
-                onClick={() => setActiveId(tab.id)}
-                buttonRef={(el) => {
-                  btnRefs.current[tab.id] = el;
-                }}
-              />
-            ))}
-
-            {/* Animated underline */}
-            {underline.width > 0 && (
-              <motion.div
-                className="absolute bottom-0 h-[2px] bg-[#ffdc81]"
-                animate={{ left: underline.left, width: underline.width }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              />
-            )}
+            <div className="relative flex gap-2 sm:gap-8 md:gap-12 lg:gap-20 w-max">
+              {tabs.map((tab) => (
+                <TabButton
+                  key={tab.id}
+                  id={tab.id}
+                  label={tab.label}
+                  active={tab.id === activeId}
+                  onClick={setActiveId}
+                  buttonRef={(el) => {
+                    btnRefs.current[tab.id] = el;
+                  }}
+                />
+              ))}
+            </div>
           </div>
         </div>
+
+        {/* ✅ White divider line UNDER the glassy outline, BEFORE content */}
+        <div className="pointer-events-none absolute left-0 right-0 bottom-0 h-px bg-white/100" />
       </div>
 
       {/* --- Content Section --- */}
       <div
-        className="w-full rounded-b-[24px] bg-gradient-to-r from-[#13181ccc] via-[#ffdc81cc] to-[#f2e9dacc]"
+        className="w-full lg:rounded-b-[24px] bg-gradient-to-r from-[#13181ccc] via-[#ffdc81cc] to-[#f2e9dacc] pt-5 lg:pt-0"
         onTouchStart={onStart}
         onTouchEnd={onEnd}
       >
-        <div className="flex flex-col lg:flex-row justify-center items-center w-full px-[56px] py-[40px]">
-          {activeTab && (
-            <>
-              {/* Text */}
-              <div className="flex flex-col gap-2 items-start w-full lg:w-[58%] mb-8 lg:mb-0">
-                <h3 className="text-[28px] sm:text-[32px] font-normal leading-[42px] text-[#ffdc81]">
-                  {activeTab.title}
-                </h3>
-                <p className="text-[16px] sm:text-[18px] font-light leading-[27px] text-[#fafafa] w-full lg:w-[66%]">
-                  {activeTab.content}
-                </p>
-              </div>
+        <div className="flex flex-col lg:flex-row justify-center items-center w-full px-12 lg:px-[56px]">
+          <AnimatePresence mode="wait">
+            {activeTab && (
+              <motion.div
+                key={activeTab.id}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.28, ease: "easeOut" }}
+                className="contents"
+              >
+                {/* Text */}
+                <div className="flex flex-col gap-2 items-start w-full lg:w-[60%] mb-8 lg:mb-0">
+                  <h3 className="text-[20px] sm:text-[32px] font-regular leading-[42px] text-[#ffdc81]">
+                    {activeTab.title}
+                  </h3>
+                  <p className="text-[18px] sm:text-[18px] font-light leading-[27px] text-[#fafafa] w-full lg:w-[66%]">
+                    {activeTab.content}
+                  </p>
+                </div>
 
-              {/* Image */}
-              <div className="w-full lg:w-[28%] flex justify-center">
-                <Image
-                  src={imageMap[activeTab.imageKey]}
-                  alt={activeTab.title}
-                  width={368}
-                  height={532}
-                  className="w-full h-auto object-cover rounded-lg"
-                />
-              </div>
-            </>
-          )}
+                {/* Image */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.98 }}
+                  transition={{ duration: 0.28 }}
+                  className="w-full lg:w-[50%] flex justify-between items-center"
+                >
+                  <Image
+                    src={imageMap[activeTab.imageKey]}
+                    alt={activeTab.title}
+                    width={360}
+                    height={315}
+                    className="object-cover rounded-lg w-[360px] h-[315px] md:w-[340px] md:h-[500px] lg:w-[368px] lg:h-[532px]"
+                  />
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>

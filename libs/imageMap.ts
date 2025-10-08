@@ -33,6 +33,8 @@ import instagram from "@/assets/instagram.png";
 import linkedin from "@/assets/linkedin.png";
 import location from "@/assets/location.png";
 
+import onzaLgBG from "@/assets/onza-lg-bg.png";
+
 export const imageMap: Record<string, StaticImageData> = {
   logo,
   bannerContact,
@@ -59,4 +61,5 @@ export const imageMap: Record<string, StaticImageData> = {
   location,
   cardbg1,
   cardbg2,
+  onzaLgBG
 };

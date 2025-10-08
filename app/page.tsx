@@ -2,7 +2,6 @@
 import { getStaticData } from "@/libs/getStaticData";
 import NavBar from "@/components/NavBar";
 import ScrollZoomComponent from "@/components/Scroll";
-import ServicesCarouselSection from "@/components/ServiceCarousel";
 import ServicesSection from "@/components/Service";
 import TestimonialsSection from "@/components/TestimonalSection";
 import ContactSection from "@/components/ContactSection";

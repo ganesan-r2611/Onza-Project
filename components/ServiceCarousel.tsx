@@ -6,14 +6,7 @@ import Image from "next/image";
 import { imageMap } from "@/libs/imageMap";
 
 type Pillar = { title: string; desc: string; imageKey: keyof typeof imageMap };
-
-type Props = {
-  data: {
-    eyebrow: string;
-    cta: { label: string; href: string };
-    items: Pillar[];
-  };
-};
+type Props = { data: { eyebrow: string; cta: { label: string; href: string }; items: Pillar[] } };
 
 export default function ServicesCarouselSection({ data }: Props) {
   const { eyebrow, cta, items } = data;
@@ -22,169 +15,134 @@ export default function ServicesCarouselSection({ data }: Props) {
   const [targetHorizontalScroll, setTargetHorizontalScroll] = useState(0);
   const [currentHorizontalScroll, setCurrentHorizontalScroll] = useState(0);
   const [mounted, setMounted] = useState(false);
-    // Calculate based on actual carousel content
-  const isMobileDevice = typeof window !== "undefined" && (window.innerWidth < 768);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const isMobileDevice = typeof window !== "undefined" && window.innerWidth < 768;
+  useEffect(() => setMounted(true), []);
 
-  // Calculate target scroll position based on vertical scroll
   useEffect(() => {
     if (!mounted) return;
-
     let rafId: number;
-
-    const handleScroll = () => {
-      if (!sectionRef.current || !carouselRef.current) {
-        rafId = requestAnimationFrame(handleScroll);
-        return;
-      }
-
-      const section = sectionRef.current;
-      const carousel = carouselRef.current;
-      const rect = section.getBoundingClientRect();
-
+    const tick = () => {
+      if (!sectionRef.current || !carouselRef.current) { rafId = requestAnimationFrame(tick); return; }
+      const rect = sectionRef.current.getBoundingClientRect();
       const sectionTop = rect.top;
       const sectionHeight = rect.height;
-      const viewportHeight = window.innerHeight;
-      const scrollableHeight = sectionHeight - viewportHeight;
+      const vh = window.innerHeight;
+      const scrollable = sectionHeight - vh;
 
-      if (sectionTop <= 0 && Math.abs(sectionTop) <= scrollableHeight) {
-        const scrollProgress = Math.abs(sectionTop) / scrollableHeight;
-        const maxScroll = carousel.scrollWidth - carousel.clientWidth;
-        const targetScroll = scrollProgress * maxScroll;
-        
-        setTargetHorizontalScroll(targetScroll);
+      if (sectionTop <= 0 && Math.abs(sectionTop) <= scrollable) {
+        const progress = Math.abs(sectionTop) / scrollable;
+        const maxScroll = carouselRef.current.scrollWidth - carouselRef.current.clientWidth;
+        setTargetHorizontalScroll(progress * maxScroll);
       }
-
-      rafId = requestAnimationFrame(handleScroll);
+      rafId = requestAnimationFrame(tick);
     };
-
-    rafId = requestAnimationFrame(handleScroll);
-    return () => {
-      cancelAnimationFrame(rafId);
-    };
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
   }, [mounted]);
 
-  // Smooth scrolling animation (rubber band effect)
   useEffect(() => {
     if (!mounted) return;
-
     let rafId: number;
-
-    const smoothScroll = () => {
-      setCurrentHorizontalScroll((prev) => {
+    const smooth = () => {
+      setCurrentHorizontalScroll(prev => {
         const diff = targetHorizontalScroll - prev;
-        const speed = isMobileDevice ? 0.15 : 0.09; // Adjust for smoothness (0.03-0.15)
-        
-        if (Math.abs(diff) < 0.5) {
-          return targetHorizontalScroll;
-        }
-        
+        const speed = isMobileDevice ? 0.20 : 0.10;
+        if (Math.abs(diff) < 0.5) return targetHorizontalScroll;
         return prev + diff * speed;
       });
-
-      rafId = requestAnimationFrame(smoothScroll);
+      rafId = requestAnimationFrame(smooth);
     };
-
-    rafId = requestAnimationFrame(smoothScroll);
-    return () => {
-      cancelAnimationFrame(rafId);
-    };
+    rafId = requestAnimationFrame(smooth);
+    return () => cancelAnimationFrame(rafId);
   }, [mounted, targetHorizontalScroll]);
 
-  // Apply smooth scroll to carousel
   useEffect(() => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollLeft = currentHorizontalScroll;
-    }
+    if (carouselRef.current) carouselRef.current.scrollLeft = currentHorizontalScroll;
   }, [currentHorizontalScroll]);
 
+  const CARD_W_DESKTOP = 322;
+  const CARD_H_DESKTOP = 438;
+
   const getSectionHeight = () => {
-  if (typeof window === "undefined") return "100vh";
-  
-  // Adjust item width and gap based on device
-  const itemWidth = isMobileDevice ? 280 : 360;
-  const gap = 24;
-  const totalCarouselWidth = (items.length * itemWidth) + ((items.length - 1) * gap);
-  
-  // Viewport width - more conservative on mobile
-  const viewportWidthRatio = isMobileDevice ? 0.8 : 0.4; // 80% on mobile, 40% on desktop
-  const viewportWidth = window.innerWidth * viewportWidthRatio;
-  
-  // Scrollable distance needed
-  const scrollableDistance = Math.max(0, totalCarouselWidth - viewportWidth);
-  
-  // Add viewport height plus extra buffer (more buffer on mobile)
-  const buffer = isMobileDevice ? 1800 : 800;
-  return `${scrollableDistance + window.innerHeight + buffer}px`;
-};
+    if (typeof window === "undefined") return "100vh";
+    const gap = 24;
+    const itemWidth = isMobileDevice ? 280 : CARD_W_DESKTOP;
+    const totalCarouselWidth = items.length * itemWidth + (items.length - 1) * gap;
+    const viewportWidthRatio = isMobileDevice ? 0.95 : 0.5; // a touch more visible on phones
+    const viewportWidth = window.innerWidth * viewportWidthRatio;
+    const scrollableDistance = Math.max(0, totalCarouselWidth - viewportWidth);
+    const buffer = isMobileDevice ? 1200 : 800;
+    return `${scrollableDistance + window.innerHeight + buffer}px`;
+  };
 
   return (
     <section
       ref={sectionRef}
-      className="relative w-full text-[#1a1a1a]"
+      className="relative text-[#1a1a1a]"
       style={mounted ? { minHeight: getSectionHeight() } : { minHeight: "100svh" }}
       data-theme="light"
     >
-      <div className="sticky top-0 h-screen flex items-center overflow-hidden w-full">
-       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-[30px] py-8 sm:py-12">
-  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 xl:gap-16 items-start">
-    {/* Left copy - stays fixed */}
-<div className="lg:col-span-5">
-  <p className="text-2xl sm:text-xl md:text-2xl lg:text-[26px] leading-[1.4] sm:leading-[1.5] text-[#fff] whitespace-pre-line">
-    {eyebrow}
-  </p>
+      <div className="sticky top-0 flex items-center overflow-hidden">
+        <div className="mx-auto pl-6 sm:px-6 lg:px-[30px] py-10 sm:py-20 lg:pt-[150px] w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-14 items-start">
+            {/* Left copy */}
+            <div className="lg:col-span-5 px-1">
+              <p className="text-[28px] sm:text-2xl md:text-3xl lg:text-[38px] leading-[1.45] sm:leading-[1.4] font-light">
+                {eyebrow}
+              </p>
 
-  <div className="mt-6 sm:mt-8">
-    <Link href={cta.href} className="inline-block">
-      <button className="glass-border-button border border-black/10 rounded-full px-5 py-2.5 sm:px-6 sm:py-3 text-[15px] sm:text-[16px] text-[#fff]">
-        {cta.label}
-      </button>
-    </Link>
-  </div>
-</div>
-
-    {/* Right carousel - scrolls horizontally */}
-    <div className="lg:col-span-7 w-full">
-      <div
-        ref={carouselRef}
-        className="flex gap-6 overflow-x-hidden w-full"
-        style={{ scrollBehavior: 'auto' }}
-      >
-        {items.map((item, i) => (
-  <div
-    key={i}
-    className={`shrink-0 w-[280px] sm:w-[320px] md:w-[360px] ${
-      i === 0 ? 'ml-4 sm:ml-8 lg:ml-14' : ''
-    } ${
-      i === items.length - 1 ? 'mr-4 sm:mr-8 lg:mr-14' : ''
-    }`}
-  >
-    <div className="rounded-2xl overflow-hidden bg-white/70 border border-black/10 shadow-md">
-      <div className="relative h-[300px] sm:h-[350px] md:h-[400px]">
-        <Image
-          src={imageMap[item.imageKey]}
-          alt={item.title}
-          fill
-          priority={i < 2}
-          className="object-cover"
-          sizes="(max-width: 640px) 280px, (max-width: 768px) 320px, 360px"
-        />
-      </div>
-    </div>
-
-    <h4 className="mt-4 text-[20px] sm:text-[20px] md:text-[24px] text-[#fff] font-normal">
-      {item.title}
-    </h4>
-    <p className="mt-2 text-[15px] sm:text-[14px] md:text-[16px] leading-[22px] sm:leading-[22px] text-[#fafafa]">
-      {item.desc}
-    </p>
-  </div>
-))}
+              {/* Non–full-width CTA on mobile (override global .glass-border-button width) */}
+              <div className="mt-5 sm:mt-8">
+                <Link href={cta.href} className="inline-block">
+                  <button className="glass-border-button w-[20px] px-6 py-3 text-[15px] sm:text-[16px] text-white">
+                    {cta.label}
+                  </button>
+                </Link>
               </div>
             </div>
+
+            {/* Right carousel (desktop unchanged) */}
+            <div className="lg:col-span-7 lg:-mr-[30px]">
+              <div
+                ref={carouselRef}
+                className="flex gap-4 sm:gap-6 overflow-x-scroll scrollbar-hide pe-0"
+                style={{ scrollBehavior: "auto" }}
+              >
+                {items.map((item, i) => (
+                  <div
+                    key={i}
+                    className={[
+                      "shrink-0",
+                      "w-[272px] xs:w-[272px] sm:w-[272px] md:w-[320px] lg:w-[322px] xl:w-[322px]",
+                      i === 0 ? "ml-2 sm:ml-8 lg:ml-14" : "",
+                      "mr-4 sm:mr-6 last:mr-2 sm:last:mr-0",
+                    ].join(" ")}
+                  >
+                    <div className="rounded-2xl overflow-hidden shadow-md">
+                      <div className="relative h-[496px] xs:h-[496px] sm:h-[496px] md:h-[320px] lg:h-[438px] xl:h-[438px]">
+                        <Image
+                          src={imageMap[item.imageKey]}
+                          alt={item.title}
+                          fill
+                          priority={i < 2}
+                          className="object-cover"
+                          sizes="(max-width: 480px) 260px, (max-width: 640px) 300px, (max-width: 1024px) 320px, 322px"
+                        />
+                      </div>
+                    </div>
+
+                    <h4 className="mt-3 pb-1 text-[20px] sm:text-[20px] md:text-[22px] lg:text-[32px] font-normal">
+                      {item.title}
+                    </h4>
+                    <p className="mt-1 text-[18px] sm:text-[18px] md:text-[15px] lg:text-[20px] leading-[20px] sm:leading-[22px] font-light">
+                      {item.desc}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
