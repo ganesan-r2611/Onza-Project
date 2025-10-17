@@ -1,17 +1,16 @@
-// app/layout.tsx
 import "./globals.css";
+import { Hanken_Grotesk } from "next/font/google";
 
-export const metadata = {
-  title: "ONZA – Crafting Pathways",
-  description: "ONZA homepage",
-};
+const hanken = Hanken_Grotesk({
+  subsets: ["latin"],
+  weight: ["100","200","300","400","500","600","700","800","900"],
+  display: "swap",
+});
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body>
-        <div className="relative z-10">{children}</div>
-      </body>
+    <html lang="en" className={hanken.className}>
+      <body>{children}</body>
     </html>
   );
 }

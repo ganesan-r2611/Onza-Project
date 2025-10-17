@@ -19,19 +19,22 @@ import testimonial1 from "@/assets/testimonial-1.png";
 import testimonial2 from "@/assets/testimonial-2.png";
 import testimonial3 from "@/assets/testimonial-3.png";
 import testimonial4 from "@/assets/testimonial-4.png";
+import testimonial5 from "@/assets/testimonial-1.png";
 
 import btnPrev from "@/assets/button-previous-slide.png";
 import btnNext from "@/assets/button-next-slide.png";
 
-import flag from "@/assets/flag.svg";
-import shield from "@/assets/shield.svg";
+import flag from "@/assets/flag.png";
+import shield from "@/assets/shield.png";
 import meditation from "@/assets/meditation.png";
-import vector from "@/assets/Vector.svg";
+import vector from "@/assets/Vector.png";
 
 import facebook from "@/assets/facebook.png";
 import instagram from "@/assets/instagram.png";
 import linkedin from "@/assets/linkedin.png";
 import location from "@/assets/location.png";
+
+import onzaLgBG from "@/assets/onza-lg-bg.png";
 
 export const imageMap: Record<string, StaticImageData> = {
   logo,
@@ -47,6 +50,7 @@ export const imageMap: Record<string, StaticImageData> = {
   testimonial2,
   testimonial3,
   testimonial4,
+  testimonial5,
   btnPrev,
   btnNext,
   flag,
@@ -59,4 +63,5 @@ export const imageMap: Record<string, StaticImageData> = {
   location,
   cardbg1,
   cardbg2,
+  onzaLgBG
 };

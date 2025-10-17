@@ -34,13 +34,15 @@ export default function TestimonialsSection({
   const next = () => setIndex((i) => (i < items.length - 1 ? i + 1 : 0));
 
   return (
-    <section className="bg-white text-black" data-theme="light">
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <section className="bg-[#FBFBFB] text-black" data-theme="light">
+      <div className="max-w-7xl mx-auto pt-32">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start px-6">
           {/* Left column */}
           <div className="lg:col-span-6">
-            <h3 className="text-sm text-gray-500 mb-3">Why Choose Us?</h3>
-            <p className="text-lg md:text-xl leading-relaxed text-gray-800 max-w-xl">
+            <h3 className="text-[20px] font-regular mb-3 text-[#4A4A4A]">
+              Why Choose Us?
+            </h3>
+            <p className="text-[26px] md:text-xl font-light leading-relaxed text-[#0A5060] max-w-xl">
               {data.subtitle}
             </p>
 
@@ -48,7 +50,7 @@ export default function TestimonialsSection({
             <div className="flex flex-wrap gap-8 mt-8">
               {values.map((v: ValueItem) => (
                 <div key={v.label} className="flex flex-col items-center gap-3">
-                  <div className="w-12 h-12 rounded-md bg-[#eafefe] flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-md bg-[rgba(60,194,204,0.1)] flex items-center justify-center">
                     <Image
                       src={imageMap[v.icon]}
                       alt={v.label}
@@ -68,17 +70,16 @@ export default function TestimonialsSection({
           {/* Right column */}
           <div className="lg:col-span-6 flex flex-col items-end gap-6">
             {/* Testimonial card */}
-            <div className="w-full md:w-3/4 lg:w-[520px]">
+            <div className="w-full md:w-3/4 lg:w-[528px]">
               <div
                 className="
-        rounded-xl border border-[#cdeff0] bg-white shadow-md transition-all duration-300 p-6
+        rounded-[16px] border border-[#0A5060] shadow-md transition-all duration-300 p-8
         flex flex-col justify-between
         h-[260px] sm:h-[280px] md:h-[280px]
       "
-                style={{ borderColor: "rgba(11,134,134,0.18)" }}
               >
                 <p
-                  className="text-base leading-7 text-gray-700 italic"
+                  className="text-[18px] text-italic leading-7 text-[#0A0A0A]"
                   style={{
                     display: "-webkit-box",
                     WebkitLineClamp: 6,
@@ -86,15 +87,15 @@ export default function TestimonialsSection({
                     overflow: "hidden",
                   }}
                 >
-                  “{items[index].text}”
+                  {items[index].text}
                 </p>
 
                 {/* Author */}
-                <div className="pt-4">
-                  <span className="text-cyan-600 font-medium">
+                <div className="pt-1">
+                  <span className="text-[20px] text-[#28A0AA] font-regular">
                     {items[index].author}
                   </span>
-                  <div className="text-sm text-gray-500 mt-1">
+                  <div className="text-[16px] text-light text-[#606060] mt-1">
                     {items[index].position}
                   </div>
                 </div>
@@ -149,23 +150,20 @@ export default function TestimonialsSection({
         </div>
 
         {/* Partner Logos */}
-        <div className="mt-16 border-t pt-8 overflow-hidden">
-          <div className="marquee">
-            {[...partnerLogos, ...partnerLogos].map(
-              (key: string, idx: number) => (
-                <div key={`${key}-${idx}`} className="inline-block px-8">
-                  <div className="w-36 h-12 flex items-center justify-center opacity-70">
-                    <Image
-                      src={imageMap[key]}
-                      alt={key}
-                      width={140}
-                      height={48}
-                      className="object-contain opacity-60"
-                    />
-                  </div>
-                </div>
-              )
-            )}
+        <div className="mt-5 pt-8">
+          <div className="flex justify-around items-center gap-12">
+            {partnerLogos.map((key: string) => (
+              <div
+                key={key}
+                className="w-36 h-[140px] flex items-center justify-center flex-shrink-0"
+              >
+                <Image
+                  src={imageMap[key]}
+                  alt={key}
+                  className="object-contain"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>

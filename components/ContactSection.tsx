@@ -30,14 +30,14 @@ export default function ContactSection({ data }: { data: ContactData }) {
           priority
         />
       </div>
-      <div className="absolute inset-0 -z-10 bg-black/30" />
+      <div className="absolute inset-0 -z-20 bg-black/30" />
 
       {/* Content Wrapper */}
-      <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-14 pt-[70px] pb-[70px]">
+      <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-36 pt-[120px] pb-[70px]">
         <div className="flex flex-col lg:flex-row justify-between items-start w-full gap-10 lg:gap-16">
           {/* Left: Title and Email */}
           <div className="w-full lg:w-[60%] flex flex-col">
-            <h2 className="text-[18px] sm:text-[20px] font-normal text-[#e6e0da]">
+            <h2 className="text-[20px] sm:text-[20px] font-regular text-[#E6E0DA]">
               {data.title}
             </h2>
             <p className="text-[26px] sm:text-[32px] md:text-[38px] font-light leading-[34px] md:leading-[44px] text-[#ffdc81] w-full lg:w-[80%] mt-3">
@@ -45,12 +45,12 @@ export default function ContactSection({ data }: { data: ContactData }) {
             </p>
 
             <div className="mt-12 sm:mt-16">
-              <p className="text-[18px] sm:text-[20px] text-[#fafafa] mb-2">
+              <p className="text-[18px] sm:text-[20px] font-regular text-[#fbfbfb] mb-2">
                 {data.emailLabel}
               </p>
               <a
                 href={`mailto:${data.email}`}
-                className="text-[18px] sm:text-[20px] text-[#ffdc81] underline hover:text-[#ffeec0]"
+                className="text-[18px] sm:text-[20px] text-[#ffdc81] font-regular underline hover:text-[#ffeec0]"
               >
                 {data.email}
               </a>
