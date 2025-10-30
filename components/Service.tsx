@@ -18,7 +18,7 @@ export default function ServicesSection({ services }: { services: ServicesData }
         withSpaceGradient
       />
       <div className="relative z-10 w-full">
-        <div className="mx-auto sm:px-8">
+        <div className="mx-auto sm:px-8 lg:pb-10">
           <div className="flex flex-col gap-[64px] items-center">
             <div className="flex flex-col lg:flex-row justify-between items-start w-full mt-[64px] px-6">
               <h2 className="text-[20px] font-normal leading-[27px] text-[#fafafa] mb-6 lg:mb-0">

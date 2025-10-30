@@ -1,12 +1,27 @@
 {
-  "title": "Get In Touch",
+  "title": "Contact Us",
   "subtitle": "Your financial journey deserves a clear path forward. Share a few details, and our team will connect with you to explore how we can help.",
   "emailLabel": "For specific queries, reach out to:",
-  "email": "hello@onza.com",
+  "email": "info@onzawestth.com",
   "form": {
-    "namePlaceholder": "Your Name *",
-    "emailPlaceholder": "you@company.com",
-    "messagePlaceholder": "Write your message here...",
-    "submitText": "Send Message"
+    "namePlaceholder": "Name",
+    "emailPlaceholder": "Email",
+    "contactNumberPlaceholder": "Contact Number",
+    "cityPlaceholder": "City",
+    "serviceInterests": [
+      "Wealth Management & Advisory",
+      "Offshore Wealth Management",
+      "Private Equity",
+      "Legacy Protection & Succession Planning",
+      "Real Estate Advisory",
+      "Managed Portfolio Services"
+    ],
+    "assetRanges": [
+      "$100K - $500K",
+      "$500K - $1M",
+      "$1M - $5M",
+      "$5M+"
+    ],
+    "submitText": "Submit"
   }
 }

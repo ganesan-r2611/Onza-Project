@@ -47,7 +47,7 @@ export default function TestimonialsSection({
             </p>
 
             {/* Values icons */}
-            <div className="flex flex-wrap gap-8 mt-8">
+            <div className="flex flex-wrap gap-8 mt-28">
               {values.map((v: ValueItem) => (
                 <div key={v.label} className="flex flex-col items-center gap-3">
                   <div className="w-12 h-12 rounded-md bg-[rgba(60,194,204,0.1)] flex items-center justify-center">
@@ -151,16 +151,16 @@ export default function TestimonialsSection({
 
         {/* Partner Logos */}
         <div className="mt-5 pt-8">
-          <div className="flex justify-around items-center gap-12">
+          <div className="grid grid-cols-2 sm:flex sm:flex-row justify-center items-center gap-6 sm:gap-[80px] lg:gap-[210px] pl-12 lg:pl-0">
             {partnerLogos.map((key: string) => (
               <div
                 key={key}
-                className="w-36 h-[140px] flex items-center justify-center flex-shrink-0"
+                className="w-28 sm:w-36 h-[100px] sm:h-[140px] flex items-center justify-center flex-shrink-0"
               >
                 <Image
                   src={imageMap[key]}
                   alt={key}
-                  className="object-contain"
+                  className="object-contain max-w-full max-h-full"
                 />
               </div>
             ))}

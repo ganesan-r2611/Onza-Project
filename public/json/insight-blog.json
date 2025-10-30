@@ -6,11 +6,65 @@
     "href": "/blogs"
   },
   "posts": [
-    { "id": 1, "category": "Wealth", "title": "The Onza Journal", "excerpt": "Lorem ipsum dolor sit amet...", "imageKey": "blog1" },
-    { "id": 2, "category": "Wealth", "title": "Title", "excerpt": "Lorem ipsum dolor sit amet...", "imageKey": "blog2" },
-    { "id": 3, "category": "Growth", "title": "Clarity & Legacy", "excerpt": "Lorem ipsum dolor sit amet...", "imageKey": "blog3" },
-    { "id": 4, "category": "Wealth", "title": "Title", "excerpt": "Lorem ipsum dolor sit amet...", "imageKey": "blog4" },
-    { "id": 5, "category": "Wealth", "title": "Title", "excerpt": "Lorem ipsum dolor sit amet...", "imageKey": "blog5" },
-    { "id": 6, "category": "Wealth", "title": "Title", "excerpt": "Lorem ipsum dolor sit amet...", "imageKey": "blog6" }
+    { 
+      "id": 1, 
+      "category": "Wealth", 
+      "title": "The Onza Journal", 
+      "excerpt": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor.", 
+      "author": "Onza Team",
+      "date": "Apr 21, 2025",
+      "readTime": "7 min read",
+      "imageKey": "blog1" 
+    },
+    { 
+      "id": 2, 
+      "category": "Wealth", 
+      "title": "Strategic Wealth Management", 
+      "excerpt": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor.", 
+      "author": "Onza Team",
+      "date": "Apr 18, 2025", 
+      "readTime": "5 min read",
+      "imageKey": "blog2" 
+    },
+    { 
+      "id": 3, 
+      "category": "Growth", 
+      "title": "Clarity & Legacy", 
+      "excerpt": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor.", 
+      "author": "Onza Team",
+      "date": "Apr 15, 2025",
+      "readTime": "6 min read", 
+      "imageKey": "blog3" 
+    },
+    { 
+      "id": 4, 
+      "category": "Wealth", 
+      "title": "Investment Strategies 2025", 
+      "excerpt": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor.", 
+      "author": "Onza Team",
+      "date": "Apr 12, 2025",
+      "readTime": "8 min read",
+      "imageKey": "blog4" 
+    },
+    { 
+      "id": 5, 
+      "category": "Wealth", 
+      "title": "Financial Planning Essentials", 
+      "excerpt": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor.", 
+      "author": "Onza Team",
+      "date": "Apr 10, 2025",
+      "readTime": "4 min read",
+      "imageKey": "blog5" 
+    },
+    { 
+      "id": 6, 
+      "category": "Wealth", 
+      "title": "Market Insights Report", 
+      "excerpt": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor.", 
+      "author": "Onza Team",
+      "date": "Apr 8, 2025",
+      "readTime": "9 min read",
+      "imageKey": "blog6" 
+    }
   ]
 }

@@ -29,12 +29,14 @@ import shield from "@/assets/shield.png";
 import meditation from "@/assets/meditation.png";
 import vector from "@/assets/Vector.png";
 
-import facebook from "@/assets/facebook.png";
-import instagram from "@/assets/instagram.png";
-import linkedin from "@/assets/linkedin.png";
-import location from "@/assets/location.png";
+import facebook from "@/assets/fb.png";
+import linkedin from "@/assets/lin.png";
+import twitter from "@/assets/twitter.png";
+// import location from "@/assets/location.png";
 
 import onzaLgBG from "@/assets/onza-lg-bg.png";
+import backgroundOZ from "@/assets/backgroundoz.png";
+import footerlogo from "@/assets/footerlogo.png";
 
 export const imageMap: Record<string, StaticImageData> = {
   logo,
@@ -58,10 +60,12 @@ export const imageMap: Record<string, StaticImageData> = {
   meditation,
   vector,
   facebook,
-  instagram,
+  twitter,
   linkedin,
-  location,
+  // location,
   cardbg1,
   cardbg2,
-  onzaLgBG
+  onzaLgBG,
+  backgroundOZ,
+  footerlogo
 };
