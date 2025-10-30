@@ -8,6 +8,9 @@ export interface BlogPost {
   title: string;
   excerpt: string;
   category: string;
+  author: string;
+  date: string;
+  readTime: string;
   imageKey: keyof typeof imageMap;
 }
 export interface BlogsData {
@@ -17,7 +20,7 @@ export interface BlogsData {
   posts: BlogPost[];
 }
 
-const CARD_H = "h-[460px]";
+const CARD_H = "h-[439px]";
 
 function Card({ post }: { post: BlogPost }) {
   const img = imageMap[post.imageKey];
@@ -27,24 +30,66 @@ function Card({ post }: { post: BlogPost }) {
         <Image src={img} alt={post.title} fill className="object-cover" />
         <div className="card-overlay" />
         <div className="card-highlight" />
-        <div className="absolute inset-0 p-6 flex flex-col justify-between">
-          <div>
-            <div className="inline-block text-[14px] px-4 py-1 w-fit rounded-[10px] font-medium transition backdrop-blur-md border border-[#d1b67c]/40 bg-white/10 text-[#ffdc81] hover:bg-white/20">
-              {post.category}
+        <div className="absolute inset-0 grid grid-rows-2 gap-3">
+          <div className="p-6 z-10 flex flex-row justify-between">
+            <div>
+              <div className="inline-block text-[10px] px-4 py-1 w-fit rounded-[10px] font-medium transition backdrop-blur-md border border-[#d1b67c]/40 bg-white/10 text-[#ffdc81] hover:bg-white/20">
+                {post.category}
+              </div>
             </div>
-            <h3 className="text-[22px] md:text-[24px] leading-[28px] text-white font-light">
-              {post.title}
-            </h3>
-            <p className="text-[14px] text-white/80 mt-2 mb-4 max-w-[95%]">
-              {post.excerpt}
-            </p>
+            <div>
+              <p className="text-[#FBFBFB] text-[10px] font-regular mt-2">
+                {post.date} &bull; {post.readTime}
+              </p>
+            </div>
           </div>
-          <div></div>
-          <Link href={`/blog/${post.id}`} className="block w-full">
-            <button className="w-full transition backdrop-blur-md border border-[#rgb(189 189 189 / 50%)] rounded-[24px] py-3 text-sm text-white/95">
-              READ MORE
-            </button>
-          </Link>
+
+          <div className="relative flex flex-col justify-end p-6">
+            {/* Multiple blur layers for gradient effect */}
+            <div
+              className="absolute inset-0 backdrop-blur-[2px]"
+              style={{
+                maskImage:
+                  "linear-gradient(to bottom, transparent 0%, black 30%, black 70%, black 100%)",
+                WebkitMaskImage:
+                  "linear-gradient(to bottom, transparent 0%, black 30%, black 70%, black 100%)",
+              }}
+            />
+            <div
+              className="absolute inset-0 backdrop-blur-[4px]"
+              style={{
+                maskImage:
+                  "linear-gradient(to bottom, transparent 0%, black 50%, black 100%)",
+                WebkitMaskImage:
+                  "linear-gradient(to bottom, transparent 0%, black 50%, black 100%)",
+              }}
+            />
+            <div
+              className="absolute inset-0 backdrop-blur-[6px]"
+              style={{
+                maskImage:
+                  "linear-gradient(to bottom, transparent 0%, black 70%, black 100%)",
+                WebkitMaskImage:
+                  "linear-gradient(to bottom, transparent 0%, black 70%, black 100%)",
+              }}
+            />
+
+            {/* Content */}
+            <div className="relative">
+              <h3 className="text-[22px] md:text-[24px] leading-[28px] text-white font-light">
+                {post.title}
+              </h3>
+              <p className="text-[14px] text-white/80 mt-2 mb-4 max-w-[95%]">
+                {post.excerpt}
+              </p>
+              <Link
+                href={`/blog/${post.id}`}
+                className="block w-full underline underline-offset-8 decoration-4 text-[14px] font-light text-[#F2E9DA] hover:text-[#ffdc81]"
+              >
+                Read More
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </article>
@@ -76,12 +121,14 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
           )}
 
           {/* CTA Button */}
-          <div className="rounded-[16px] p-6 bg-gradient-to-br from-white/6 to-black/10">
-            <Link href={blogs.cta?.href || "/blogs"} className="w-full">
-              <button className="glass-btn w-full rounded-[24px] py-3 text-sm text-white/95">
-                {blogs.cta?.label || "View All Blogs"}
-              </button>
-            </Link>
+          <div className="glass-card items-center pt-1 mt-3">
+            <div className="rounded-[16px] p-6 bg-gradient-to-br from-white/6 to-black/10">
+              <Link href={blogs.cta?.href || "/blogs"} className="w-full">
+                <button className="glass-btn w-full rounded-[24px] py-3 text-sm text-white/95">
+                  {blogs.cta?.label || "View All Blogs"}
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
 
@@ -89,7 +136,7 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
         <div className="hidden lg:grid grid-cols-3 gap-8 mx-auto">
           {/* Column 1 */}
           <div className="flex flex-col gap-6">
-            <h2 className="text-[34px] md:text-[38px] lg:text-[38px] font-light text-[#FBFBFB] leading-tight max-w-[437px] pb-6" >
+            <h2 className="text-[34px] md:text-[38px] lg:text-[38px] font-light text-[#FBFBFB] leading-tight max-w-[437px] pb-6">
               <span className="block">Insights</span>
               <span className="block">Unlocked</span>
             </h2>
@@ -103,12 +150,14 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
             {p(3) && <Card post={p(3)} />}
 
             {/* CTA (desktop only) */}
-            <div className="rounded-[16px] p-6 bg-gradient-to-br from-white/6 to-black/10 items-center justify-center flex">
-              <Link href={blogs.cta?.href || "/blogs"} className="w-full">
-                <button className="glass-btn w-full rounded-[24px] py-3 text-sm text-white/95">
-                  {blogs.cta?.label || "View All Blogs"}
-                </button>
-              </Link>
+            <div className="glass-card items-center pt-1 mt-3">
+              <div className="rounded-[16px] p-6 bg-gradient-to-br from-white/6 to-black/10 items-center justify-center flex">
+                <Link href={blogs.cta?.href || "/blogs"} className="w-full">
+                  <button className="glass-btn w-full rounded-[24px] py-3 text-sm text-white/95">
+                    {blogs.cta?.label || "View All Blogs"}
+                  </button>
+                </Link>
+              </div>
             </div>
           </div>
 

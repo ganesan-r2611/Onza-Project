@@ -4,14 +4,15 @@
   "address": "753 Joshua Pines, Tatum borough 68760-9731",
   "socials": [
     { "icon": "facebook", "href": "https://www.facebook.com/" },
-    { "icon": "instagram", "href": "https://www.instagram.com/" },
-    { "icon": "linkedin", "href": "https://www.linkedin.com/" }
+    { "icon": "linkedin", "href": "https://www.linkedin.com/" },
+    { "icon": "twitter", "href": "https://www.x.com/" }
   ],
   "links": {
     "general": [
-      { "label": "About Us", "href": "/about" },
-      { "label": "Blogs", "href": "/blogs" },
-      { "label": "Contact Us", "href": "/contact" }
+      { "label": "HOME", "href": "/" },
+      { "label": "ABOUT US", "href": "/about" },
+      { "label": "BLOGS", "href": "/blogs" },
+      { "label": "CONTACT US", "href": "/contact" }
     ],
     "services": [
       { "label": "Wealth & Investment Advisory", "href": "/services/wealth" },
@@ -26,7 +27,26 @@
     { "label": "Privacy Policy", "href": "/privacy" },
     { "label": "Terms of Service", "href": "/terms" }
   ],
-  "icons": {
-    "location": "location"
-  }
+  "companyInfo": [
+    {
+      "name": "Onza Financial And Investment Advisors Private Limited",
+      "registration": "SEBI REGISTRATION NO: NAM000017234",
+      "cin": "CIN NO: U123456NHA7/9P/FTC1234564"
+    },
+    {
+      "name": "Onza Fund Managers Private Limited",
+      "registration": "SEBI REGISTRATION NO: NAM000017234",
+      "cin": "CIN NO: U123456NHA7/9P/FTC1234564"
+    },
+    {
+      "name": "Onza International IFSc PVT LTD",
+      "registration": "SEBI REGISTRATION NO: NAM000017234",
+      "cin": "CIN NO: U123456NHA7/9P/FTC1234564"
+    },
+    {
+      "name": "Onza International IFSc PVT LTD",
+      "registration": "SEBI REGISTRATION NO: NAM000017234",
+      "cin": "CIN NO: U123456NHA7/9P/FTC1234564"
+    }
+  ]
 }

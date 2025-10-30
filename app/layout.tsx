@@ -1,3 +1,4 @@
+import ConditionalSmoothScroll from "@/components/ui/SmoothScrollWraper";
 import "./globals.css";
 import { Hanken_Grotesk } from "next/font/google";
 
@@ -10,7 +11,11 @@ const hanken = Hanken_Grotesk({
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={hanken.className}>
-      <body>{children}</body>
+      <body>
+        <ConditionalSmoothScroll>
+          {children}
+        </ConditionalSmoothScroll>
+      </body>
     </html>
   );
 }

@@ -83,7 +83,7 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
             style={{ overscrollBehaviorX: "contain" }}
             role="tablist"
           >
-            <div className="relative flex gap-2 sm:gap-8 md:gap-12 lg:gap-24 w-max">
+            <div className="relative flex gap-2 sm:gap-8 md:gap-12 lg:gap-20 w-max">
               {tabs.map((tab) => (
                 <TabButton
                   key={tab.id}
@@ -106,11 +106,24 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
 
       {/* --- Content Section --- */}
       <div
-        className="w-full lg:rounded-b-[24px] bg-gradient-to-r from-[#13181ccc] via-[#ffdc81cc] to-[#f2e9dacc] pt-5 lg:pt-0"
+        className="w-full lg:rounded-b-[24px] lg:pt-0"
         onTouchStart={onStart}
         onTouchEnd={onEnd}
       >
-        <div className="flex flex-col lg:flex-row justify-center items-center w-full px-12 lg:px-[56px]">
+        <div
+          className="flex flex-col lg:flex-row justify-center items-center w-full px-6 lg:px-[56px] rounded-b-none lg:rounded-b-[24px] h-auto lg:h-[532px] min-h-[532px] lg:min-h-[532px]"
+          style={{
+            backgroundImage: `
+      linear-gradient(116deg, rgba(0, 0, 0, 1) 9%, rgba(19, 159, 140, 1) 53%, rgba(255, 220, 129, 1) 93%),
+      url(${imageMap.backgroundOZ.src || imageMap.backgroundOZ})
+    `,
+            backgroundSize: "cover, cover",
+            backgroundPosition: "center, center",
+            backgroundRepeat: "no-repeat, no-repeat",
+            backgroundBlendMode: "multiply, normal",
+            overflow: "hidden",
+          }}
+        >
           <AnimatePresence mode="wait">
             {activeTab && (
               <motion.div
@@ -122,7 +135,7 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
                 className="contents"
               >
                 {/* Text */}
-                <div className="flex flex-col gap-2 items-start w-full lg:w-[60%] mb-8 lg:mb-0">
+                <div className="flex flex-col gap-2 items-start w-full lg:w-[60%] mb-8 lg:mb-0 mt-10 lg:mt-0">
                   <h3 className="text-[20px] sm:text-[32px] font-regular leading-[42px] text-[#ffdc81]">
                     {activeTab.title}
                   </h3>
@@ -142,9 +155,7 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
                   <Image
                     src={imageMap[activeTab.imageKey]}
                     alt={activeTab.title}
-                    width={360}
-                    height={315}
-                    className="object-cover rounded-lg w-[360px] h-[315px] md:w-[340px] md:h-[500px] lg:w-[368px] lg:h-[532px]"
+                    className="object-cover rounded-lg w-[360px] h-[420px] md:w-[340px] md:h-[520px] lg:w-[368px] lg:h-[532px]"
                   />
                 </motion.div>
               </motion.div>
