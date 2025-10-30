@@ -23,7 +23,7 @@ export default function ConditionalSmoothScroll({
   useLayoutEffect(() => {
     // Only enable ScrollSmoother if we're not excluding hero
     if (!excludeHero) {
-      let ctx = gsap.context(() => {
+      const ctx = gsap.context(() => {
         ScrollSmoother.create({
           wrapper: scrollRef.current,
           content: contentRef.current,
