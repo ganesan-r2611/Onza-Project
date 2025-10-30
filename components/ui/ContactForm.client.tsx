@@ -2,18 +2,6 @@
 import { useState } from "react";
 import Button from "./Button";
 
-interface ServiceInterest {
-  id: string;
-  label: string;
-  checked: boolean;
-}
-
-interface AssetRange {
-  id: string;
-  label: string;
-  checked: boolean;
-}
-
 export default function ContactForm({
   data,
 }: {

@@ -32,7 +32,6 @@ export default function SectionZoomComponent({ data }: Props) {
     const ctx = gsap.context(() => {
       const getStageConfig = () => {
         const width = window.innerWidth;
-        const height = window.innerHeight;
 
         if (width <= 768) {
           return [1.2, 4, 7, 20];

@@ -1,6 +1,4 @@
 // components/ContactSection.tsx (SERVER)
-import Image from "next/image";
-import { imageMap } from "@/libs/imageMap";
 import ContactForm from "./ui/ContactForm.client";
 
 export interface ContactFormData {

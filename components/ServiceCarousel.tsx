@@ -22,8 +22,6 @@ export default function ServicesCarouselSection({ data }: Props) {
   const [currentHorizontalScroll, setCurrentHorizontalScroll] = useState(0);
   const [mounted, setMounted] = useState(false);
 
-  const isMobileDevice =
-    typeof window !== "undefined" && window.innerWidth < 768;
   useEffect(() => setMounted(true), []);
 
   useEffect(() => {
