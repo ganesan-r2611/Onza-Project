@@ -102,12 +102,12 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
 
   return (
     <section className="bg-[#121819] pt-16 pb-20" data-theme="light">
-      <div className="mx-auto px-3">
+      <div className="mx-auto px-3 md:px-8">
         {/* Mobile Layout (flex-col) */}
         <div className="lg:hidden flex flex-col gap-6">
           {/* Title */}
           <h2 className="text-[24px] md:text-[38px] lg:text-[38px] font-light text-[#FBFBFB] leading-tight">
-            Insights <br/> Unlocked
+            Insights <br /> Unlocked
           </h2>
 
           {/* Subtitle */}
@@ -163,7 +163,7 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
 
           {/* Column 3 */}
           <div className="flex flex-col gap-6">
-            <p className="text-[20px] text-[#bbbbbb] max-w-[362px]">
+            <p className="text-[20px] text-[#bbbbbb] max-w-[362px] self-end text-left">
               {blogs.sectionSubtitle}
             </p>
             {p(4) && <Card post={p(4)} />}
