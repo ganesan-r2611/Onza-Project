@@ -312,3 +312,34 @@ body {
     transform: translateX(-50%);
   }
 }
+
+
+.stroke-custom-black {
+  stroke: #0a0a0a;
+}
+
+.custom-select option {
+  color: #A4A4A4;
+  background-color: #0A5060;
+}
+
+.custom-select option:checked {
+  color: #ffdc81;
+  background-color: #0A5060;
+}
+
+.custom-select:focus option:checked {
+  color: #ffdc81;
+  background-color: #0A5060;
+}
+
+/* Add hover styles */
+.custom-select option:hover {
+  color: #ffdc81 !important;
+  background-color: #0A5060 !important;
+}
+
+.custom-select option:focus {
+  color: #ffdc81 !important;
+  background-color: #0A5060 !important;
+}

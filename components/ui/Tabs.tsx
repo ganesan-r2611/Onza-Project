@@ -75,7 +75,7 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
     <div className="w-full mx-auto lg:px-7 xl:pb-24">
       {/* --- Tabs Navigation (glassy) --- */}
       <div className="relative bg-[#ffffff26] border border-[#ffffff21] md:rounded-t-[16px] lg:rounded-t-[16px] shadow-[0px_4px_176px_#888888ff] ">
-        <div className="flex flex-col w-full h-[51px] lg:h-full px-5 pt-2">
+        <div className="flex flex-col w-full h-[51px] lg:h-full px-6 pt-2">
           {/* OUTER scroller */}
           <div
             ref={scrollerRef}
@@ -83,7 +83,7 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
             style={{ overscrollBehaviorX: "contain" }}
             role="tablist"
           >
-            <div className="relative flex gap-2 sm:gap-8 md:gap-12 lg:gap-20 w-max">
+            <div className="relative flex gap-2 sm:gap-1 md:gap-9 lg:gap-9 w-max">
               {tabs.map((tab) => (
                 <TabButton
                   key={tab.id}
@@ -139,7 +139,7 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
                   <h3 className="text-[20px] sm:text-[32px] font-regular leading-[42px] text-[#ffdc81]">
                     {activeTab.title}
                   </h3>
-                  <p className="text-[18px] sm:text-[18px] font-light leading-[27px] text-[#fafafa] w-full lg:w-[66%]">
+                  <p className="text-[18px] sm:text-[17px] font-light leading-[27px] text-[#fafafa] w-full lg:w-[66%]">
                     {activeTab.content}
                   </p>
                 </div>

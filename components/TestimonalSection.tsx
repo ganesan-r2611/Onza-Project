@@ -35,22 +35,22 @@ export default function TestimonialsSection({
 
   return (
     <section className="bg-[#FBFBFB] text-black" data-theme="light">
-      <div className="max-w-7xl mx-auto pt-32">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start px-6">
+      <div className="max-w-7xl mx-auto pt-5 lg:pt-[161px]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start px-3 lg:pl-[40px]">
           {/* Left column */}
-          <div className="lg:col-span-6">
+          <div className="lg:col-span-6 p-[20px]  lg:p-[21px]">
             <h3 className="text-[20px] font-regular mb-3 text-[#4A4A4A]">
               Why Choose Us?
             </h3>
-            <p className="text-[26px] md:text-xl font-light leading-relaxed text-[#0A5060] max-w-xl">
+            <p className="text-[26px] md:text-[26px] font-light leading-none text-[#0A5060] md:px-0 max-w-[560px]">
               {data.subtitle}
             </p>
 
             {/* Values icons */}
-            <div className="flex flex-wrap gap-8 mt-28">
+            <div className="flex flex-wrap gap-12 lg:gap-16 mt-10 lg:mt-20">
               {values.map((v: ValueItem) => (
                 <div key={v.label} className="flex flex-col items-center gap-3">
-                  <div className="w-12 h-12 rounded-md bg-[rgba(60,194,204,0.1)] flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-md bg-[#3cc2cc10] flex items-center justify-center">
                     <Image
                       src={imageMap[v.icon]}
                       alt={v.label}
@@ -59,7 +59,7 @@ export default function TestimonialsSection({
                       className="object-contain"
                     />
                   </div>
-                  <div className="text-sm text-gray-700 text-center">
+                  <div className="text-[20px] font-regular text-center lg:mt-1">
                     {v.label}
                   </div>
                 </div>
@@ -68,23 +68,20 @@ export default function TestimonialsSection({
           </div>
 
           {/* Right column */}
-          <div className="lg:col-span-6 flex flex-col items-end gap-6">
+          <div className="lg:col-span-6 flex flex-col gap-6">
             {/* Testimonial card */}
             <div className="w-full md:w-3/4 lg:w-[528px]">
               <div
                 className="
-        rounded-[16px] border border-[#0A5060] shadow-md transition-all duration-300 p-8
+        rounded-[16px] border border-[#0A5060] shadow-md transition-all duration-300 p-5 lg:p-8
         flex flex-col justify-between
-        h-[260px] sm:h-[280px] md:h-[280px]
+        h-[300px] sm:h-[263px] md:h-[263px]
       "
               >
                 <p
-                  className="text-[18px] text-italic leading-7 text-[#0A0A0A]"
+                  className="text-[16px] md:text-[17px] font-light leading-7 text-[#0A0A0A]"
                   style={{
-                    display: "-webkit-box",
-                    WebkitLineClamp: 6,
-                    WebkitBoxOrient: "vertical",
-                    overflow: "hidden",
+                    fontStyle : 'italic'
                   }}
                 >
                   {items[index].text}
@@ -106,15 +103,15 @@ export default function TestimonialsSection({
             <div className="flex gap-6 justify-end w-full md:w-3/4 lg:w-[520px]">
               <button
                 onClick={prev}
-                className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-gray-100 transition"
+                className="w-11 h-11 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-gray-100 transition"
                 aria-label="Previous testimonial"
               >
                 <svg
-                  width="16"
-                  height="16"
+                  width="18"
+                  height="18"
                   viewBox="0 0 24 24"
                   fill="none"
-                  className="stroke-gray-700"
+                  className="stroke-custom-black"
                 >
                   <path
                     d="M15 18l-6-6 6-6"
@@ -127,15 +124,15 @@ export default function TestimonialsSection({
 
               <button
                 onClick={next}
-                className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-gray-100 transition"
+                className="w-11 h-11 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-gray-100 transition"
                 aria-label="Next testimonial"
               >
                 <svg
-                  width="16"
-                  height="16"
+                  width="18"
+                  height="18"
                   viewBox="0 0 24 24"
                   fill="none"
-                  className="stroke-gray-700"
+                  className="stroke-custom-black"
                 >
                   <path
                     d="M9 6l6 6-6 6"
@@ -151,11 +148,11 @@ export default function TestimonialsSection({
 
         {/* Partner Logos */}
         <div className="mt-5 pt-8">
-          <div className="grid grid-cols-2 sm:flex sm:flex-row justify-center items-center gap-6 sm:gap-[80px] lg:gap-[210px] pl-12 lg:pl-0">
+          <div className="grid grid-cols-2 sm:flex sm:flex-row justify-center items-center gap-6 sm:gap-[80px] lg:gap-[210px] pl-9 lg:pl-0">
             {partnerLogos.map((key: string) => (
               <div
                 key={key}
-                className="w-28 sm:w-36 h-[100px] sm:h-[140px] flex items-center justify-center flex-shrink-0"
+                className="w-28 sm:w-48 h-[100px] sm:h-[140px] flex items-center justify-center flex-shrink-0"
               >
                 <Image
                   src={imageMap[key]}
