@@ -51,7 +51,7 @@ export default function FAQSection({ data }: { data: FAQData }) {
           )}
 
           {/* Content: Two-column layout for desktop */}
-          <div className="flex flex-col lg:flex-row items-start justify-between gap-10">
+          <div className="flex flex-col lg:flex-row items-start justify-between gap-8">
             {/* Left: Image - Hidden on mobile, shown on desktop */}
             {illustration && (
               <div className="hidden lg:flex w-full lg:w-[55%] justify-center lg:justify-start">
@@ -59,7 +59,7 @@ export default function FAQSection({ data }: { data: FAQData }) {
                   <Image
                     src={illustration}
                     alt="FAQ Illustration"
-                    className="lg:w-[652px] lg:h-[525px] w-full h-auto object-cover rounded-[24px]"
+                    className="lg:w-[708px] lg:h-[702px] w-full h-auto object-cover rounded-[24px]"
                     priority
                   />
                 </div>
