@@ -29,7 +29,7 @@ export default function TabButton({
       type="button"
       aria-pressed={active}
       whileTap={{ scale: 0.98 }}
-      className="relative flex items-center justify-center w-48 px-4 py-4 text-[16px] lg:text-[18px] transition-colors"
+      className="relative flex items-center justify-center lg:w-56 px-4 py-4 text-[16px] lg:text-[22px] transition-colors"
     >
       {active && (
         <motion.span
@@ -40,7 +40,7 @@ export default function TabButton({
       )}
 
       <span
-        className={`relative z-10 text-center whitespace-nowrap ${
+        className={`relative z-10 text-center font-regular whitespace-nowrap ${
           active ? "text-[#4a4a4a]" : "text-[#a4a4a4] hover:text-[#fafafa]"
         }`}
       >

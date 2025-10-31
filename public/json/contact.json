@@ -17,10 +17,12 @@
       "Managed Portfolio Services"
     ],
     "assetRanges": [
-      "$100K - $500K",
-      "$500K - $1M",
-      "$1M - $5M",
-      "$5M+"
+      "1 - 5 Cr",
+      "5 - 10 Cr",
+      "10 - 20 Cr",
+      "20 - 50 Cr",
+      "50 - 100 Cr",
+      "More than 100 Cr"
     ],
     "submitText": "Submit"
   }

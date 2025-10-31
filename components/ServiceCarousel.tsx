@@ -98,16 +98,16 @@ export default function ServicesCarouselSection({ data }: Props) {
       data-theme="light"
     >
       <div className="sticky top-0 flex items-center overflow-hidden">
-        <div className="mx-auto pl-6 sm:px-6 lg:px-[30px] py-10 sm:py-20 lg:pt-[150px] w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-14 items-start">
+        <div className="mx-auto px-4 lg:pl-6 sm:px-6 lg:px-[30px] py-10 sm:py-20 lg:pt-[150px] w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-7 items-start">
             {/* Left copy */}
-            <div className="lg:col-span-5 px-1">
-              <p className="text-[28px] sm:text-2xl md:text-3xl lg:text-[38px] leading-[1.45] sm:leading-[1.4] font-light">
+            <div className="lg:col-span-5 px-1 pl-3 pr-2 ">
+              <p className="text-[28px] sm:text-2xl md:text-[34px] lg:text-[38px] leading-[1.2] sm:leading-[1.2] font-light">
                 {eyebrow}
               </p>
 
               {/* Non–full-width CTA on mobile (override global .glass-border-button width) */}
-              <div className="mt-5 sm:mt-8">
+              <div className="mt-16 sm:mt-8">
                 <Link href={cta.href} className="inline-block">
                   <button className="glass-border-button w-[20px] px-6 py-3 text-[15px] sm:text-[16px] text-white">
                     {cta.label}
@@ -120,7 +120,7 @@ export default function ServicesCarouselSection({ data }: Props) {
             <div className="lg:col-span-7 lg:-mr-[30px]">
               <div
                 ref={carouselRef}
-                className="flex gap-4 sm:gap-6 overflow-x-scroll scrollbar-hide pe-0"
+                className="flex overflow-x-scroll scrollbar-hide pe-0"
                 style={{ scrollBehavior: "auto" }}
               >
                 {items.map((item, i) => (
@@ -134,7 +134,7 @@ export default function ServicesCarouselSection({ data }: Props) {
                     ].join(" ")}
                   >
                     <div className="rounded-2xl overflow-hidden shadow-md">
-                      <div className="relative h-[496px] xs:h-[496px] sm:h-[496px] md:h-[320px] lg:h-[438px] xl:h-[438px]">
+                      <div className="relative h-[393px] xs:h-[393px] sm:h-[393px] md:h-[320px] lg:h-[438px] xl:h-[438px]">
                         <Image
                           src={imageMap[item.imageKey]}
                           alt={item.title}
@@ -146,7 +146,7 @@ export default function ServicesCarouselSection({ data }: Props) {
                       </div>
                     </div>
 
-                    <h4 className="mt-3 pb-1 text-[20px] sm:text-[20px] md:text-[22px] lg:text-[32px] font-normal">
+                    <h4 className="mt-3 pb-1 text-[20px] sm:text-[20px] md:text-[22px] lg:text-[34px] font-regular">
                       {item.title}
                     </h4>
                     <p className="mt-1 text-[18px] sm:text-[18px] md:text-[15px] lg:text-[20px] leading-[20px] sm:leading-[22px] font-light">

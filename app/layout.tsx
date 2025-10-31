@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={hanken.className}>
       <body>
-        <ConditionalSmoothScroll>{children}</ConditionalSmoothScroll>
+        {children}
       </body>
     </html>
   );

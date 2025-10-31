@@ -102,16 +102,16 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
 
   return (
     <section className="bg-[#121819] pt-16 pb-20" data-theme="light">
-      <div className="mx-auto px-6">
+      <div className="mx-auto px-3">
         {/* Mobile Layout (flex-col) */}
         <div className="lg:hidden flex flex-col gap-6">
           {/* Title */}
-          <h2 className="text-[34px] md:text-[38px] lg:text-[38px] font-light text-[#FBFBFB] leading-tight">
-            {blogs.sectionTitle}
+          <h2 className="text-[24px] md:text-[38px] lg:text-[38px] font-light text-[#FBFBFB] leading-tight">
+            Insights <br/> Unlocked
           </h2>
 
           {/* Subtitle */}
-          <p className="text-[20px] text-[#bbbbbb] max-w-[362px]">
+          <p className="text-[18px] text-[#bbbbbb] max-w-[362px]">
             {blogs.sectionSubtitle}
           </p>
 

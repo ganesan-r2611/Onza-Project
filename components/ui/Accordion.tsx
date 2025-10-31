@@ -29,7 +29,7 @@ export default function Accordion({ items }: { items: AccordionItem[] }) {
             >
               <div className="flex justify-between items-center">
                 <span
-                  className={`text-[22px] font-regular leading-[24px] transition-colors duration-300 ${
+                  className={`text-[16px] md:text-[22px] font-regular leading-[24px] transition-colors duration-300 ${
                     expanded ? "text-[#FFDC81]" : "text-white"
                   }`}
                 >

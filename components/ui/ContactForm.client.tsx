@@ -51,62 +51,59 @@ export default function ContactForm({
   };
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="flex flex-col gap-8 w-full max-w-[520px] mx-auto"
-    >
+    <form onSubmit={onSubmit} className="flex flex-col gap-8 mx-auto">
       {/* Two Column Inputs */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-        <div className="flex flex-col gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="flex flex-col gap-10">
           <input
             type="text"
             placeholder={data.namePlaceholder}
             value={formData.name}
             onChange={(e) => onChange("name", e.target.value)}
-            className="w-full bg-transparent border-b border-[#8e8e8e] placeholder:text-[#8e8e8e] text-[16px] font-light text-[#A4A4A4] focus:outline-none focus:border-[#ffdc81] py-3"
+            className="w-[291px] h-[70px] bg-transparent border-b border-[#0A5060] placeholder:text-[#8e8e8e] text-[16px] font-light text-[#A4A4A4] focus:outline-none focus:border-[#ffdc81] py-3"
           />
           <input
             type="text"
             placeholder={data.contactNumberPlaceholder}
             value={formData.contactNumber}
             onChange={(e) => onChange("contactNumber", e.target.value)}
-            className="w-full bg-transparent border-b border-[#8e8e8e] placeholder:text-[#8e8e8e] text-[16px] font-light text-[#A4A4A4] focus:outline-none focus:border-[#ffdc81] py-3"
+            className="w-[291px] h-[70px] bg-transparent border-b border-[#0A5060] placeholder:text-[#8e8e8e] text-[16px] font-light text-[#A4A4A4] focus:outline-none focus:border-[#ffdc81] py-3"
           />
         </div>
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-10">
           <input
             type="email"
             placeholder={data.emailPlaceholder}
             value={formData.email}
             onChange={(e) => onChange("email", e.target.value)}
-            className="w-full bg-transparent border-b border-[#8e8e8e] placeholder:text-[#8e8e8e] text-[16px] font-light text-[#A4A4A4] focus:outline-none focus:border-[#ffdc81] py-3"
+            className="w-[291px] h-[70px] bg-transparent border-b border-[#0A5060] placeholder:text-[#8e8e8e] text-[16px] font-light text-[#A4A4A4] focus:outline-none focus:border-[#ffdc81] py-3"
           />
           <input
             type="text"
             placeholder={data.cityPlaceholder}
             value={formData.city}
             onChange={(e) => onChange("city", e.target.value)}
-            className="w-full bg-transparent border-b border-[#8e8e8e] placeholder:text-[#8e8e8e] text-[16px] font-light text-[#A4A4A4] focus:outline-none focus:border-[#ffdc81] py-3"
+            className="w-[291px] h-[70px] bg-transparent border-b border-[#0A5060] placeholder:text-[#8e8e8e] text-[16px] font-light text-[#A4A4A4] focus:outline-none focus:border-[#ffdc81] py-3"
           />
         </div>
       </div>
 
       {/* Service Interests */}
       <div className="w-full">
-        <label className="text-[16px] font-regular text-[#A4A4A4] mb-4 block">
+        <label className="text-[14px] font-light text-[#A4A4A4] mb-4 block">
           Select Your Interest of Service
         </label>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
           {formData.serviceInterests.map((interest) => (
             <label
               key={interest.id}
-              className="flex items-center gap-3 text-[14px] text-[#A4A4A4] font-light cursor-pointer"
+              className="flex items-center gap-3 text-[16px] text-[#A4A4A4] font-light cursor-pointer"
             >
               <input
                 type="checkbox"
                 checked={interest.checked}
                 onChange={() => handleServiceInterestChange(interest.id)}
-                className="w-4 h-4 bg-transparent border border-[#0A5060] rounded focus:ring-[#ffdc81] focus:border-[#ffdc81] checked:bg-[#0A5060] checked:border-[#0A5060] appearance-none relative cursor-pointer"
+                className="w-5 h-5 bg-transparent border border-[#0A5060] rounded focus:ring-[#0A5060] focus:border-[#0A5060] checked:bg-[#ffdc81] checked:border-[#ffdc81] appearance-none relative cursor-pointer"
               />
               {interest.label}
             </label>
@@ -123,17 +120,11 @@ export default function ContactForm({
           <select
             value={formData.assetRange}
             onChange={(e) => handleAssetRangeChange(e.target.value)}
-            className="w-full bg-transparent border-b border-[#8e8e8e] text-[16px] font-light text-[#A4A4A4] focus:outline-none focus:border-[#ffdc81] py-3 appearance-none cursor-pointer"
+            className="custom-select w-full bg-transparent border-b border-[#0A5060] text-[16px] font-light text-[#A4A4A4] focus:outline-none focus:border-[#ffdc81] py-3 appearance-none cursor-pointer"
           >
-            <option value="" className="bg-[#1a1a1a] text-[#A4A4A4]">
-              Select your asset range
-            </option>
+            <option value="">Select your asset range</option>
             {data.assetRanges.map((range) => (
-              <option
-                key={range}
-                value={range}
-                className="bg-[#1a1a1a] text-[#A4A4A4]"
-              >
+              <option key={range} value={range}>
                 {range}
               </option>
             ))}
@@ -177,7 +168,7 @@ export default function ContactForm({
       />
 
       {/* Privacy Policy */}
-      <p className="text-[12px] font-light text-center mt-4">
+      <p className="text-[12px] font-medium text-center text-[#F2E9DA] mt-4">
         By submitting this form you agree to our{" "}
         <a
           href="#"
