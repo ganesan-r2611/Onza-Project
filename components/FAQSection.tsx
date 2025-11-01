@@ -9,7 +9,7 @@ type FAQItem = {
   answer: string;
 };
 
-type FAQData = {
+export interface FAQData  {
   title: string;
   subtitle: string;
   imageKey: keyof typeof imageMap;

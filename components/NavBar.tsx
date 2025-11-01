@@ -6,7 +6,7 @@ import Image from "next/image";
 import { imageMap } from "@/libs/imageMap";
 
 type NavItem = { label: string; href: string; children?: NavItem[] };
-type NavbarData = { nav: NavItem[]; cta: { href: string; label: string } };
+export interface NavbarData { nav: NavItem[]; cta: { href: string; label: string } };
 
 export default function NavBar({ data }: { data: NavbarData }) {
   const [darkMode, setDarkMode] = useState(false);

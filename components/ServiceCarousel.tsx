@@ -24,7 +24,7 @@ export default function ServicesCarouselSection({ data, horizontalProgress = 0, 
   useEffect(() => setMounted(true), []);
 
   return (
-    <div className="w-full h-full flex items-center bg-[#E5D4C3] backdrop-blur-sm text-[#1a1a1a]">
+    <div className={`${!showIntro ? "py-10":''} w-full h-full flex items-center bg-[#E5D4C3] backdrop-blur-sm text-[#1a1a1a]`}>
       <div className="w-full h-full flex items-center">
         <div className="w-full flex items-center gap-8">
           {/* Desktop: Show intro text on left */}
@@ -42,7 +42,7 @@ export default function ServicesCarouselSection({ data, horizontalProgress = 0, 
           )}
 
           {/* Carousel - full width on mobile, right side on desktop */}
-          <div className={`w-full ${showIntro ? 'lg:w-7/12' : ''} overflow-hidden`}>
+          <div className={`w-full ${showIntro ? 'lg:w-7/12 overflow-hidden' : 'overflow-x-auto no-scrollbar'}`}>
             <div
               className={`identifier flex ${isScrolling ? 'transition-none' : 'transition-transform duration-200 ease-out'}`}
               style={{

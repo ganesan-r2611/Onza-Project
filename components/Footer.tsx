@@ -2,11 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { imageMap } from "@/libs/imageMap";
-
-export default function Footer({
-  data,
-}: {
-  data: {
+export interface FooterData {
     description: string;
     contactText: string;
     address: string;
@@ -21,7 +17,12 @@ export default function Footer({
       registration: string;
       cin: string;
     }[];
-  };
+  }
+
+export default function Footer({
+  data,
+}: {
+  data: FooterData
 }) {
   return (
     <footer className="bg-black text-[#E6E0DA] pt-6 pl-4 lg:pl-0">
