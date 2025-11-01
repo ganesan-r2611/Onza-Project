@@ -82,7 +82,7 @@ function useScaleStages(category: string, totalItems: number) {
   // Adjust scales based on number of snap items
   const base = {
     mobile:       [1.1, 3.5, 7, 50],
-    tablet:       [1.0, 4.2, 5.8, 8.2],
+    tablet:       [1.0, 2.8, 5.8, 8.2],
     desktop:      [1.0, 3.5, 6.0, 9.0],
     desktopShort: [0.95, 3.2, 5.4, 8.2],
     ultrawide:    [1.0, 3.2, 5.4, 8.4],
@@ -196,7 +196,7 @@ export default function SectionZoomComponent({ currentSnapIndex = 0, totalSnapIt
           src={imageMap.onzaLgBG}
           alt="Onza Background"
           priority
-          className="md:mt-[200px] transition-all duration-[1200ms] ease-[cubic-bezier(0.45,0,0.25,1)] object-contain"
+          className="transition-all duration-[1200ms] ease-[cubic-bezier(0.45,0,0.25,1)] object-contain"
           style={{
             transform: mounted ? `scale(${imageScale})` : "scale(1)",
             width: "min(65vw, 560px)",

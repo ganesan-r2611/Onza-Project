@@ -29,7 +29,7 @@ export default function TabButton({
       type="button"
       aria-pressed={active}
       whileTap={{ scale: 0.98 }}
-      className="relative flex items-center justify-center lg:w-56 px-4 py-4 text-[16px] lg:text-[22px] transition-colors"
+      className="relative flex items-center justify-center md:w-48 lg:w-56 px-4 py-4 text-[16px] md:text-[20px] lg:text-[22px] transition-colors"
     >
       {active && (
         <motion.span
