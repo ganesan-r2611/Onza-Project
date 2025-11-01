@@ -25,11 +25,11 @@ export default function ServicesCarouselSection({ data, horizontalProgress = 0, 
 
   return (
     <div className="w-full h-full flex items-center bg-[#E5D4C3] backdrop-blur-sm text-[#1a1a1a]">
-      <div className="w-full h-full flex items-center px-4 sm:px-6 lg:px-8">
+      <div className="w-full h-full flex items-center">
         <div className="w-full flex items-center gap-8">
           {/* Desktop: Show intro text on left */}
           {showIntro && (
-            <div className="hidden lg:block lg:w-5/12 flex-shrink-0">
+            <div className="hidden lg:block lg:w-5/12 flex-shrink-0 pl-4 sm:pl-6 lg:pl-8">
               <p className="text-[32px] lg:text-[38px] xl:text-[42px] leading-[1.2] font-light mb-8">
                 {eyebrow}
               </p>
