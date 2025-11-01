@@ -68,7 +68,7 @@ export default function TestimonialsSection({
           </div>
 
           {/* Right column */}
-          <div className="lg:col-span-6 flex flex-col gap-6">
+          <div className="lg:col-span-6 flex flex-col gap-6 md:items-end">
             {/* Testimonial card */}
             <div className="w-full md:w-3/4 lg:w-[528px]">
               <div

@@ -25,7 +25,7 @@ function Card({ post }: { post: BlogPost }) {
   return (
     <article className="relative rounded-[18px] overflow-hidden card-border">
       <div
-        className={`relative w-[327.63px] h-[412.92px]  md:h-[459px] md:w-[437.33px]`}
+        className={`relative w-[327.63px] h-[412.92px] md:w-[437.33px] md:h-[459px] lg:w-[437.33px] lg:h-[459px]`}
       >
         <Image src={img} alt={post.title} fill className="object-cover" />
         <div className="card-overlay" />
@@ -104,11 +104,11 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
 
   return (
     <section className="bg-[#121819] pt-16 pb-20" data-theme="light">
-      <div className="mx-auto px-3 md:px-9">
-        {/* Mobile Layout (flex-col) */}
-        <div className="lg:hidden flex flex-col gap-6">
+      <div className="mx-auto px-3 md:px-6 lg:px-9">
+        {/* Mobile Layout (flex-col) - Hidden on tablet and desktop */}
+        <div className="flex flex-col gap-6 md:hidden">
           {/* Title */}
-          <h2 className="text-[24px] md:text-[38px] lg:text-[38px] font-light text-[#FBFBFB] leading-tight">
+          <h2 className="text-[24px] md:text-[38px] font-light text-[#FBFBFB] leading-tight">
             Insights <br /> Unlocked
           </h2>
 
@@ -139,7 +139,49 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
           </div>
         </div>
 
-        {/* Desktop Layout (grid-cols-3) */}
+        {/* Tablet Layout (grid-cols-2) - Hidden on mobile and desktop */}
+        <div className="hidden md:grid lg:hidden grid-cols-2 gap-6 mx-auto">
+          {/* Column 1 */}
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4 mb-4">
+              <h2 className="text-[32px] font-light text-[#FBFBFB] leading-tight">
+                <span className="block">Insights</span>
+                <span className="block">Unlocked</span>
+              </h2>
+              <p className="text-[18px] text-[#bbbbbb] max-w-[300px]">
+                {blogs.sectionSubtitle}
+              </p>
+            </div>
+            {p(0) && <Card post={p(0)} />}
+            {p(1) && <Card post={p(1)} />}
+            {p(2) && <Card post={p(2)} />}
+          </div>
+
+          {/* Column 2 */}
+          <div className="flex flex-col gap-8">
+            {p(3) && <Card post={p(3)} />}
+            {p(4) && <Card post={p(4)} />}
+            {p(5) && <Card post={p(5)} />}
+
+            {/* CTA Button for Tablet */}
+            <div className="glass-card items-center pt-1 mt-3">
+              <div className="rounded-[16px] p-6 bg-gradient-to-br from-white/6 to-black/10">
+                <Link
+                  // href={blogs.cta?.href || "/blogs"}
+                  href={""}
+                  onClick={(e) => e.preventDefault()}
+                  className="w-full"
+                >
+                  <button className="glass-btn w-full rounded-[24px] py-3 text-sm text-white/95">
+                    {blogs.cta?.label || "View All Blogs"}
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop Layout (grid-cols-3) - Hidden on mobile and tablet */}
         <div className="hidden lg:grid grid-cols-3 gap-8 mx-auto">
           {/* Column 1 */}
           <div className="flex flex-col gap-6">

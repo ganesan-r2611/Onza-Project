@@ -69,13 +69,13 @@ export default function ServicesCarouselSection({
                     key={i}
                     className={[
                       "shrink-0",
-                      "w-[272px] xs:w-[272px] sm:w-[272px] md:w-[320px] lg:w-[322px] xl:w-[322px]",
+                      "w-[272px] xs:w-[272px] sm:w-[272px] md:w-[322px] lg:w-[322px] xl:w-[322px]",
                       i === 0 ? "ml-2 sm:ml-8 lg:ml-10" : "",
                       "mr-4 sm:mr-6 last:mr-2 sm:last:mr-0",
                     ].join(" ")}
                   >
                     <div className="rounded-2xl overflow-hidden shadow-md">
-                      <div className="relative h-[393px] xs:h-[393px] sm:h-[393px] md:h-[320px] lg:h-[438px] xl:h-[438px]">
+                      <div className="relative h-[393px] xs:h-[393px] sm:h-[393px] md:h-[438px] lg:h-[438px] xl:h-[438px]">
                         <Image
                           src={imageMap[item.imageKey]}
                           alt={item.title}
@@ -87,10 +87,10 @@ export default function ServicesCarouselSection({
                       </div>
                     </div>
 
-                    <h4 className="mt-3 pb-1 text-[20px] sm:text-[20px] md:text-[22px] lg:text-[32px] font-regular leading-none">
+                    <h4 className="mt-3 pb-1 text-[20px] sm:text-[20px] md:text-[30px] lg:text-[32px] font-regular leading-none">
                       {item.title}
                     </h4>
-                    <p className="mt-1 text-[18px] sm:text-[18px] md:text-[15px] lg:text-[20px] leading-[20px] sm:leading-[22px] font-light">
+                    <p className="mt-1 text-[18px] sm:text-[18px] md:text-[18px] lg:text-[20px] leading-[20px] sm:leading-[22px] font-light">
                       {item.desc}
                     </p>
                   </div>
