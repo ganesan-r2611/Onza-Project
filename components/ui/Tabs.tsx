@@ -111,7 +111,7 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
         onTouchEnd={onEnd}
       >
         <div
-          className="flex flex-col lg:flex-row justify-center items-center w-full px-6 lg:px-[56px] rounded-b-none lg:rounded-b-[24px] h-auto lg:h-[532px] min-h-[532px] lg:min-h-[532px]"
+          className="flex flex-col lg:flex-row justify-center items-center w-full px-6 lg:px-[56px] rounded-b-none md:rounded-b-[24px] lg:rounded-b-[24px] h-auto lg:h-[532px] min-h-[532px] lg:min-h-[532px]"
           style={{
             backgroundImage: `
       linear-gradient(116deg, rgba(0, 0, 0, 1) 9%, rgba(19, 159, 140, 1) 53%, rgba(255, 220, 129, 1) 93%),
@@ -150,7 +150,7 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.98 }}
                   transition={{ duration: 0.28 }}
-                  className="w-full lg:w-[50%] flex justify-between items-center"
+                  className="w-full md:w-[75%] lg:w-[50%] flex justify-between items-center md:pl-[50px] lg:pl-0"
                 >
                   <Image
                     src={imageMap[activeTab.imageKey]}

@@ -17,7 +17,7 @@ interface SnapScrollContentProps {
 
 export default function SnapScrollContent({ data }: SnapScrollContentProps) {
   const [currentSnapIndex, setCurrentSnapIndex] = useState(0);
- 
+
   // Mobile: Separate intro + carousel sections
   const mobileSnapItems: SnapItem[] = [
     {
@@ -25,19 +25,19 @@ export default function SnapScrollContent({ data }: SnapScrollContentProps) {
       type: "simple",
       content: (
         <section
-          className="scroll-section min-h-screen relative flex flex-col md:flex-row justify-end md:justify-between items-start md:items-center"
+          className="scroll-section min-h-screen relative flex flex-col md:flex-row justify-end md:justify-between items-start md:items-center mt-[-50px] md:mt-0"
           data-speed="1"
         >
-          <div className="text-[#fbfbfb] max-w-lg">
-            <h2 className="text-[40px] leading-[40px] font-light drop-shadow-2xl px-3 pb-2">
+          <div className="text-[#fbfbfb] max-w-lg md:mt-[600px]">
+            <h2 className="text-[40px] leading-[40px] font-light drop-shadow-2xl px-3 pb-2 md:px-4">
               <span className="inline lg:block">Crafting</span>
               <span className="inline lg:hidden">&nbsp;</span>
               <span className="inline lg:block">Pathways,</span>
               <span className="block">That&nbsp;Endure</span>
             </h2>
           </div>
-          <div className="max-w-md md:self-end px-4 md:px-0 lg:pl-[47px] lg:pr-[40px] lg:mt-[715px]">
-            <p className="text-[18px] font-light drop-shadow-lg leading-1 text-[#ffeec0]">
+          <div className="max-w-md px-4 md:px-10 md:mt-[800px]">
+            <p className="text-[18px] md:text-[24px] font-light drop-shadow-lg leading-1 text-[#ffeec0]">
               Discreet and discerning guidance for those whose decisions define
               tomorrow&apos;s world.
             </p>
@@ -95,7 +95,7 @@ export default function SnapScrollContent({ data }: SnapScrollContentProps) {
       id: "services-intro",
       type: "simple",
       content: <ServiceCarouselIntro data={data} />,
-    }
+    },
     // {
     //   id: 'services-carousel',
     //   type: 'horizontal-scroll',
@@ -113,20 +113,20 @@ export default function SnapScrollContent({ data }: SnapScrollContentProps) {
           className="scroll-section min-h-screen relative flex flex-col md:flex-row justify-end md:justify-between items-start md:items-center"
           data-speed="1"
         >
-          <div className="text-[#fbfbfb] max-w-lg lg:pl-[40px] lg:mt-[200px]">
-          <h2 className="text-[40px] lg:text-[64px] leading-[72px] font-light drop-shadow-2xl pt-14 px-4 md:px-0 lg:pl-0">
-            <span className="inline lg:block">Crafting</span>
-            <span className="inline lg:hidden">&nbsp;</span>
-            <span className="inline lg:block">Pathways,</span>
-            <span className="block">That&nbsp;Endure</span>
-          </h2>
-        </div>
-        <div className="max-w-md md:self-end px-4 md:px-0 lg:pl-[47px] lg:pr-[40px] lg:mt-[715px]">
-          <p className="text-[18px] md:text-[18px] lg:text-[20px] font-light drop-shadow-lg leading-relaxed text-[#ffeec0]">
-            Discreet and discerning guidance for those whose decisions define
-            tomorrow&apos;s world.
-          </p>
-        </div>
+          <div className="text-[#fbfbfb] max-w-lg lg:pl-[40px] md:mt-[100px] lg:mt-[200px]">
+            <h2 className="text-[40px] lg:text-[64px] leading-[72px] font-light drop-shadow-2xl pt-14 px-4 md:px-0 lg:pl-0">
+              <span className="inline lg:block">Crafting</span>
+              <span className="inline lg:hidden">&nbsp;</span>
+              <span className="inline lg:block">Pathways,</span>
+              <span className="block">That&nbsp;Endure</span>
+            </h2>
+          </div>
+          <div className="max-w-md md:self-end px-4 md:px-0 lg:pl-[47px] lg:pr-[40px]">
+            <p className="text-[18px] md:text-[18px] lg:text-[20px] font-light drop-shadow-lg leading-relaxed text-[#ffeec0]">
+              Discreet and discerning guidance for those whose decisions define
+              tomorrow&apos;s world.
+            </p>
+          </div>
         </section>
       ),
     },
@@ -139,15 +139,15 @@ export default function SnapScrollContent({ data }: SnapScrollContentProps) {
           data-speed="1"
         >
           <div className="max-w-8xl lg:max-w-7xl p-[15px] lg:p-[178px] lg:mt-[-50px]">
-          <p className="text-[18px] md:text-[24px] lg:text-[20px] font-regular mb-6 text-[#606060]">
-            Our Ethos
-          </p>
-          <p className="text-[32px] md:text-[58px] lg:text-[64px] leading-[1.2] lg:leading-[1.156] font-light tracking-[0.8px] lg:tracking-[0px] text-[#0A0A0A]">
-            Lorem ipsum dolor sit amet consectetur. Egestas urna faucibus sit
-            nibh augue morbi diam aliquet aenean. Mattis volutpat maecenas
-            placerat orci. Sapien morbi ut tempus facilisis.
-          </p>
-        </div>
+            <p className="text-[18px] md:text-[24px] lg:text-[20px] font-regular mb-6 text-[#606060]">
+              Our Ethos
+            </p>
+            <p className="text-[32px] md:text-[58px] lg:text-[64px] leading-[1.2] lg:leading-[1.156] font-light tracking-[0.8px] lg:tracking-[0px] text-[#0A0A0A]">
+              Lorem ipsum dolor sit amet consectetur. Egestas urna faucibus sit
+              nibh augue morbi diam aliquet aenean. Mattis volutpat maecenas
+              placerat orci. Sapien morbi ut tempus facilisis.
+            </p>
+          </div>
         </section>
       ),
     },
@@ -160,19 +160,19 @@ export default function SnapScrollContent({ data }: SnapScrollContentProps) {
           data-speed="1"
         >
           <div className="max-w-8xl lg:max-w-8xl p-[15px] lg:p-[40px] lg:pl-[170px]">
-          <p className="text-[18px] md:text-[24px] lg:text-[20px] font-regular mb-6 text-[#606060]">
-            Our Advisory Philosophy
-          </p>
-          <p className="text-[32px] md:text-[58px] lg:text-[64px] leading-[1.1] lg:leading-[1.156] font-light tracking-[0.8px] text-[#0A0A0A]">
-            Our approach begins with your real-life goals, not just financial
-            metrics.
-            <span className="hidden md:inline">
-              <br />
-            </span>
-            Whether it&apos;s legacy building, education, lifestyle security, or
-            intergenerational wealth, our strategies are:
-          </p>
-        </div>
+            <p className="text-[18px] md:text-[24px] lg:text-[20px] font-regular mb-6 text-[#606060]">
+              Our Advisory Philosophy
+            </p>
+            <p className="text-[32px] md:text-[58px] lg:text-[64px] leading-[1.1] lg:leading-[1.156] font-light tracking-[0.8px] text-[#0A0A0A]">
+              Our approach begins with your real-life goals, not just financial
+              metrics.
+              <span className="hidden md:inline">
+                <br />
+              </span>
+              Whether it&apos;s legacy building, education, lifestyle security,
+              or intergenerational wealth, our strategies are:
+            </p>
+          </div>
         </section>
       ),
     },
