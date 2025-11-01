@@ -20,13 +20,12 @@ export interface BlogsData {
   posts: BlogPost[];
 }
 
-const CARD_H = "h-[439px]";
 
 function Card({ post }: { post: BlogPost }) {
   const img = imageMap[post.imageKey];
   return (
     <article className="relative rounded-[18px] overflow-hidden card-border">
-      <div className={`relative ${CARD_H} w-full`}>
+      <div className={`relative w-[327.63px] h-[412.92px]  md:h-[459px] md:w-[437.33px]`}>
         <Image src={img} alt={post.title} fill className="object-cover" />
         <div className="card-overlay" />
         <div className="card-highlight" />

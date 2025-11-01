@@ -35,10 +35,10 @@ export default function TestimonialsSection({
 
   return (
     <section className="bg-[#FBFBFB] text-black" data-theme="light">
-      <div className="max-w-7xl mx-auto pt-5 lg:pt-[161px]">
+      <div className="max-w-7xl mx-auto pt-5 lg:pt-[202px]">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start px-3 lg:pl-[40px]">
           {/* Left column */}
-          <div className="lg:col-span-6 p-[20px]  lg:p-[21px]">
+          <div className="lg:col-span-6 p-[12px]  lg:p-[21px]">
             <h3 className="text-[20px] font-regular mb-3 text-[#4A4A4A]">
               Why Choose Us?
             </h3>

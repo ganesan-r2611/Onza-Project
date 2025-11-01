@@ -22,7 +22,7 @@ export default function Accordion({ items }: { items: AccordionItem[] }) {
         return (
           <div key={faq.id}>
             <div
-              className={`bg-[#0a0a0a] lg:w-[628px] rounded-[24px] p-8 cursor-pointer transition-all duration-500 ease-in-out ${
+              className={`bg-[#0a0a0a] w-[328px] md:w-[628px] rounded-[24px] p-8 cursor-pointer transition-all duration-500 ease-in-out ${
                 expanded ? "shadow-lg" : ""
               }`}
               style={{
@@ -33,7 +33,7 @@ export default function Accordion({ items }: { items: AccordionItem[] }) {
             >
               <div className="flex justify-between items-start">
                 <span
-                  className={`text-[16px] md:text-[22px] font-regular leading-[24px] transition-colors duration-300 ${
+                  className={`text-[16px] md:text-[22px] font-regular leading-[20px] transition-colors duration-300 ${
                     expanded ? "text-[#FFDC81]" : "text-white"
                   }`}
                 >
@@ -65,7 +65,7 @@ export default function Accordion({ items }: { items: AccordionItem[] }) {
                   expanded ? 'max-h-32 opacity-100 mt-3' : 'max-h-0 opacity-0'
                 }`}
               >
-                <div className="text-[14px] text-[#bbbbbb] font-light leading-[22px]">
+                <div className="text-[14px] text-[#bbbbbb] font-light leading-[16px]">
                   {faq.answer}
                 </div>
               </div>

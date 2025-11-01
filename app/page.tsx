@@ -1,5 +1,3 @@
-'use client';
-
 // app/page.tsx
 import { getStaticData } from "@/libs/getStaticData";
 import NavBar from "@/components/NavBar";
