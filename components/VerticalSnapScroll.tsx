@@ -260,198 +260,215 @@ export default function VerticalSnapScroll({
     const container = containerRef.current;
     if (!viewport || !container) return;
 
-    const handleWheel = (e: WheelEvent) => {
-      // CRITICAL: Block wheel events if touch is active (mobile sometimes fires both)
-      if (isTouchActiveRef.current) {
-        e.preventDefault();
-        return;
-      }
-      
-      // Check if additional section is visible
-      const nextSection = document.getElementById('additional-sections');
-      if (nextSection) {
-        const nextSectionRect = nextSection.getBoundingClientRect();
-        const isNextSectionVisible = 
-          nextSectionRect.top < window.innerHeight && 
-          nextSectionRect.bottom > 0;
-        
-        if (isNextSectionVisible) {
-          // Additional section is in viewport - don't interfere at all
-          return;
-        }
-      }
-      
-      const containerRect = container.getBoundingClientRect();
-      
-      // If we've scrolled past the container, allow natural scrolling
-      if (shouldReleaseControl && e.deltaY > 0) {
-        return;
-      }
-      
-      // If container is completely above viewport, don't interfere
-      if (containerRect.bottom < 0) {
-        return;
-      }
-      
-      // If container hasn't entered viewport yet, don't interfere
-      if (containerRect.top > window.innerHeight) {
-        return;
-      }
+ const handleWheel = (e: WheelEvent) => {
+  // CRITICAL: Block wheel events if touch is active (mobile sometimes fires both)
+  if (isTouchActiveRef.current) {
+    e.preventDefault();
+    return;
+  }
+  
+  // Check if additional section is visible
+  const nextSection = document.getElementById('additional-sections');
+  if (nextSection) {
+    const nextSectionRect = nextSection.getBoundingClientRect();
+    const isNextSectionVisible = 
+      nextSectionRect.top < window.innerHeight && 
+      nextSectionRect.bottom > 0;
+    
+    if (isNextSectionVisible) {
+      // Additional section is in viewport - don't interfere at all
+      return;
+    }
+  }
+  
+  const container = containerRef.current;
+  if (!container) return;
+  
+  const containerRect = container.getBoundingClientRect();
+  
+  // If we've scrolled past the container, allow natural scrolling
+  if (shouldReleaseControl && e.deltaY > 0) {
+    return;
+  }
+  
+  // If container is completely above viewport, don't interfere
+  if (containerRect.bottom < 0) {
+    return;
+  }
+  
+  // If container hasn't entered viewport yet, don't interfere
+  if (containerRect.top > window.innerHeight) {
+    return;
+  }
 
-      const now = Date.now();
-      const timeSinceLastScroll = now - scrollStartTimeRef.current;
+  // MAC TOUCHPAD FIX: Detect if this is likely a touchpad event
+  const isTouchpad = 
+    Math.abs(e.deltaX) > 0 || 
+    Math.abs(e.deltaY) % 1 !== 0 || // Fractional values indicate touchpad
+    e.deltaMode === 0; // Pixel mode often indicates touchpad
 
-      if (timeSinceLastScroll > 200 && isActiveScrollRef.current) {
-        isActiveScrollRef.current = false;
-        accumulatedScrollRef.current = 0;
-      }
+  const now = Date.now();
+  const timeSinceLastScroll = now - scrollStartTimeRef.current;
 
-      const shouldAllowNaturalScroll = () => {
-        // At the last item, scrolling down
-        if (currentIndex === items.length - 1 && e.deltaY > 0) {
-          const currentItem = items[currentIndex];
-          const isHorizontalScrollItem = currentItem.type === 'horizontal-scroll';
-          
-          if (isHorizontalScrollItem) {
-            const maxScroll = getHorizontalScrollWidth(currentItem.id);
-            const tolerance = 10;
-            // Allow natural scroll when horizontal scroll is complete
-            if (horizontalProgress >= maxScroll - tolerance) {
-              return true;
-            }
-            return false;
-          }
-          // Simple item at the end - allow natural scroll to exit
-          return true;
-        }
-        
-        // At the first item, scrolling up - allow natural scroll
-        if (currentIndex === 0 && e.deltaY < 0) {
-          const currentItem = items[currentIndex];
-          const isHorizontalScrollItem = currentItem.type === 'horizontal-scroll';
-          
-          if (isHorizontalScrollItem) {
-            return horizontalProgress <= 0;
-          }
-          return true;
-        }
-        
-        return false;
-      };
+  if (timeSinceLastScroll > 200 && isActiveScrollRef.current) {
+    isActiveScrollRef.current = false;
+    accumulatedScrollRef.current = 0;
+  }
 
-      if (shouldAllowNaturalScroll()) {
-        isActiveScrollRef.current = false;
-        accumulatedScrollRef.current = 0;
-        if (scrollTimeoutRef.current) {
-          clearTimeout(scrollTimeoutRef.current);
-        }
-        // Allow browser's natural scroll
-        return;
-      }
-
-      e.preventDefault();
-
-      if (!isActiveScrollRef.current) {
-        scrollStartTimeRef.current = now;
-        isActiveScrollRef.current = true;
-        accumulatedScrollRef.current = 0;
-        setIsScrolling(true);
-      }
-
+  const shouldAllowNaturalScroll = () => {
+    // At the last item, scrolling down
+    if (currentIndex === items.length - 1 && e.deltaY > 0) {
       const currentItem = items[currentIndex];
       const isHorizontalScrollItem = currentItem.type === 'horizontal-scroll';
-      const scrollDelta = e.deltaY * scrollSpeed;
       
-      accumulatedScrollRef.current += scrollDelta;
+      if (isHorizontalScrollItem) {
+        const maxScroll = getHorizontalScrollWidth(currentItem.id);
+        const tolerance = 10;
+        // Allow natural scroll when horizontal scroll is complete
+        if (horizontalProgress >= maxScroll - tolerance) {
+          return true;
+        }
+        return false;
+      }
+      // Simple item at the end - allow natural scroll to exit
+      return true;
+    }
+    
+    // At the first item, scrolling up - allow natural scroll
+    if (currentIndex === 0 && e.deltaY < 0) {
+      const currentItem = items[currentIndex];
+      const isHorizontalScrollItem = currentItem.type === 'horizontal-scroll';
+      
+      if (isHorizontalScrollItem) {
+        return horizontalProgress <= 0;
+      }
+      return true;
+    }
+    
+    return false;
+  };
+
+  if (shouldAllowNaturalScroll()) {
+    isActiveScrollRef.current = false;
+    accumulatedScrollRef.current = 0;
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+    }
+    // Allow browser's natural scroll
+    return;
+  }
+
+  e.preventDefault();
+
+  if (!isActiveScrollRef.current) {
+    scrollStartTimeRef.current = now;
+    isActiveScrollRef.current = true;
+    accumulatedScrollRef.current = 0;
+    setIsScrolling(true);
+  }
+
+  const currentItem = items[currentIndex];
+  const isHorizontalScrollItem = currentItem.type === 'horizontal-scroll';
+  
+  // MAC TOUCHPAD FIX: Adjust sensitivity for touchpad
+  const touchpadMultiplier = isTouchpad ? 0.3 : 1; // Reduce sensitivity for touchpad
+  const scrollDelta = e.deltaY * scrollSpeed * touchpadMultiplier;
+  
+  accumulatedScrollRef.current += scrollDelta;
+
+  if (isHorizontalScrollItem) {
+    const maxScroll = getHorizontalScrollWidth(currentItem.id);
+    
+    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+      const newProgress = horizontalProgress + scrollDelta;
+      setHorizontalProgress(Math.max(0, Math.min(maxScroll, newProgress)));
+    } else {
+      const horizontalScrollDelta = e.deltaX * scrollSpeed * touchpadMultiplier;
+      const newProgress = horizontalProgress + horizontalScrollDelta;
+      setHorizontalProgress(Math.max(0, Math.min(maxScroll, newProgress)));
+    }
+  }
+
+  if (scrollTimeoutRef.current) {
+    clearTimeout(scrollTimeoutRef.current);
+  }
+
+  // MAC TOUCHPAD FIX: Adjust timeout for smoother touchpad experience
+  const timeoutDuration = isTouchpad ? 50 : 120;
+
+  scrollTimeoutRef.current = setTimeout(() => {
+    if (!isActiveScrollRef.current) return;
+
+    const scrollDuration = now - scrollStartTimeRef.current;
+    const distance = Math.abs(accumulatedScrollRef.current);
+    const direction = accumulatedScrollRef.current > 0 ? 1 : -1;
+
+    const FAST_GESTURE_TIME = 150;
+    const SLOW_SCROLL_TIME = 300;
+
+    const isFastGesture = scrollDuration < FAST_GESTURE_TIME;
+    const isSlowScroll = scrollDuration >= SLOW_SCROLL_TIME;
+
+    let shouldSnap = false;
+    let adaptiveTransitionDuration = 700;
+
+    // MAC TOUCHPAD FIX: Adjust thresholds for touchpad
+    const distanceThreshold = isTouchpad ? minThreshold * 0.4 : minThreshold;
+
+    if (isFastGesture) {
+      shouldSnap = distance >= 30;
+      adaptiveTransitionDuration = 900;
+    } else if (isSlowScroll) {
+      shouldSnap = distance >= distanceThreshold * 0.6;
+      adaptiveTransitionDuration = 600;
+    } else {
+      if (distance >= distanceThreshold) {
+        shouldSnap = true;
+        adaptiveTransitionDuration = 600;
+      }
+    }
+
+    if (shouldSnap) {
+      setTransitionDuration(adaptiveTransitionDuration);
 
       if (isHorizontalScrollItem) {
         const maxScroll = getHorizontalScrollWidth(currentItem.id);
-        
-        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-          const newProgress = horizontalProgress + scrollDelta;
-          setHorizontalProgress(Math.max(0, Math.min(maxScroll, newProgress)));
-        } else {
-          const horizontalScrollDelta = e.deltaX * scrollSpeed;
-          const newProgress = horizontalProgress + horizontalScrollDelta;
-          setHorizontalProgress(Math.max(0, Math.min(maxScroll, newProgress)));
-        }
-      }
+        const newProgress = horizontalProgress + accumulatedScrollRef.current;
+        const tolerance = 5;
 
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-
-      scrollTimeoutRef.current = setTimeout(() => {
-        if (!isActiveScrollRef.current) return;
-
-        const scrollDuration = now - scrollStartTimeRef.current;
-        const distance = Math.abs(accumulatedScrollRef.current);
-        const direction = accumulatedScrollRef.current > 0 ? 1 : -1;
-        const velocity = distance / Math.max(scrollDuration, 1);
-
-        const FAST_GESTURE_TIME = 150;
-        const SLOW_SCROLL_TIME = 300;
-
-        const isFastGesture = scrollDuration < FAST_GESTURE_TIME;
-        const isSlowScroll = scrollDuration >= SLOW_SCROLL_TIME;
-
-        let shouldSnap = false;
-        let adaptiveTransitionDuration = 700;
-
-        if (isFastGesture) {
-          shouldSnap = distance >= 30;
-          adaptiveTransitionDuration = 900;
-        } else if (isSlowScroll) {
-          shouldSnap = distance >= minThreshold * 0.6;
-          adaptiveTransitionDuration = 600;
-        } else {
-          if (distance >= minThreshold) {
-            shouldSnap = true;
-            adaptiveTransitionDuration = 600;
+        if (direction < 0) {
+          if (horizontalProgress <= tolerance && currentIndex > 0) {
+            setCurrentIndex(currentIndex - 1);
+            setHorizontalProgress(0);
+            setTransitionDuration(700);
           }
-        }
-
-        if (shouldSnap) {
-          setTransitionDuration(adaptiveTransitionDuration);
-
-          if (isHorizontalScrollItem) {
-            const maxScroll = getHorizontalScrollWidth(currentItem.id);
-            const newProgress = horizontalProgress + accumulatedScrollRef.current;
-            const tolerance = 5;
-
-            if (direction < 0) {
-              if (horizontalProgress <= tolerance && currentIndex > 0) {
-                setCurrentIndex(currentIndex - 1);
-                setHorizontalProgress(0);
-                setTransitionDuration(700);
-              }
-            } 
-            else if (direction > 0) {
-              if (newProgress >= maxScroll - tolerance) {
-                if (currentIndex < items.length - 1) {
-                  setCurrentIndex(currentIndex + 1);
-                  setHorizontalProgress(0);
-                  setTransitionDuration(700);
-                } else {
-                  setHorizontalProgress(maxScroll);
-                }
-              }
-            }
-          } else {
-            if (direction > 0 && currentIndex < items.length - 1) {
+        } 
+        else if (direction > 0) {
+          if (newProgress >= maxScroll - tolerance) {
+            if (currentIndex < items.length - 1) {
               setCurrentIndex(currentIndex + 1);
-            } else if (direction < 0 && currentIndex > 0) {
-              setCurrentIndex(currentIndex - 1);
+              setHorizontalProgress(0);
+              setTransitionDuration(700);
+            } else {
+              setHorizontalProgress(maxScroll);
             }
           }
         }
+      } else {
+        if (direction > 0 && currentIndex < items.length - 1) {
+          setCurrentIndex(currentIndex + 1);
+        } else if (direction < 0 && currentIndex > 0) {
+          setCurrentIndex(currentIndex - 1);
+        }
+      }
+    }
 
-        isActiveScrollRef.current = false;
-        accumulatedScrollRef.current = 0;
-        scrollStartTimeRef.current = 0;
-        setIsScrolling(false);
-      }, 120);
-    };
+    isActiveScrollRef.current = false;
+    accumulatedScrollRef.current = 0;
+    scrollStartTimeRef.current = 0;
+    setIsScrolling(false);
+  }, timeoutDuration);
+};
 
     window.addEventListener('wheel', handleWheel, { passive: false });
 
