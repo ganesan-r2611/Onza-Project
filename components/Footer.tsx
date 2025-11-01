@@ -3,27 +3,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { imageMap } from "@/libs/imageMap";
 export interface FooterData {
-    description: string;
-    contactText: string;
-    address: string;
-    socials: { icon: string; href: string }[];
-    links: {
-      general: { label: string; href: string }[];
-      services: { label: string; href: string }[];
-    };
-    legal: { label: string; href: string }[];
-    companyInfo: {
-      name: string;
-      registration: string;
-      cin: string;
-    }[];
-  }
+  description: string;
+  contactText: string;
+  address: string;
+  socials: { icon: string; href: string }[];
+  links: {
+    general: { label: string; href: string }[];
+    services: { label: string; href: string }[];
+  };
+  legal: { label: string; href: string }[];
+  companyInfo: {
+    name: string;
+    registration: string;
+    cin: string;
+  }[];
+}
 
-export default function Footer({
-  data,
-}: {
-  data: FooterData
-}) {
+export default function Footer({ data }: { data: FooterData }) {
   return (
     <footer className="bg-black text-[#E6E0DA] pt-6 pl-4 lg:pl-0">
       {/* Main Footer Content */}
@@ -46,7 +42,9 @@ export default function Footer({
               {data.links.general.map((link, index) => (
                 <li key={index}>
                   <Link
-                    href={link.href}
+                    // href={link.href}
+                    href={""}
+                    onClick={(e) => e.preventDefault()}
                     className="text-[14px] font-medium text-[#E6E0DA] hover:text-[#ffdc81] transition-colors"
                   >
                     {link.label}
@@ -65,7 +63,9 @@ export default function Footer({
               {data.links.services.map((service, index) => (
                 <li key={index}>
                   <Link
-                    href={service.href}
+                    // href={service.href}
+                    href={""}
+                    onClick={(e) => e.preventDefault()}
                     className="text-[12px] text-[#E6E0DA] hover:text-[#ffdc81] transition-colors"
                   >
                     {service.label}
@@ -103,7 +103,8 @@ export default function Footer({
                 {data.socials.map((social, index) => (
                   <Link
                     key={index}
-                    href={social.href}
+                    href={""}
+                    onClick={(e) => e.preventDefault()}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-18 h-18 flex items-center justify-center hover:bg-[#ffdc81] transition-colors"
@@ -152,7 +153,9 @@ export default function Footer({
               {data.legal.map((legal, index) => (
                 <Link
                   key={index}
-                  href={legal.href}
+                  // href={legal.href}
+                  href={""}
+                  onClick={(e) => e.preventDefault()}
                   className="text-[14px] text-gray-400 hover:text-[#ffdc81] transition-colors"
                 >
                   {legal.label}

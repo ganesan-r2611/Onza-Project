@@ -23,7 +23,7 @@ export default function ContactSection({ data }: { data: ContactData }) {
   return (
     <section className="relative w-full" data-theme="dark">
       {/* Background Gradient */}
-      <div 
+      <div
         className="absolute inset-0 -z-20"
         style={{
           background: "linear-gradient(135deg, #0A5060 0%, #000000 100%)",
@@ -47,7 +47,9 @@ export default function ContactSection({ data }: { data: ContactData }) {
                 {data.emailLabel}
               </p>
               <a
-                href={`mailto:${data.email}`}
+                // href={`mailto:${data.email}`}
+                href={""}
+                onClick={(e) => e.preventDefault()}
                 className="text-[18px] sm:text-[20px] text-[#ffdc81] font-regular underline hover:text-[#ffeec0]"
               >
                 {data.email}
@@ -58,8 +60,8 @@ export default function ContactSection({ data }: { data: ContactData }) {
           {/* Right: Form */}
           <div className="w-full lg:w-[55%] flex justify-center lg:justify-end">
             <div className="p-6 sm:p-8 md:p-4">
-                <ContactForm data={data.form} />
-              </div>
+              <ContactForm data={data.form} />
+            </div>
           </div>
         </div>
       </div>
