@@ -3,29 +3,29 @@
   "contactText": "Contact Us",
   "address": "753 Joshua Pines, Tatum borough 68760-9731",
   "socials": [
-    { "icon": "facebook", "href": "https://www.facebook.com/" },
-    { "icon": "linkedin", "href": "https://www.linkedin.com/" },
-    { "icon": "twitter", "href": "https://www.x.com/" }
+    { "icon": "facebook", "href": "#" },
+    { "icon": "linkedin", "href": "#" },
+    { "icon": "twitter", "href": "#" }
   ],
   "links": {
     "general": [
       { "label": "HOME", "href": "/" },
-      { "label": "ABOUT US", "href": "/about" },
-      { "label": "BLOGS", "href": "/blogs" },
-      { "label": "CONTACT US", "href": "/contact" }
+      { "label": "ABOUT US", "href": "#" },
+      { "label": "BLOGS", "href": "#" },
+      { "label": "CONTACT US", "href": "#" }
     ],
     "services": [
-      { "label": "Wealth & Investment Advisory", "href": "/services/wealth" },
-      { "label": "Legacy Protection & Succession Planning", "href": "/services/legacy" },
-      { "label": "Offshore Wealth Management", "href": "/services/offshore" },
-      { "label": "Lifestyle & Ease of Living Services", "href": "/services/lifestyle" },
-      { "label": "Real Estate Advisory", "href": "/services/real-estate" },
-      { "label": "Private Equity", "href": "/services/private-equity" }
+      { "label": "Wealth & Investment Advisory", "href": "#" },
+      { "label": "Legacy Protection & Succession Planning", "href": "#" },
+      { "label": "Offshore Wealth Management", "href": "#" },
+      { "label": "Lifestyle & Ease of Living Services", "href": "#" },
+      { "label": "Real Estate Advisory", "href": "#" },
+      { "label": "Private Equity", "href": "#" }
     ]
   },
   "legal": [
-    { "label": "Privacy Policy", "href": "/privacy" },
-    { "label": "Terms of Service", "href": "/terms" }
+    { "label": "Privacy Policy", "href": "#" },
+    { "label": "Terms of Service", "href": "#" }
   ],
   "companyInfo": [
     {

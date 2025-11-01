@@ -81,7 +81,7 @@ function useViewportCategory() {
 function useScaleStages(category: string, totalItems: number) {
   // Adjust scales based on number of snap items
   const base = {
-    mobile:       [1.1, 4.3, 7, 50],
+    mobile:       [1.1, 3.5, 7, 50],
     tablet:       [1.0, 4.2, 5.8, 8.2],
     desktop:      [1.0, 3.5, 6.0, 9.0],
     desktopShort: [0.95, 3.2, 5.4, 8.2],

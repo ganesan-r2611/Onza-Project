@@ -6,33 +6,18 @@ import ServiceCarouselIntro from "./ServiceCarouselIntro";
 import SectionZoomComponent from "./SectionZoomComponent";
 import VerticalSnapScroll, { SnapItem } from "./VerticalSnapScroll";
 
-interface heroSectionProps {
+interface SnapScrollContentProps {
+  data: {
+    isMobile?: boolean;
     eyebrow: string;
-    cta: {
-        label: string;
-        href: string;
-    };
-    items: {
-        title: string;
-        desc: string;
-        imageKey: string;
-    }[];
+    cta: { label: string; href: string };
+    items: Array<{ title: string; desc: string; imageKey: string }>;
+  };
 }
 
-export default function SnapScrollContent({ data} : {data : heroSectionProps}) {
+export default function SnapScrollContent({ data }: SnapScrollContentProps) {
   const [currentSnapIndex, setCurrentSnapIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 769); // Mobile/tablet < 769px
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
+ 
   // Mobile: Separate intro + carousel sections
   const mobileSnapItems: SnapItem[] = [
     {
@@ -110,12 +95,12 @@ export default function SnapScrollContent({ data} : {data : heroSectionProps}) {
       id: "services-intro",
       type: "simple",
       content: <ServiceCarouselIntro data={data} />,
-    },
-    {
-      id: "services-carousel",
-      type: "horizontal-scroll",
-      content: <ServicesCarouselSection data={data} showIntro={false} />,
-    },
+    }
+    // {
+    //   id: 'services-carousel',
+    //   type: 'horizontal-scroll',
+    //   content: <ServicesCarouselSection data={data} showIntro={false} />,
+    // },
   ];
 
   // Desktop: Combined intro + carousel section (no separate intro snap)
@@ -198,7 +183,7 @@ export default function SnapScrollContent({ data} : {data : heroSectionProps}) {
     },
   ];
 
-  const snapItems = isMobile ? mobileSnapItems : desktopSnapItems;
+  const snapItems = data?.isMobile ? mobileSnapItems : desktopSnapItems;
 
   return (
     <div

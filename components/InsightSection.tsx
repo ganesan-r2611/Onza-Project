@@ -20,12 +20,13 @@ export interface BlogsData {
   posts: BlogPost[];
 }
 
-
 function Card({ post }: { post: BlogPost }) {
   const img = imageMap[post.imageKey];
   return (
     <article className="relative rounded-[18px] overflow-hidden card-border">
-      <div className={`relative w-[327.63px] h-[412.92px]  md:h-[459px] md:w-[437.33px]`}>
+      <div
+        className={`relative w-[327.63px] h-[412.92px]  md:h-[459px] md:w-[437.33px]`}
+      >
         <Image src={img} alt={post.title} fill className="object-cover" />
         <div className="card-overlay" />
         <div className="card-highlight" />
@@ -82,7 +83,9 @@ function Card({ post }: { post: BlogPost }) {
                 {post.excerpt}
               </p>
               <Link
-                href={`/blog/${post.id}`}
+                // href={`/blog/${post.id}`}
+                href={""}
+                onClick={(e) => e.preventDefault()}
                 className="block w-full underline underline-offset-8 decoration-4 text-[14px] font-light text-[#F2E9DA] hover:text-[#ffdc81]"
               >
                 Read More
@@ -101,7 +104,7 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
 
   return (
     <section className="bg-[#121819] pt-16 pb-20" data-theme="light">
-      <div className="mx-auto px-3 md:px-8">
+      <div className="mx-auto px-3 md:px-9">
         {/* Mobile Layout (flex-col) */}
         <div className="lg:hidden flex flex-col gap-6">
           {/* Title */}
@@ -122,7 +125,12 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
           {/* CTA Button */}
           <div className="glass-card items-center pt-1 mt-3">
             <div className="rounded-[16px] p-6 bg-gradient-to-br from-white/6 to-black/10">
-              <Link href={blogs.cta?.href || "/blogs"} className="w-full">
+              <Link
+                // href={blogs.cta?.href || "/blogs"}
+                href={""}
+                onClick={(e) => e.preventDefault()}
+                className="w-full"
+              >
                 <button className="glass-btn w-full rounded-[24px] py-3 text-sm text-white/95">
                   {blogs.cta?.label || "View All Blogs"}
                 </button>
@@ -151,7 +159,12 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
             {/* CTA (desktop only) */}
             <div className="glass-card items-center pt-1 mt-3">
               <div className="rounded-[16px] p-6 bg-gradient-to-br from-white/6 to-black/10 items-center justify-center flex">
-                <Link href={blogs.cta?.href || "/blogs"} className="w-full">
+                <Link
+                  // href={blogs.cta?.href || "/blogs"}
+                  href={""}
+                  onClick={(e) => e.preventDefault()}
+                  className="w-full"
+                >
                   <button className="glass-btn w-full rounded-[24px] py-3 text-sm text-white/95">
                     {blogs.cta?.label || "View All Blogs"}
                   </button>

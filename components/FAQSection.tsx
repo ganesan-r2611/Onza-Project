@@ -9,7 +9,7 @@ type FAQItem = {
   answer: string;
 };
 
-type FAQData = {
+export interface FAQData  {
   title: string;
   subtitle: string;
   imageKey: keyof typeof imageMap;
@@ -24,7 +24,7 @@ export default function FAQSection({ data }: { data: FAQData }) {
       className="bg-[#121819] pt-10 md:pt-[78px] pb-[78px]"
       data-theme="light"
     >
-      <div className="mx-auto px-3 sm:px-8 lg:px-8">
+      <div className="mx-auto px-3 sm:px-9 lg:px-9">
         <div className="mx-auto">
           {/* Header */}
           <div className="flex flex-col gap-4 mb-10">
