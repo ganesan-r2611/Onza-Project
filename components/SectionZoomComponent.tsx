@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { imageMap } from "@/libs/imageMap";
 
@@ -12,6 +12,8 @@ type Props = {
     cta: { label: string; href: string };
     items: Pillar[];
   };
+  currentSnapIndex?: number;
+  totalSnapItems?: number;
 };
 
 interface FlarePosition {
@@ -45,7 +47,7 @@ function useViewportCategory() {
       setVp({ w, h, ar: w / Math.max(1, h), mounted: true });
     };
     const run = debounce(update, 120);
-    update(); // initial after mount
+    update();
     window.addEventListener("resize", run);
     window.addEventListener("orientationchange", run);
     return () => {
@@ -54,22 +56,18 @@ function useViewportCategory() {
     };
   }, []);
 
-  // Categories
   const category = useMemo(() => {
-    if (!vp.mounted) return "server"; // avoid SSR mismatch
+    if (!vp.mounted) return "server";
     const { w, h, ar } = vp;
 
-    // Base buckets
     const isMobile = w <= 768;
     const isTablet = w > 768 && w <= 1180;
     const isDesktop = w > 1180 && ar <= 2.0;
     const isUltraWide = w > 1440 && ar > 2.0;
 
-    // Height-aware flags (kept in case you use later)
     const isShort = h < 720;
     const isVeryShort = h < 600;
 
-    // ✨ Only one mobile category
     if (isMobile) return "mobile";
     if (isTablet) return isShort ? "tablet-short" : "tablet";
     if (isUltraWide) return isVeryShort ? "ultrawide-very-short" : "ultrawide";
@@ -80,38 +78,49 @@ function useViewportCategory() {
 }
 
 /** Choose per-section scale arrays based on viewport category */
-function useScaleStages(category: string) {
-  // Base scales for your 4 sections; tune as needed
+function useScaleStages(category: string, totalItems: number) {
+  // Adjust scales based on number of snap items
   const base = {
-    mobile:       [1.2, 4, 7, 20],
-    // mobileShort:  [1.2, 4, 7, 20],
+    mobile:       [1.1, 4.3, 7, 50],
     tablet:       [1.0, 4.2, 5.8, 8.2],
-    // tabletShort:  [0.95, 3.8, 5.2, 7.4],
     desktop:      [1.0, 3.5, 6.0, 9.0],
     desktopShort: [0.95, 3.2, 5.4, 8.2],
     ultrawide:    [1.0, 3.2, 5.4, 8.4],
     ultraVery:    [0.92, 3.0, 5.0, 7.8],
-  } as const;
+  };
 
+  let stages: number[];
+  
   switch (category) {
-    case "mobile": return base.mobile;
-    // case "mobile-short": return base.mobileShort; // unused now, safe to keep
-    case "tablet": return base.tablet;
-    // case "tablet-short": return base.tabletShort;
-    case "desktop": return base.desktop;
-    case "desktop-short": return base.desktopShort;
-    case "ultrawide": return base.ultrawide;
-    case "ultrawide-very-short": return base.ultraVery;
-    case "server":
-    default:
-      return base.desktop;
+    case "mobile": stages = base.mobile; break;
+    case "tablet": 
+    case "tablet-short": stages = base.tablet; break;
+    case "desktop": stages = base.desktop; break;
+    case "desktop-short": stages = base.desktopShort; break;
+    case "ultrawide": stages = base.ultrawide; break;
+    case "ultrawide-very-short": stages = base.ultraVery; break;
+    default: stages = base.desktop;
   }
+
+  // If we have more or fewer items, adjust
+  if (totalItems !== 4) {
+    // Interpolate or extend stages to match totalItems
+    const result: number[] = [];
+    for (let i = 0; i < totalItems; i++) {
+      const ratio = i / Math.max(1, totalItems - 1);
+      const idx = ratio * (stages.length - 1);
+      const lower = Math.floor(idx);
+      const upper = Math.ceil(idx);
+      const frac = idx - lower;
+      result.push(stages[lower] * (1 - frac) + stages[upper] * frac);
+    }
+    return result;
+  }
+
+  return stages;
 }
 
-export default function SectionZoomComponent() {
-  const [activeSection, setActiveSection] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-
+export default function SectionZoomComponent({ currentSnapIndex = 0, totalSnapItems = 4 }: Props) {
   // 🔹 Lens flare animation
   const [flarePositions, setFlarePositions] = useState<FlarePosition[]>([
     { x: 20, y: 30, time: 0 },
@@ -138,100 +147,28 @@ export default function SectionZoomComponent() {
     return () => clearInterval(id);
   }, []);
 
-  // 🔹 Track active section
-  useEffect(() => {
-    const rootEl = containerRef.current;
-    if (!rootEl) return;
-
-    const sections = Array.from(
-      rootEl.querySelectorAll<HTMLElement>(".scroll-section")
-    );
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-        if (visible) {
-          const idx = Number(visible.target.getAttribute("data-index"));
-          setActiveSection(idx);
-        }
-      },
-      {
-        root: null,
-        threshold: Array.from({ length: 11 }, (_, i) => i / 10),
-        rootMargin: "0px 0px -30% 0px",
-      }
-    );
-
-    sections.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
   const { category, mounted, height } = useViewportCategory();
-  const stages = useScaleStages(category);
-  const isMobileCat = category === "mobile";
-  const [effectiveSection, setEffectiveSection] = useState(0);
-  const downshiftTimerRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    if (!isMobileCat) {
-      if (downshiftTimerRef.current) {
-        window.clearTimeout(downshiftTimerRef.current);
-        downshiftTimerRef.current = null;
-      }
-      setEffectiveSection(activeSection);
-      return;
-    }
-
-    setEffectiveSection((curr) => {
-      if (activeSection > curr) {
-        if (downshiftTimerRef.current) {
-          window.clearTimeout(downshiftTimerRef.current);
-          downshiftTimerRef.current = null;
-        }
-        return activeSection;
-      }
-
-      if (activeSection < curr) {
-        if (downshiftTimerRef.current) {
-          window.clearTimeout(downshiftTimerRef.current);
-        }
-        downshiftTimerRef.current = window.setTimeout(() => {
-          setEffectiveSection(activeSection);
-          downshiftTimerRef.current = null;
-        }, 140);
-      }
-
-      return curr;
-    });
-  }, [activeSection, isMobileCat]);
-
-  useEffect(() => {
-    return () => {
-      if (downshiftTimerRef.current) {
-        window.clearTimeout(downshiftTimerRef.current);
-      }
-    };
-  }, []);
+  const stages = useScaleStages(category, totalSnapItems);
+  
+  // Use the snap index directly from parent
+  const effectiveSection = currentSnapIndex;
 
   const shortBoost = mounted && height < 640 ? 0.92 : 1;
-  const imageScale = (stages[effectiveSection] ?? 1) * shortBoost;
+  const imageScale = (stages[effectiveSection] ?? stages[0] ?? 1) * shortBoost;
 
   return (
-    <div ref={containerRef} className="relative w-full">
-      {/* 🔹 Gradient background */}
+    <div className="relative w-full h-full">
+      {/* 🔹 Gradient background - Absolute to parent container */}
       <div
-        className="fixed inset-0 -z-50 transition-opacity duration-1000 ease-in-out"
+        className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
         style={{
           background:
             "radial-gradient(ellipse at 50% 30%, #0f3333 0%, #0a2828 50%, #051a1a 80%, #020f0f 100%)",
         }}
       />
 
-      {/* 🔹 Lens flares */}
-      <div className="fixed inset-0 -z-40 pointer-events-none transition-all duration-700 ease-in-out">
+      {/* 🔹 Lens flares - Absolute to parent container */}
+      <div className="absolute inset-0 pointer-events-none transition-all duration-700 ease-in-out overflow-hidden">
         {flarePositions.map((f, idx) => (
           <div
             key={idx}
@@ -253,16 +190,16 @@ export default function SectionZoomComponent() {
         ))}
       </div>
 
-      {/* 🔹 Scalable image */}
-      <div className="fixed inset-0 -z-30 flex items-center justify-center transition-all duration-[1200ms] ease-[cubic-bezier(0.45,0,0.25,1)] pointer-events-none">
+      {/* 🔹 Scalable image - Absolute to parent container */}
+      <div className="absolute inset-0 flex items-center justify-center transition-all duration-[1200ms] ease-[cubic-bezier(0.45,0,0.25,1)] pointer-events-none">
         <Image
           src={imageMap.onzaLgBG}
           alt="Onza Background"
           priority
-          className="transition-all duration-[1200ms] ease-[cubic-bezier(0.45,0,0.25,1)] object-contain"
+          className="md:mt-[200px] transition-all duration-[1200ms] ease-[cubic-bezier(0.45,0,0.25,1)] object-contain"
           style={{
             transform: mounted ? `scale(${imageScale})` : "scale(1)",
-            width: "min(65vw, 520px)",
+            width: "min(65vw, 560px)",
             height: "auto",
             filter: "drop-shadow(0 12px 30px rgba(0,0,0,0.35))",
           }}

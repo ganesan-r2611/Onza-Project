@@ -1,17 +1,15 @@
 // app/page.tsx
 import { getStaticData } from "@/libs/getStaticData";
-import NavBar from "@/components/NavBar";
-import ScrollZoomComponent from "@/components/Scroll";
 import ServicesSection from "@/components/Service";
 import TestimonialsSection from "@/components/TestimonalSection";
 import ContactSection from "@/components/ContactSection";
 import FAQSection from "@/components/FAQSection";
 import InsightsSection from "@/components/InsightSection";
 import Footer from "@/components/Footer";
+import SnapScrollContent from '../components/Snapscrollcontent';
 
 export default async function HomePage() {
   const {
-    navbarData,
     heroSectionData,
     servicesData,
     blogsData,
@@ -24,23 +22,23 @@ export default async function HomePage() {
   return (
     <>
       {/* Navbar - will appear over scroll component */}
-      <NavBar data={navbarData} />
+      {/* <NavBar data={navbarData} /> */}
 
       <main>
         {/* Scroll Hero Section - NO pt-28, starts at top */}
         <div className="relative">
-          <section data-theme="dark">
+          {/* <section data-theme="dark">
             <ScrollZoomComponent data={heroSectionData} />
+          </section> */}
+          <section data-theme="dark">
+             <SnapScrollContent data={heroSectionData}/>
           </section>
         </div>
+        
+        {/* Additional sections - scroll will automatically continue here after snap container */}
         <div className="relative">
-          {/* Services Carousel - immediately after scroll */}
-          {/* <section data-theme="light">
-          <ServicesCarouselSection data={heroSectionData} />
-        </section> */}
-
           {/* Who We Serve */}
-          <section data-theme="dark">
+          <section data-theme="dark" id="additional-sections">
             <ServicesSection services={servicesData} />
           </section>
 
