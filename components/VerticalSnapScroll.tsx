@@ -267,6 +267,20 @@ export default function VerticalSnapScroll({
         return;
       }
       
+      // Check if the wheel event is happening on our container
+      const target = e.target as HTMLElement;
+      if (!viewport.contains(target)) {
+        // Event is outside our container, don't interfere
+        return;
+      }
+      
+      const containerRect = container.getBoundingClientRect();
+      
+      // Don't interfere if container is not in viewport at all
+      if (containerRect.bottom < 0 || containerRect.top > window.innerHeight) {
+        return;
+      }
+      
       // Check if additional section is visible
       const nextSection = document.getElementById('additional-sections');
       if (nextSection) {
@@ -281,20 +295,8 @@ export default function VerticalSnapScroll({
         }
       }
       
-      const containerRect = container.getBoundingClientRect();
-      
       // If we've scrolled past the container, allow natural scrolling
       if (shouldReleaseControl && e.deltaY > 0) {
-        return;
-      }
-      
-      // If container is completely above viewport, don't interfere
-      if (containerRect.bottom < 0) {
-        return;
-      }
-      
-      // If container hasn't entered viewport yet, don't interfere
-      if (containerRect.top > window.innerHeight) {
         return;
       }
 
