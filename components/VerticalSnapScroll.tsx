@@ -49,6 +49,7 @@ export default function VerticalSnapScroll({
   const [calculatedScrollWidths, setCalculatedScrollWidths] = useState<Map<string, number>>(new Map());
   const [isMeasuring, setIsMeasuring] = useState(true);
   const [shouldReleaseControl, setShouldReleaseControl] = useState(false);
+  const isMomentumScrollRef = useRef(false);
 
   const { min: minThreshold, max: maxThreshold } = snapThreshold;
 
@@ -366,6 +367,13 @@ export default function VerticalSnapScroll({
       
       accumulatedScrollRef.current += scrollDelta;
 
+      // Log for debugging Mac trackpad
+      console.log('Wheel event:', { 
+        deltaY: e.deltaY.toFixed(2), 
+        deltaMode: e.deltaMode,
+        accumulated: accumulatedScrollRef.current.toFixed(2)
+      });
+
       if (isHorizontalScrollItem) {
         const maxScroll = getHorizontalScrollWidth(currentItem.id);
         
@@ -383,9 +391,19 @@ export default function VerticalSnapScroll({
         clearTimeout(scrollTimeoutRef.current);
       }
 
-      // Mac trackpad momentum detection: if wheel events are very small and frequent
-      const isMomentumScroll = Math.abs(e.deltaY) < 2 && isActiveScrollRef.current;
-      const timeoutDelay = isMomentumScroll ? 50 : 120; // Shorter timeout for momentum
+      // Better Mac trackpad momentum detection
+      // Mac uses deltaMode 0 (pixels) and momentum has small consistent deltas
+      const isLikelyMomentum = (
+        e.deltaMode === 0 && // Pixel mode (trackpad)
+        Math.abs(e.deltaY) < 10 && // Small delta
+        Math.abs(e.deltaY) > 0.1 && // Not zero
+        isActiveScrollRef.current // Already scrolling
+      );
+      
+      isMomentumScrollRef.current = isLikelyMomentum;
+      
+      const timeoutDelay = isLikelyMomentum ? 50 : 150; // Shorter for momentum
+      console.log('Timeout delay:', timeoutDelay, 'isMomentum:', isLikelyMomentum);
 
       scrollTimeoutRef.current = setTimeout(() => {
         if (!isActiveScrollRef.current) return;
@@ -405,7 +423,7 @@ export default function VerticalSnapScroll({
         let adaptiveTransitionDuration = 700;
 
         // Lower threshold for momentum scrolling
-        const threshold = isMomentumScroll ? minThreshold * 0.4 : minThreshold * 0.6;
+        const threshold = isMomentumScrollRef.current ? minThreshold * 0.3 : minThreshold * 0.6;
 
         if (isFastGesture) {
           shouldSnap = distance >= 30;
@@ -414,11 +432,13 @@ export default function VerticalSnapScroll({
           shouldSnap = distance >= threshold;
           adaptiveTransitionDuration = 600;
         } else {
-          if (distance >= minThreshold) {
+          if (distance >= threshold) {
             shouldSnap = true;
             adaptiveTransitionDuration = 600;
           }
         }
+        
+        console.log('Snap check:', { shouldSnap, distance, threshold, duration: scrollDuration });
 
         if (shouldSnap) {
           setTransitionDuration(adaptiveTransitionDuration);
