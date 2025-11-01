@@ -56,7 +56,7 @@ export default function ServicesCarouselSection({
           )}
 
           {/* Carousel - full width on mobile, right side on desktop */}
-          <div className={`${showIntro ? 'lg:col-span-10 md:pt-16 lg:-mr-[20px]' : 'w-full'} overflow-hidden`}>
+          <div className={`${showIntro ? 'lg:col-span-10 md:pt-16 lg:-mr-[20px]' : 'w-full overflow-x-auto no-scrollbar'} overflow-hidden`}>
               <div
                 className={`identifier flex ${isScrolling ? 'transition-none' : 'transition-transform duration-200 ease-out'}`}
                 style={{
