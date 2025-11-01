@@ -383,6 +383,10 @@ export default function VerticalSnapScroll({
         clearTimeout(scrollTimeoutRef.current);
       }
 
+      // Mac trackpad momentum detection: if wheel events are very small and frequent
+      const isMomentumScroll = Math.abs(e.deltaY) < 2 && isActiveScrollRef.current;
+      const timeoutDelay = isMomentumScroll ? 50 : 120; // Shorter timeout for momentum
+
       scrollTimeoutRef.current = setTimeout(() => {
         if (!isActiveScrollRef.current) return;
 
@@ -400,11 +404,14 @@ export default function VerticalSnapScroll({
         let shouldSnap = false;
         let adaptiveTransitionDuration = 700;
 
+        // Lower threshold for momentum scrolling
+        const threshold = isMomentumScroll ? minThreshold * 0.4 : minThreshold * 0.6;
+
         if (isFastGesture) {
           shouldSnap = distance >= 30;
           adaptiveTransitionDuration = 900;
         } else if (isSlowScroll) {
-          shouldSnap = distance >= minThreshold * 0.6;
+          shouldSnap = distance >= threshold;
           adaptiveTransitionDuration = 600;
         } else {
           if (distance >= minThreshold) {
@@ -452,7 +459,7 @@ export default function VerticalSnapScroll({
         accumulatedScrollRef.current = 0;
         scrollStartTimeRef.current = 0;
         setIsScrolling(false);
-      }, 120);
+      }, timeoutDelay);
     };
 
     window.addEventListener('wheel', handleWheel, { passive: false });
