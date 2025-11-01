@@ -2,7 +2,6 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import ServicesCarouselSection from "./ServiceCarousel";
 import { imageMap } from "@/libs/imageMap";
 
 type Pillar = { title: string; desc: string; imageKey: keyof typeof imageMap };
@@ -109,7 +108,7 @@ function useScaleStages(category: string) {
   }
 }
 
-export default function SectionZoomComponent({ data }: Props) {
+export default function SectionZoomComponent() {
   const [activeSection, setActiveSection] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 

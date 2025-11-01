@@ -6,7 +6,20 @@ import ServiceCarouselIntro from "./ServiceCarouselIntro";
 import SectionZoomComponent from "./SectionZoomComponent";
 import VerticalSnapScroll, { SnapItem } from "./VerticalSnapScroll";
 
-export default function SnapScrollContent({ data }: { data: any }) {
+interface heroSectionProps {
+    eyebrow: string;
+    cta: {
+        label: string;
+        href: string;
+    };
+    items: {
+        title: string;
+        desc: string;
+        imageKey: string;
+    }[];
+}
+
+export default function SnapScrollContent({ data} : {data : heroSectionProps}) {
   const [currentSnapIndex, setCurrentSnapIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 

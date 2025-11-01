@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { imageMap } from "@/libs/imageMap";
 
@@ -120,7 +120,7 @@ function useScaleStages(category: string, totalItems: number) {
   return stages;
 }
 
-export default function SectionZoomComponent({ data, currentSnapIndex = 0, totalSnapItems = 4 }: Props) {
+export default function SectionZoomComponent({ currentSnapIndex = 0, totalSnapItems = 4 }: Props) {
   // 🔹 Lens flare animation
   const [flarePositions, setFlarePositions] = useState<FlarePosition[]>([
     { x: 20, y: 30, time: 0 },

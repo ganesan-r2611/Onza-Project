@@ -338,7 +338,7 @@ export default function VerticalSnapScroll({
         clearTimeout(scrollTimeoutRef.current);
       }
     };
-  }, [currentIndex, horizontalProgress, items, scrollSpeed, minThreshold, maxThreshold, calculatedScrollWidths]);
+  }, [currentIndex, horizontalProgress, items, scrollSpeed, minThreshold, maxThreshold, calculatedScrollWidths,getHorizontalScrollWidth]);
 
   // Touch events (keeping original for brevity)
   useEffect(() => {

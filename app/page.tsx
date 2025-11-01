@@ -1,7 +1,5 @@
 // app/page.tsx
 import { getStaticData } from "@/libs/getStaticData";
-import NavBar from "@/components/NavBar";
-import ScrollZoomComponent from "@/components/Scroll";
 import ServicesSection from "@/components/Service";
 import TestimonialsSection from "@/components/TestimonalSection";
 import ContactSection from "@/components/ContactSection";
@@ -12,7 +10,6 @@ import SnapScrollContent from '../components/Snapscrollcontent';
 
 export default async function HomePage() {
   const {
-    navbarData,
     heroSectionData,
     servicesData,
     blogsData,
