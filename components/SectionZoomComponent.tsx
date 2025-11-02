@@ -128,6 +128,39 @@ export default function SectionZoomComponent({ currentSnapIndex = 0, totalSnapIt
     { x: 40, y: 70, time: (4 * Math.PI) / 3 },
   ]);
 
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 }); // For mouse hover parallax
+
+// Track mouse position for hover parallax effect (first snap only)
+  useEffect(() => {
+    const updateMousePosition = (e: MouseEvent) => {
+      // Only track if on first snap section
+      if (currentSnapIndex !== 0) return;
+
+      // Use the entire viewport for tracking
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+      
+      // Clamp values between 0 and 1
+      const clampedX = Math.max(0, Math.min(1, x));
+      const clampedY = Math.max(0, Math.min(1, y));
+      
+      setMousePosition({
+        x: clampedX,
+        y: clampedY
+      });
+
+    };
+
+    if (currentSnapIndex === 0) {
+      window.addEventListener('mousemove', updateMousePosition, { passive: true });
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', updateMousePosition);
+    };
+
+  }, [currentSnapIndex]);
+
   useEffect(() => {
     const id = setInterval(() => {
       setFlarePositions((prev) =>
@@ -155,6 +188,11 @@ export default function SectionZoomComponent({ currentSnapIndex = 0, totalSnapIt
 
   const shortBoost = mounted && height < 640 ? 0.92 : 1;
   const imageScale = (stages[effectiveSection] ?? stages[0] ?? 1) * shortBoost;
+
+  const parallaxX = currentSnapIndex === 0 ? (mousePosition.x - 0.5) * 30 : 0; // Move left/right up to 15px
+  const parallaxY = currentSnapIndex === 0 ? (mousePosition.y - 0.5) * 30 : 0; // Move up/down up to 15px
+  const parallaxScale = currentSnapIndex === 0 ? 1 + (Math.abs(mousePosition.x - 0.5) + Math.abs(mousePosition.y - 0.5)) * 0.05 : 1; // Slight scale
+
 
   return (
     <div className="relative w-full h-full">
@@ -198,7 +236,16 @@ export default function SectionZoomComponent({ currentSnapIndex = 0, totalSnapIt
           priority
           className="transition-all duration-[1200ms] ease-[cubic-bezier(0.45,0,0.25,1)] object-contain"
           style={{
-            transform: mounted ? `scale(${imageScale})` : "scale(1)",
+            transform: (() => {
+              const transformValue = currentSnapIndex === 0
+                ? `scale(${mounted ? imageScale : 1}) translate3d(${parallaxX}px, ${parallaxY}px, 0)`
+                : `scale(${mounted ? imageScale : 1})`;
+              return transformValue;
+            })(),
+            transition: currentSnapIndex === 0 
+              ? 'transform 0.8s ease-out' 
+              : 'transform 1200ms cubic-bezier(0.45,0,0.25,1)',
+            willChange: currentSnapIndex === 0 ? 'transform' : 'auto',
             width: "min(65vw, 560px)",
             height: "auto",
             filter: "drop-shadow(0 12px 30px rgba(0,0,0,0.35))",
