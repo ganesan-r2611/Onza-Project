@@ -60,7 +60,7 @@ export default function ServicesCarouselSection({
               <div
                 className={`identifier flex ${isScrolling ? 'transition-none' : 'transition-transform duration-200 ease-out'}`}
                 style={{
-                  transform: `translateX(-${horizontalProgress}px)`,
+                  transform: `translateX(-${showIntro ? horizontalProgress+20 : horizontalProgress}px)`,
                   willChange: 'transform',
                 }}
               >
