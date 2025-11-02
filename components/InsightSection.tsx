@@ -25,7 +25,7 @@ function Card({ post }: { post: BlogPost }) {
   return (
     <article className="relative rounded-[18px] overflow-hidden card-border">
       <div
-        className={`relative w-[410px] h-[412.92px]  md:w-[437.33px] md:h-[459px] lg:w-[437.33px] lg:h-[459px]`}
+        className={`relative w-auto h-[412.92px]  md:w-[437.33px] md:h-[459px] lg:w-[437.33px] lg:h-[459px]`}
       >
         <Image src={img} alt={post.title} fill className="object-cover" />
         <div className="card-overlay" />
@@ -57,7 +57,7 @@ function Card({ post }: { post: BlogPost }) {
                   "linear-gradient(to top, black 40%, transparent 100%)",
               }}
             />
-        <div className="absolute inset-0 flex flex-col justify-between p-6">
+        <div className="absolute inset-0 flex flex-col justify-between p-8 md:p-6">
           {/* Top Section - Category & Date */}
           <div className="flex justify-between items-start z-10">
             <div className="inline-block text-[10px] px-4 py-1 rounded-[10px] font-medium transition backdrop-blur-md border border-[#d1b67c]/40 bg-white/10 text-[#ffdc81] hover:bg-white/20">
@@ -70,7 +70,6 @@ function Card({ post }: { post: BlogPost }) {
 
           {/* Bottom Section - Content */}
           <div className="relative flex flex-col justify-end flex-1 min-h-0">
-            {/* Multiple blur layers for gradient effect - Properly aligned */}
 
             {/* Content */}
             <div className="relative z-10">
