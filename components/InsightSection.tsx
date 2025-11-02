@@ -30,52 +30,50 @@ function Card({ post }: { post: BlogPost }) {
         <Image src={img} alt={post.title} fill className="object-cover" />
         <div className="card-overlay" />
         <div className="card-highlight" />
-        <div className="absolute inset-0 grid grid-rows-2 gap-3">
-          <div className="p-6 z-10 flex flex-row justify-between">
-            <div>
-              <div className="inline-block text-[10px] px-4 py-1 w-fit rounded-[10px] font-medium transition backdrop-blur-md border border-[#d1b67c]/40 bg-white/10 text-[#ffdc81] hover:bg-white/20">
-                {post.category}
-              </div>
+        <div
+              className="absolute inset-x-0 bottom-0 top-1/3 backdrop-blur-[2px]"
+              style={{
+                maskImage:
+                  "linear-gradient(to top, black 0%, transparent 100%)",
+                WebkitMaskImage:
+                  "linear-gradient(to top, black 0%, transparent 100%)",
+              }}
+            />
+            <div
+              className="absolute inset-x-0 bottom-0 top-1/4 backdrop-blur-[4px]"
+              style={{
+                maskImage:
+                  "linear-gradient(to top, black 20%, transparent 100%)",
+                WebkitMaskImage:
+                  "linear-gradient(to top, black 20%, transparent 100%)",
+              }}
+            />
+            <div
+              className="absolute inset-x-0 bottom-0 top-1/6 backdrop-blur-[6px]"
+              style={{
+                maskImage:
+                  "linear-gradient(to top, black 40%, transparent 100%)",
+                WebkitMaskImage:
+                  "linear-gradient(to top, black 40%, transparent 100%)",
+              }}
+            />
+        <div className="absolute inset-0 flex flex-col justify-between p-6">
+          {/* Top Section - Category & Date */}
+          <div className="flex justify-between items-start z-10">
+            <div className="inline-block text-[10px] px-4 py-1 rounded-[10px] font-medium transition backdrop-blur-md border border-[#d1b67c]/40 bg-white/10 text-[#ffdc81] hover:bg-white/20">
+              {post.category}
             </div>
-            <div>
-              <p className="text-[#FBFBFB] text-[10px] font-regular mt-2">
-                {post.date} &bull; {post.readTime}
-              </p>
-            </div>
+            <p className="text-[#FBFBFB] text-[10px] font-regular">
+              {post.date} &bull; {post.readTime}
+            </p>
           </div>
 
-          <div className="relative flex flex-col justify-end p-6">
-            {/* Multiple blur layers for gradient effect */}
-            <div
-              className="absolute inset-0 backdrop-blur-[2px]"
-              style={{
-                maskImage:
-                  "linear-gradient(to bottom, transparent 0%, black 30%, black 70%, black 100%)",
-                WebkitMaskImage:
-                  "linear-gradient(to bottom, transparent 0%, black 30%, black 70%, black 100%)",
-              }}
-            />
-            <div
-              className="absolute inset-0 backdrop-blur-[4px]"
-              style={{
-                maskImage:
-                  "linear-gradient(to bottom, transparent 0%, black 50%, black 100%)",
-                WebkitMaskImage:
-                  "linear-gradient(to bottom, transparent 0%, black 50%, black 100%)",
-              }}
-            />
-            <div
-              className="absolute inset-0 backdrop-blur-[6px]"
-              style={{
-                maskImage:
-                  "linear-gradient(to bottom, transparent 0%, black 70%, black 100%)",
-                WebkitMaskImage:
-                  "linear-gradient(to bottom, transparent 0%, black 70%, black 100%)",
-              }}
-            />
+          {/* Bottom Section - Content */}
+          <div className="relative flex flex-col justify-end flex-1 min-h-0">
+            {/* Multiple blur layers for gradient effect - Properly aligned */}
 
             {/* Content */}
-            <div className="relative">
+            <div className="relative z-10">
               <h3 className="text-[22px] md:text-[24px] leading-[28px] text-white font-light">
                 {post.title}
               </h3>
@@ -83,7 +81,6 @@ function Card({ post }: { post: BlogPost }) {
                 {post.excerpt}
               </p>
               <Link
-                // href={`/blog/${post.id}`}
                 href={""}
                 onClick={(e) => e.preventDefault()}
                 className="block w-full underline underline-offset-8 decoration-4 text-[14px] font-light text-[#F2E9DA] hover:text-[#ffdc81]"
