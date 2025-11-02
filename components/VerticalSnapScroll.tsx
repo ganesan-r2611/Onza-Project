@@ -46,13 +46,23 @@ export default function VerticalSnapScroll({
   const scrollStartTimeRef = useRef<number>(0);
   const isActiveScrollRef = useRef(false);
   const isTouchActiveRef = useRef(false);
+  const lastTouchYRef = useRef(0);
   const [calculatedScrollWidths, setCalculatedScrollWidths] = useState<Map<string, number>>(new Map());
   const [isMeasuring, setIsMeasuring] = useState(true);
   const [shouldReleaseControl, setShouldReleaseControl] = useState(false);
   const isMomentumScrollRef = useRef(false);
+  const [isDesktop, setIsDesktop] = useState(true);
 
   const { min: minThreshold, max: maxThreshold } = snapThreshold;
-
+  // Detect device type (desktop vs mobile/tablet)
+  useEffect(() => {
+    const checkDevice = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
+    return () => window.removeEventListener('resize', checkDevice);
+  }, []);
   // Notify parent of index changes
   useEffect(() => {
     if (onIndexChange) {
@@ -74,32 +84,27 @@ export default function VerticalSnapScroll({
       const containerRect = container.getBoundingClientRect();
       const windowHeight = window.innerHeight;
       
-      // Find the next section (additional sections) in the DOM
       const nextSection = document.getElementById('additional-sections');
       const nextSectionRect = nextSection?.getBoundingClientRect();
       
       if (nextSectionRect) {
-        // Check if any part of the additional section is visible in viewport
         const isNextSectionVisible = 
           nextSectionRect.top < windowHeight && 
           nextSectionRect.bottom > 0;
         
         if (isNextSectionVisible) {
-          // Additional section is visible - keep control released
           setShouldReleaseControl(true);
         } else {
-          // Additional section is completely out of view - regain control
           setShouldReleaseControl(false);
         }
       } else {
-        // Fallback to container-based detection if additional section not found
         const nextSectionStartsEntering = containerRect.bottom < windowHeight;
         setShouldReleaseControl(nextSectionStartsEntering);
       }
     };
 
     window.addEventListener('scroll', checkScrollPosition);
-    checkScrollPosition(); // Initial check
+    checkScrollPosition();
 
     return () => {
       window.removeEventListener('scroll', checkScrollPosition);
@@ -118,7 +123,6 @@ export default function VerticalSnapScroll({
           return false;
         }
 
-        // Look for the carousel with identifier class or flex gap
         let carouselContainer = contentRef.querySelector('.identifier') || 
                                 contentRef.querySelector('[class*="flex gap"]') || 
                                 contentRef.querySelector('.flex');
@@ -168,20 +172,19 @@ export default function VerticalSnapScroll({
     if (calculated) {
       return calculated;
     }
-    
-    // TEMPORARY: Hardcode for testing
-    return 2000;
+    return 500;
   };
 
   // Keyboard event handler
+  // ENHANCED: Keyboard handler with horizontal scroll support for desktop
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Only handle arrow keys
-      if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+      if (!['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
         return;
       }
-
-      // Check if we should release control to natural scrolling
+// console.log(shouldReleaseControl)
+      // Release control if additional-sections visible
       if (shouldReleaseControl) {
         return;
       }
@@ -200,88 +203,107 @@ export default function VerticalSnapScroll({
       const currentItem = items[currentIndex];
       const isHorizontalScrollItem = currentItem.type === 'horizontal-scroll';
 
-      if (isHorizontalScrollItem) {
-        // Horizontal scroll item - handle left/right arrows
+      // ENHANCED: Horizontal scroll support on desktop only
+      if (isHorizontalScrollItem && isDesktop) {
+        // Handle left/right arrows for horizontal scrolling
         if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
           const maxScroll = getHorizontalScrollWidth(currentItem.id);
-          const step = 100; // Fixed step for keyboard
+          const step = 100;
           let newProgress = horizontalProgress;
 
           if (e.key === 'ArrowLeft') {
             newProgress = Math.max(0, horizontalProgress - step);
-          } else if (e.key === 'ArrowRight') {
+          } else {
             newProgress = Math.min(maxScroll, horizontalProgress + step);
           }
 
           setHorizontalProgress(newProgress);
-          setTransitionDuration(200); // Fast transition for keyboard
+          setTransitionDuration(200);
 
-          // Check if we should snap to next/previous section
+          // Snap to next/previous section at edges
           const tolerance = 20;
           if (e.key === 'ArrowLeft' && newProgress <= tolerance && currentIndex > 0) {
-            // At start, pressing left arrow - go to previous section
             setCurrentIndex(currentIndex - 1);
             setHorizontalProgress(0);
+            setTransitionDuration(700);
           } else if (e.key === 'ArrowRight' && newProgress >= maxScroll - tolerance && currentIndex < items.length - 1) {
-            // At end, pressing right arrow - go to next section
             setCurrentIndex(currentIndex + 1);
             setHorizontalProgress(0);
+            setTransitionDuration(700);
           }
+          return;
         }
         
-        // For vertical arrows in horizontal scroll items, allow section navigation
-        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-          if (e.key === 'ArrowDown' && currentIndex < items.length - 1) {
-            setCurrentIndex(currentIndex + 1);
-            setHorizontalProgress(0);
-          } else if (e.key === 'ArrowUp' && currentIndex > 0) {
+        // ENHANCED: Up/Down arrows also work for horizontal items (desktop only)
+        if (isDesktop && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+          const maxScroll = getHorizontalScrollWidth(currentItem.id);
+          const step = 100;
+          let newProgress = horizontalProgress;
+
+          if (e.key === 'ArrowUp') {
+            newProgress = Math.max(0, horizontalProgress - step);
+          } else {
+            newProgress = Math.min(maxScroll, horizontalProgress + step);
+          }
+
+          setHorizontalProgress(newProgress);
+          setTransitionDuration(200);
+
+          // Snap to next/previous section at edges
+          const tolerance = 20;
+          if (e.key === 'ArrowUp' && newProgress <= tolerance && currentIndex > 0) {
             setCurrentIndex(currentIndex - 1);
             setHorizontalProgress(0);
+            setTransitionDuration(700);
+          } else if (e.key === 'ArrowDown' && newProgress >= maxScroll - tolerance && currentIndex < items.length - 1) {
+            setCurrentIndex(currentIndex + 1);
+            setHorizontalProgress(0);
+            setTransitionDuration(700);
           }
+          return;
         }
       } else {
-        // Simple item - handle up/down arrows for section navigation
+        // Simple item - handle up/down for section navigation
         if (e.key === 'ArrowDown' && currentIndex < items.length - 1) {
           setCurrentIndex(currentIndex + 1);
+          setTransitionDuration(700);
         } else if (e.key === 'ArrowUp' && currentIndex > 0) {
           setCurrentIndex(currentIndex - 1);
+          setTransitionDuration(700);
         }
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentIndex, horizontalProgress, items, shouldReleaseControl, isDesktop]);
 
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [currentIndex, horizontalProgress, items, shouldReleaseControl]);
-
+  // SIMPLIFIED WHEEL EVENT HANDLER FOR MAC
   useEffect(() => {
     const viewport = stickyViewportRef.current;
     const container = containerRef.current;
     if (!viewport || !container) return;
 
     const handleWheel = (e: WheelEvent) => {
-      // CRITICAL: Block wheel events if touch is active (mobile sometimes fires both)
+      // Block if touch is active
       if (isTouchActiveRef.current) {
         e.preventDefault();
         return;
       }
-      
-      // Check if the wheel event is happening on our container
+
+      // Check if event is on our container
       const target = e.target as HTMLElement;
       if (!viewport.contains(target)) {
-        // Event is outside our container, don't interfere
         return;
       }
-      
+
       const containerRect = container.getBoundingClientRect();
       
-      // Don't interfere if container is not in viewport at all
+      // Don't interfere if container is not in viewport
       if (containerRect.bottom < 0 || containerRect.top > window.innerHeight) {
         return;
       }
-      
+
       // Check if additional section is visible
       const nextSection = document.getElementById('additional-sections');
       if (nextSection) {
@@ -291,23 +313,19 @@ export default function VerticalSnapScroll({
           nextSectionRect.bottom > 0;
         
         if (isNextSectionVisible) {
-          // Additional section is in viewport - don't interfere at all
           return;
         }
       }
-      
+
       // If we've scrolled past the container, allow natural scrolling
       if (shouldReleaseControl && e.deltaY > 0) {
         return;
       }
 
       const now = Date.now();
-      const timeSinceLastScroll = now - scrollStartTimeRef.current;
-
-      if (timeSinceLastScroll > 200 && isActiveScrollRef.current) {
-        isActiveScrollRef.current = false;
-        accumulatedScrollRef.current = 0;
-      }
+      
+      // Don't auto-reset based on time - let the scroll timeout handle it
+      // The scroll timeout will reset after the user stops scrolling
 
       const shouldAllowNaturalScroll = () => {
         // At the last item, scrolling down
@@ -318,17 +336,15 @@ export default function VerticalSnapScroll({
           if (isHorizontalScrollItem) {
             const maxScroll = getHorizontalScrollWidth(currentItem.id);
             const tolerance = 10;
-            // Allow natural scroll when horizontal scroll is complete
             if (horizontalProgress >= maxScroll - tolerance) {
               return true;
             }
             return false;
           }
-          // Simple item at the end - allow natural scroll to exit
           return true;
         }
         
-        // At the first item, scrolling up - allow natural scroll
+        // At the first item, scrolling up
         if (currentIndex === 0 && e.deltaY < 0) {
           const currentItem = items[currentIndex];
           const isHorizontalScrollItem = currentItem.type === 'horizontal-scroll';
@@ -348,7 +364,6 @@ export default function VerticalSnapScroll({
         if (scrollTimeoutRef.current) {
           clearTimeout(scrollTimeoutRef.current);
         }
-        // Allow browser's natural scroll
         return;
       }
 
@@ -357,22 +372,29 @@ export default function VerticalSnapScroll({
       if (!isActiveScrollRef.current) {
         scrollStartTimeRef.current = now;
         isActiveScrollRef.current = true;
-        accumulatedScrollRef.current = 0;
+        // DON'T reset accumulated here - keep building it up
+        // accumulatedScrollRef.current = 0;
         setIsScrolling(true);
       }
 
       const currentItem = items[currentIndex];
       const isHorizontalScrollItem = currentItem.type === 'horizontal-scroll';
-      const scrollDelta = e.deltaY * scrollSpeed;
+      
+      // SIMPLER APPROACH: Just boost trackpad slightly
+      const isMacTrackpad = e.deltaMode === 0;
+      const boost = isMacTrackpad ? 1.8 : 1.0;
+      const scrollDelta = e.deltaY * scrollSpeed * boost;
       
       accumulatedScrollRef.current += scrollDelta;
 
-      // Log for debugging Mac trackpad
-      console.log('Wheel event:', { 
-        deltaY: e.deltaY.toFixed(2), 
-        deltaMode: e.deltaMode,
-        accumulated: accumulatedScrollRef.current.toFixed(2)
-      });
+      // Log for debugging
+      // console.log('Wheel:', { 
+      //   deltaY: e.deltaY.toFixed(2), 
+      //   mode: e.deltaMode,
+      //   boost: boost,
+      //   accumulated: accumulatedScrollRef.current.toFixed(2),
+      //   startTime: scrollStartTimeRef.current
+      // });
 
       if (isHorizontalScrollItem) {
         const maxScroll = getHorizontalScrollWidth(currentItem.id);
@@ -381,29 +403,32 @@ export default function VerticalSnapScroll({
           const newProgress = horizontalProgress + scrollDelta;
           setHorizontalProgress(Math.max(0, Math.min(maxScroll, newProgress)));
         } else {
-          const horizontalScrollDelta = e.deltaX * scrollSpeed;
+          const horizontalScrollDelta = e.deltaX * scrollSpeed * boost;
           const newProgress = horizontalProgress + horizontalScrollDelta;
           setHorizontalProgress(Math.max(0, Math.min(maxScroll, newProgress)));
         }
+        setTransitionDuration(0);
+      } else {
+        setTransitionDuration(0);
       }
 
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
       }
 
-      // Better Mac trackpad momentum detection
-      // Mac uses deltaMode 0 (pixels) and momentum has small consistent deltas
+      // Simple momentum detection
       const isLikelyMomentum = (
-        e.deltaMode === 0 && // Pixel mode (trackpad)
-        Math.abs(e.deltaY) < 10 && // Small delta
-        Math.abs(e.deltaY) > 0.1 && // Not zero
-        isActiveScrollRef.current // Already scrolling
+        e.deltaMode === 0 &&
+        Math.abs(e.deltaY) < 10 &&
+        Math.abs(e.deltaY) > 0.1 &&
+        isActiveScrollRef.current
       );
       
       isMomentumScrollRef.current = isLikelyMomentum;
       
-      const timeoutDelay = isLikelyMomentum ? 50 : 150; // Shorter for momentum
-      console.log('Timeout delay:', timeoutDelay, 'isMomentum:', isLikelyMomentum);
+      // Very fast timeouts for instant response
+      const timeoutDelay = isLikelyMomentum ? 40 : 80;
+      // console.log('Timeout:', timeoutDelay, 'momentum:', isLikelyMomentum);
 
       scrollTimeoutRef.current = setTimeout(() => {
         if (!isActiveScrollRef.current) return;
@@ -411,7 +436,6 @@ export default function VerticalSnapScroll({
         const scrollDuration = now - scrollStartTimeRef.current;
         const distance = Math.abs(accumulatedScrollRef.current);
         const direction = accumulatedScrollRef.current > 0 ? 1 : -1;
-        const velocity = distance / Math.max(scrollDuration, 1);
 
         const FAST_GESTURE_TIME = 150;
         const SLOW_SCROLL_TIME = 300;
@@ -420,33 +444,41 @@ export default function VerticalSnapScroll({
         const isSlowScroll = scrollDuration >= SLOW_SCROLL_TIME;
 
         let shouldSnap = false;
-        let adaptiveTransitionDuration = 700;
+        let adaptiveTransitionDuration = 800; // Default - slower and smoother
 
-        // Lower threshold for momentum scrolling
-        const threshold = isMomentumScrollRef.current ? minThreshold * 0.3 : minThreshold * 0.6;
+        // SIMPLER THRESHOLDS
+        const threshold = isMomentumScrollRef.current 
+          ? minThreshold * 0.3
+          : minThreshold * 0.6;
 
         if (isFastGesture) {
-          shouldSnap = distance >= 30;
-          adaptiveTransitionDuration = 900;
+          shouldSnap = distance >= 25;
+          adaptiveTransitionDuration = 700; // Smooth but not too slow
         } else if (isSlowScroll) {
           shouldSnap = distance >= threshold;
-          adaptiveTransitionDuration = 600;
+          adaptiveTransitionDuration = 900; // Very smooth for deliberate scrolls
         } else {
           if (distance >= threshold) {
             shouldSnap = true;
-            adaptiveTransitionDuration = 600;
+            adaptiveTransitionDuration = 800; // Nice medium speed
           }
         }
         
-        console.log('Snap check:', { shouldSnap, distance, threshold, duration: scrollDuration });
+        // console.log('Snap?', { 
+        //   shouldSnap, 
+        //   distance: distance.toFixed(2), 
+        //   threshold, 
+        //   duration: scrollDuration,
+        //   startTime: scrollStartTimeRef.current,
+        //   now: now
+        // });
 
         if (shouldSnap) {
           setTransitionDuration(adaptiveTransitionDuration);
 
           if (isHorizontalScrollItem) {
             const maxScroll = getHorizontalScrollWidth(currentItem.id);
-            const newProgress = horizontalProgress + accumulatedScrollRef.current;
-            const tolerance = 5;
+            const tolerance = 20;
 
             if (direction < 0) {
               if (horizontalProgress <= tolerance && currentIndex > 0) {
@@ -456,6 +488,7 @@ export default function VerticalSnapScroll({
               }
             } 
             else if (direction > 0) {
+              const newProgress = horizontalProgress + accumulatedScrollRef.current;
               if (newProgress >= maxScroll - tolerance) {
                 if (currentIndex < items.length - 1) {
                   setCurrentIndex(currentIndex + 1);
@@ -475,6 +508,7 @@ export default function VerticalSnapScroll({
           }
         }
 
+        // Only reset if we actually stopped scrolling
         isActiveScrollRef.current = false;
         accumulatedScrollRef.current = 0;
         scrollStartTimeRef.current = 0;
@@ -482,39 +516,49 @@ export default function VerticalSnapScroll({
       }, timeoutDelay);
     };
 
-    window.addEventListener('wheel', handleWheel, { passive: false });
+    viewport.addEventListener('wheel', handleWheel, { passive: false });
 
     return () => {
-      window.removeEventListener('wheel', handleWheel);
+      viewport.removeEventListener('wheel', handleWheel);
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
       }
     };
   }, [currentIndex, horizontalProgress, items, scrollSpeed, minThreshold, maxThreshold, calculatedScrollWidths, shouldReleaseControl]);
 
-  // Touch events - simplified to match wheel behavior
+  // Touch events
   useEffect(() => {
     const viewport = stickyViewportRef.current;
     if (!viewport) return;
 
-    const lastTouchYRef = { current: 0 };
     let touchStartTime = 0;
 
     const handleTouchStart = (e: TouchEvent) => {
-      // Check if we should release control
-      if (shouldReleaseControl) return;
-      
-      // Additional check: if container has scrolled past, don't interfere
-      const container = containerRef.current;
-      if (container) {
-        const containerRect = container.getBoundingClientRect();
-        // If container is above viewport (scrolled past), don't interfere
-        if (containerRect.bottom < window.innerHeight) {
-          return;
+      if (shouldReleaseControl) {
+        return;
+      }
+        // ENHANCED: Check if additional-sections is in viewport
+      const nextSection = document.getElementById('additional-sections');
+      if (nextSection) {
+        const nextSectionRect = nextSection.getBoundingClientRect();
+        const isNextSectionVisible = 
+          nextSectionRect.top < window.innerHeight && 
+          nextSectionRect.bottom > 0;
+        
+        if (isNextSectionVisible) {
+          return; // Don't interfere
         }
       }
+
+      const container = containerRef.current;
+      if (!container) return;
       
-      // Check if we're at the last item and at a position where we should allow exit
+      const containerRect = container.getBoundingClientRect();
+      if (containerRect.bottom < 0 || containerRect.top > window.innerHeight) {
+        return;
+      }
+
+      // ENHANCED: Smooth exit at last item
       const isLastItem = currentIndex === items.length - 1;
       if (isLastItem) {
         const currentItem = items[currentIndex];
@@ -522,18 +566,15 @@ export default function VerticalSnapScroll({
         
         if (isHorizontalScrollItem) {
           const maxScroll = getHorizontalScrollWidth(currentItem.id);
-          const tolerance = 100; // Increased tolerance
-          // If at end of horizontal scroll, don't interfere - allow native scroll
+          const tolerance = 100;
           if (horizontalProgressRef.current >= maxScroll - tolerance) {
             isTouchActiveRef.current = false;
             isActiveScrollRef.current = false;
             return;
           }
         }
-        // For simple items at the end, we still need to handle the touch to snap
-        // but we'll release quickly if scrolling down
       }
-      
+
       isTouchActiveRef.current = true;
       lastTouchYRef.current = e.touches[0].clientY;
       touchStartTime = Date.now();
@@ -545,22 +586,24 @@ export default function VerticalSnapScroll({
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      if (shouldReleaseControl) return;
-      
+      if (shouldReleaseControl) {
+        return;
+      }
+
+
       const touchY = e.touches[0].clientY;
       
-      // CRITICAL: Protect against corrupted touch values
       if (touchY === 0 || !touchY || lastTouchYRef.current === 0) {
         lastTouchYRef.current = touchY || lastTouchYRef.current;
         return;
       }
       
-      // deltaY positive = moved down/scrolling down, negative = moved up/scrolling up
       const deltaY = (lastTouchYRef.current - touchY);
       
-      // Check if we're at exit point BEFORE checking isActiveScrollRef
       const isLastItem = currentIndex === items.length - 1;
-      if (isLastItem && deltaY > 3) { // Very low threshold
+      const isFirstItem = currentIndex === 0;
+
+      if (isLastItem && deltaY > 3) {
         const currentItem = items[currentIndex];
         const isHorizontalScrollItem = currentItem.type === 'horizontal-scroll';
         
@@ -568,44 +611,48 @@ export default function VerticalSnapScroll({
           const maxScroll = getHorizontalScrollWidth(currentItem.id);
           const tolerance = 100;
           if (horizontalProgressRef.current >= maxScroll - tolerance) {
-            // Release completely
             isActiveScrollRef.current = false;
             isTouchActiveRef.current = false;
             setIsScrolling(false);
             lastTouchYRef.current = touchY;
-            return; // Don't preventDefault
+            return;
           }
         } else {
-          // Simple item - release immediately
+        // Simple item at end - release
+        isActiveScrollRef.current = false;
+        isTouchActiveRef.current = false;
+        setIsScrolling(false);
+        lastTouchYRef.current = touchY;
+        return;
+      }
+    }
+    
+    // ENHANCED: Also check first item for smooth scroll back
+    if (isFirstItem && deltaY < -3) {
+      const currentItem = items[currentIndex];
+      const isHorizontalScrollItem = currentItem.type === 'horizontal-scroll';
+      
+      if (isHorizontalScrollItem && horizontalProgressRef.current <= 10) { 
           isActiveScrollRef.current = false;
           isTouchActiveRef.current = false;
           setIsScrolling(false);
           lastTouchYRef.current = touchY;
-          return; // Don't preventDefault
+          return;
         }
       }
       
       if (!isActiveScrollRef.current) return;
       
-      // CRITICAL: Protect against huge jumps (likely corrupted data)
       if (Math.abs(deltaY) > 200) {
         lastTouchYRef.current = touchY;
         return;
       }
       
-      // Update last position for next move
       lastTouchYRef.current = touchY;
-
-      // Prevent default to stop page scroll
       e.preventDefault();
 
-      // Touch needs MUCH higher speed - 8x multiplier for smooth, responsive feel on mobile
       const touchMultiplier = 8;
-      
-      // Swipe UP (negative deltaY) should scroll LEFT (negative scroll)
-      // Swipe DOWN (positive deltaY) should scroll RIGHT (positive scroll)
       const scrollDelta = deltaY * scrollSpeed * touchMultiplier;
-      
       accumulatedScrollRef.current += scrollDelta;
 
       const currentItem = items[currentIndex];
@@ -618,12 +665,9 @@ export default function VerticalSnapScroll({
           const newProgress = prevProgress + scrollDelta;
           const clampedProgress = Math.max(0, Math.min(maxScroll, newProgress));
           horizontalProgressRef.current = clampedProgress;
-          
-          
           return clampedProgress;
         });
       } else {
-        // For vertical items, accumulate for snapping
         const scaledDeltaY = deltaY * scrollSpeed;
         accumulatedScrollRef.current += scaledDeltaY;
       }
@@ -642,38 +686,27 @@ export default function VerticalSnapScroll({
         const maxScroll = getHorizontalScrollWidth(currentItem.id);
         const currentProgress = horizontalProgressRef.current;
         
-        // Check if we're truly at the edges (within 20px)
         const atStart = currentProgress <= 20;
         const atEnd = currentProgress >= maxScroll - 20;
 
-        // Only snap to next/prev section if:
-        // 1. We're at the edge AND
-        // 2. We're trying to scroll further in that direction AND
-        // 3. There's a decent swipe distance (> 50px)
-        let shouldSnapToSection = false;
-
         if (distance >= 50) {
           if (direction < 0 && atStart && currentIndex > 0) {
-            // At start, swiping left (back) - go to previous section
-            shouldSnapToSection = true;
             setCurrentIndex(currentIndex - 1);
             setHorizontalProgress(0);
             horizontalProgressRef.current = 0;
           } else if (direction > 0 && atEnd && currentIndex < items.length - 1) {
-            // At end, swiping right (forward) - go to next section
-            shouldSnapToSection = true;
             setCurrentIndex(currentIndex + 1);
             setHorizontalProgress(0);
             horizontalProgressRef.current = 0;
           }
         }
 
-        setTransitionDuration(200); // Faster transition for mobile
+        setTransitionDuration(200);
       } else {
-        // Vertical snap items - normal behavior
         const FAST_GESTURE_TIME = 150;
         const isFastGesture = touchDuration < FAST_GESTURE_TIME;
         const shouldSnap = isFastGesture ? distance >= 30 : distance >= minThreshold * 0.6;
+        
         if (shouldSnap) {
           if (direction > 0 && currentIndex < items.length - 1) {
             setCurrentIndex(currentIndex + 1);
@@ -688,7 +721,6 @@ export default function VerticalSnapScroll({
       isActiveScrollRef.current = false;
       accumulatedScrollRef.current = 0;
       
-      // Keep touch active for a bit longer to block any trailing wheel events
       setTimeout(() => {
         isTouchActiveRef.current = false;
       }, 300);
