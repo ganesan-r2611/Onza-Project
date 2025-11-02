@@ -40,9 +40,6 @@ export default function Footer({ data }: { data: FooterData }) {
 
           {/* Home Links */}
           <div className="md:col-span-1 lg:ml-28 pl-0 md:pl-4">
-            <h4 className="text-[14px] font-medium text-[#E6E0DA] mb-4 md:hidden">
-              HOME
-            </h4>
             <ul className="space-y-3">
               {data.links.general.map((link, index) => (
                 <li key={index}>

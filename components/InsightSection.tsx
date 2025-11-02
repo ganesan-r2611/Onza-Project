@@ -25,7 +25,7 @@ function Card({ post }: { post: BlogPost }) {
   return (
     <article className="relative rounded-[18px] overflow-hidden card-border">
       <div
-        className={`relative w-[327.63px] h-[412.92px] md:w-[437.33px] md:h-[459px] lg:w-[437.33px] lg:h-[459px]`}
+        className={`relative w-[410px] h-[412.92px]  md:w-[437.33px] md:h-[459px] lg:w-[437.33px] lg:h-[459px]`}
       >
         <Image src={img} alt={post.title} fill className="object-cover" />
         <div className="card-overlay" />
