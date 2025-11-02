@@ -22,7 +22,7 @@ export default function Accordion({ items }: { items: AccordionItem[] }) {
         return (
           <div key={faq.id}>
             <div
-              className={`bg-[#0a0a0a] w-[328px] md:w-auto lg:w-[628px] rounded-[24px] p-8 md:p-8 lg:p-8 cursor-pointer transition-all duration-500 ease-in-out ${
+              className={`bg-[#0a0a0a] w-auto md:w-auto lg:w-[628px] rounded-[24px] p-8 md:p-8 lg:p-8 cursor-pointer transition-all duration-500 ease-in-out ${
                 expanded ? "shadow-lg" : ""
               }`}
               style={{

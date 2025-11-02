@@ -6,7 +6,10 @@ import Image from "next/image";
 import { imageMap } from "@/libs/imageMap";
 
 type NavItem = { label: string; href: string; children?: NavItem[] };
-export interface NavbarData { nav: NavItem[]; cta: { href: string; label: string } };
+export interface NavbarData {
+  nav: NavItem[];
+  cta: { href: string; label: string };
+}
 
 export default function NavBar({ data }: { data: NavbarData }) {
   const [darkMode, setDarkMode] = useState(false);
@@ -72,7 +75,12 @@ export default function NavBar({ data }: { data: NavbarData }) {
         className={`max-w-[1440px] mx-auto flex items-center justify-between ${shell} ${shellTheme}`}
       >
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
+        <Link
+          // href="/"
+          href={""}
+          onClick={(e) => e.preventDefault()}
+          className="flex items-center gap-2"
+        >
           <Image
             src={imageMap.logo}
             alt="ONZA Logo"
@@ -85,10 +93,7 @@ export default function NavBar({ data }: { data: NavbarData }) {
         {/* Desktop Nav */}
         <ul className="hidden md:flex items-center gap-10">
           {data.nav.map((item) => (
-            <li
-              key={item.label}
-              className="relative dropdown-container"
-            >
+            <li key={item.label} className="relative dropdown-container">
               {item.children ? (
                 <>
                   <button
@@ -125,7 +130,9 @@ export default function NavBar({ data }: { data: NavbarData }) {
                       {item.children.map((child) => (
                         <Link
                           key={child.label}
-                          href={child.href}
+                          // href={child.href}
+                          href={""}
+                          onClick={(e) => e.preventDefault()}
                           className="block px-3 py-2 rounded-md hover:bg-white/10"
                         >
                           {child.label}
@@ -135,7 +142,12 @@ export default function NavBar({ data }: { data: NavbarData }) {
                   )}
                 </>
               ) : (
-                <Link href={item.href} className="hover:opacity-80 transition">
+                <Link
+                  // href={item.href}
+                  href={""}
+                  onClick={(e) => e.preventDefault()}
+                  className="hover:opacity-80 transition"
+                >
                   {item.label}
                 </Link>
               )}
@@ -145,7 +157,12 @@ export default function NavBar({ data }: { data: NavbarData }) {
 
         {/* Desktop CTA */}
         <div className="hidden md:block">
-          <Link href={data.cta.href} className={`${pillBtn} ${pillTheme}`}>
+          <Link
+            // href={data.cta.href}
+            href={""}
+            onClick={(e) => e.preventDefault()}
+            className={`${pillBtn} ${pillTheme}`}
+          >
             {data.cta.label}
           </Link>
         </div>
@@ -234,7 +251,8 @@ export default function NavBar({ data }: { data: NavbarData }) {
                         {item.children.map((child) => (
                           <li key={child.label}>
                             <Link
-                              href={child.href}
+                              // href={child.href}
+                              href={""}
                               className="block py-2 text-sm opacity-90"
                               onClick={() => setOpen(false)}
                             >
@@ -246,7 +264,12 @@ export default function NavBar({ data }: { data: NavbarData }) {
                     </div>
                   </>
                 ) : (
-                  <Link href={item.href} className="block py-2">
+                  <Link
+                    // href={item.href}
+                    href={""}
+                    onClick={(e) => e.preventDefault()}
+                    className="block py-2"
+                  >
                     {item.label}
                   </Link>
                 )}
@@ -256,7 +279,9 @@ export default function NavBar({ data }: { data: NavbarData }) {
             {/* CTA */}
             <li className="pt-2">
               <Link
-                href={data.cta.href}
+                // href={data.cta.href}
+                href={""}
+                onClick={(e) => e.preventDefault()}
                 className={`w-full inline-flex justify-center ${pillBtn} ${pillTheme}`}
               >
                 {data.cta.label}
