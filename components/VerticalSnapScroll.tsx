@@ -52,6 +52,7 @@ export default function VerticalSnapScroll({
   const [shouldReleaseControl, setShouldReleaseControl] = useState(false);
   const isMomentumScrollRef = useRef(false);
   const [isDesktop, setIsDesktop] = useState(true);
+  const hasTriggeredScrollRef = useRef(false);
 
   const { min: minThreshold, max: maxThreshold } = snapThreshold;
   // Detect device type (desktop vs mobile/tablet)
@@ -100,6 +101,22 @@ export default function VerticalSnapScroll({
       } else {
         const nextSectionStartsEntering = containerRect.bottom < windowHeight;
         setShouldReleaseControl(nextSectionStartsEntering);
+        
+        // When natural scroll is enabled and we're at the end, auto-scroll to additional sections
+        if (nextSectionStartsEntering && currentIndex === items.length - 1) {
+          const currentItem = items[currentIndex];
+          const isHorizontalScrollItem = currentItem.type === 'horizontal-scroll';
+          
+          if (isHorizontalScrollItem) {
+            const maxScroll = getHorizontalScrollWidth(currentItem.id);
+            const tolerance = 10;
+            if (horizontalProgressRef.current >= maxScroll - tolerance) {
+              setTimeout(() => scrollToAdditionalSections(), 100);
+            }
+          } else {
+            setTimeout(() => scrollToAdditionalSections(), 100);
+          }
+        }
       }
     };
 
@@ -109,7 +126,7 @@ export default function VerticalSnapScroll({
     return () => {
       window.removeEventListener('scroll', checkScrollPosition);
     };
-  }, []);
+  }, [currentIndex, items]);
 
   // Calculate scroll widths when we switch to a horizontal scroll item
   useEffect(() => {
@@ -175,6 +192,22 @@ export default function VerticalSnapScroll({
     return 500;
   };
 
+  // Helper to scroll to additional sections
+  const scrollToAdditionalSections = () => {
+    if (hasTriggeredScrollRef.current) return;
+    hasTriggeredScrollRef.current = true;
+    
+    const additionalSection = document.getElementById('additional-sections');
+    if (additionalSection) {
+      additionalSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      
+      // Reset after transition
+      setTimeout(() => {
+        hasTriggeredScrollRef.current = false;
+      }, 1500);
+    }
+  };
+
   // Keyboard event handler
   // ENHANCED: Keyboard handler with horizontal scroll support for desktop
   useEffect(() => {
@@ -230,6 +263,9 @@ export default function VerticalSnapScroll({
             setCurrentIndex(currentIndex + 1);
             setHorizontalProgress(0);
             setTransitionDuration(700);
+          } else if (e.key === 'ArrowRight' && newProgress >= maxScroll - tolerance && currentIndex === items.length - 1) {
+            // At last item, horizontal scroll complete, arrow right pressed - auto-scroll
+            setTimeout(() => scrollToAdditionalSections(), 100);
           }
           return;
         }
@@ -259,6 +295,9 @@ export default function VerticalSnapScroll({
             setCurrentIndex(currentIndex + 1);
             setHorizontalProgress(0);
             setTransitionDuration(700);
+          } else if (e.key === 'ArrowDown' && newProgress >= maxScroll - tolerance && currentIndex === items.length - 1) {
+            // At last item, horizontal scroll complete, arrow down pressed - auto-scroll
+            setTimeout(() => scrollToAdditionalSections(), 100);
           }
           return;
         }
@@ -267,6 +306,9 @@ export default function VerticalSnapScroll({
         if (e.key === 'ArrowDown' && currentIndex < items.length - 1) {
           setCurrentIndex(currentIndex + 1);
           setTransitionDuration(700);
+        } else if (e.key === 'ArrowDown' && currentIndex === items.length - 1) {
+          // At last item and arrow down pressed - auto-scroll
+          setTimeout(() => scrollToAdditionalSections(), 100);
         } else if (e.key === 'ArrowUp' && currentIndex > 0) {
           setCurrentIndex(currentIndex - 1);
           setTransitionDuration(700);
@@ -319,6 +361,10 @@ export default function VerticalSnapScroll({
 
       // If we've scrolled past the container, allow natural scrolling
       if (shouldReleaseControl && e.deltaY > 0) {
+        // Trigger auto-scroll to additional sections when natural scroll begins
+        if (currentIndex === items.length - 1) {
+          setTimeout(() => scrollToAdditionalSections(), 50);
+        }
         return;
       }
 
@@ -337,10 +383,14 @@ export default function VerticalSnapScroll({
             const maxScroll = getHorizontalScrollWidth(currentItem.id);
             const tolerance = 10;
             if (horizontalProgress >= maxScroll - tolerance) {
+              // Trigger auto-scroll to additional sections
+              setTimeout(() => scrollToAdditionalSections(), 100);
               return true;
             }
             return false;
           }
+          // For simple items at end, trigger auto-scroll
+          setTimeout(() => scrollToAdditionalSections(), 100);
           return true;
         }
         
@@ -587,6 +637,10 @@ export default function VerticalSnapScroll({
 
     const handleTouchMove = (e: TouchEvent) => {
       if (shouldReleaseControl) {
+        // When natural scroll is enabled at the end, trigger auto-scroll
+        if (currentIndex === items.length - 1) {
+          setTimeout(() => scrollToAdditionalSections(), 100);
+        }
         return;
       }
 
@@ -615,14 +669,17 @@ export default function VerticalSnapScroll({
             isTouchActiveRef.current = false;
             setIsScrolling(false);
             lastTouchYRef.current = touchY;
+            // Trigger auto-scroll when swiping down at the end
+            setTimeout(() => scrollToAdditionalSections(), 100);
             return;
           }
         } else {
-        // Simple item at end - release
+        // Simple item at end - release and auto-scroll
         isActiveScrollRef.current = false;
         isTouchActiveRef.current = false;
         setIsScrolling(false);
         lastTouchYRef.current = touchY;
+        setTimeout(() => scrollToAdditionalSections(), 100);
         return;
       }
     }
@@ -698,6 +755,9 @@ export default function VerticalSnapScroll({
             setCurrentIndex(currentIndex + 1);
             setHorizontalProgress(0);
             horizontalProgressRef.current = 0;
+          } else if (direction > 0 && atEnd && currentIndex === items.length - 1) {
+            // At last item, horizontal complete, gesture forward - auto-scroll
+            setTimeout(() => scrollToAdditionalSections(), 100);
           }
         }
 
@@ -712,6 +772,9 @@ export default function VerticalSnapScroll({
             setCurrentIndex(currentIndex + 1);
           } else if (direction < 0 && currentIndex > 0) {
             setCurrentIndex(currentIndex - 1);
+          } else if (direction > 0 && currentIndex === items.length - 1) {
+            // At last simple item, gesture forward - auto-scroll
+            setTimeout(() => scrollToAdditionalSections(), 100);
           }
         }
         
