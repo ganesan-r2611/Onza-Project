@@ -11,6 +11,7 @@ import ContactSection, { ContactData } from "./ContactSection";
 import FAQSection, { FAQData } from "./FAQSection";
 import InsightsSection, { BlogsData } from "./InsightSection";
 import NavBar,{NavbarData} from "./NavBar";
+import ServiceCarouselIntro from "./ServiceCarouselIntro";
 
 interface HomeContentProps {
   staticData: {
@@ -76,6 +77,7 @@ export default function HomeContent({ staticData }: HomeContentProps) {
             id={isMobile ? 'additional-sections' : 'not-additional-sections'} 
             className={`${!isMobile ? 'hidden' : ''}`}
           >
+            <ServiceCarouselIntro data={heroSectionData} />
             <ServicesCarouselSection data={heroSectionData} showIntro={false} />
           </section>
           

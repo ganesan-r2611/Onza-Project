@@ -90,12 +90,12 @@ export default function SnapScrollContent({ data }: SnapScrollContentProps) {
           </div>
         </section>
       ),
-    },
-    {
-      id: "services-intro",
-      type: "simple",
-      content: <ServiceCarouselIntro data={data} />,
-    },
+    }
+    // {
+    //   id: "services-intro",
+    //   type: "simple",
+    //   content: <ServiceCarouselIntro data={data} />,
+    // },
     // {
     //   id: 'services-carousel',
     //   type: 'horizontal-scroll',
