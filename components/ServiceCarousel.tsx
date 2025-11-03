@@ -38,7 +38,7 @@ export default function ServicesCarouselSection({
         <div className="w-full flex items-center">
           {/* Desktop: Show intro text on left */}
           {showIntro && (
-            <div className="hidden lg:block lg:w-5/12 flex-shrink-0 pl-4 sm:pl-6 lg:pl-12">
+            <div className="hidden lg:block lg:w-5/12 flex-shrink-0 pl-4 sm:pl-6 md:pl-3 lg:pl-12">
               <p className="text-[32px] lg:text-[38px] xl:text-[38px] leading-[1.2] font-light mb-8">
                 {eyebrow}
               </p>

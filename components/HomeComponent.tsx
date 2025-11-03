@@ -75,7 +75,7 @@ export default function HomeContent({ staticData }: HomeContentProps) {
           <section 
             data-theme="dark" 
             id={isMobile ? 'additional-sections' : 'not-additional-sections'} 
-            className={`${!isMobile ? 'hidden' : ''}`}
+            className={`${!isMobile ? 'hidden' : ''} bg-[#E5D4C3]`}
           >
             <ServiceCarouselIntro data={heroSectionData} />
             <ServicesCarouselSection data={heroSectionData} showIntro={false} />
