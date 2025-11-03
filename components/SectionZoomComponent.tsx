@@ -33,7 +33,12 @@ function debounce<T extends (...args: unknown[]) => void>(fn: T, ms: number) {
 
 /** Viewport classifier */
 function useViewportCategory() {
-  const [vp, setVp] = useState<{ w: number; h: number; ar: number; mounted: boolean }>({
+  const [vp, setVp] = useState<{
+    w: number;
+    h: number;
+    ar: number;
+    mounted: boolean;
+  }>({
     w: 0,
     h: 0,
     ar: 1,
@@ -60,46 +65,212 @@ function useViewportCategory() {
     if (!vp.mounted) return "server";
     const { w, h, ar } = vp;
 
-    const isMobile = w <= 768;
-    const isTablet = w > 768 && w <= 1180;
-    const isDesktop = w > 1180 && ar <= 2.0;
-    const isUltraWide = w > 1440 && ar > 2.0;
+    const isMobileSmall = w <= 375; // Small phones
+    const isMobile = w <= 428; // Modern phones
+    const isMobileLarge = w <= 480; // Large phones
+    const isTabletSmall = w <= 600; // Small tablets
+    const isTablet = w <= 768; // Standard tablets
+    const isTabletLarge = w <= 1024; // Large tablets
+    const isLaptop = w <= 1366; // Laptops
+    const isLaptopLarge = w <= 1440; // Large laptops
+    const isDesktop = w <= 1920; // Full HD
+    const isDesktopLarge = w <= 2560; // 2K screens
+    const isUltraWide = w > 2560;
 
-    const isShort = h < 720;
     const isVeryShort = h < 600;
+    const isShort = h < 720;
+    const isTall = h > 1200;
 
+    // Mobile categories
+    if (isMobileSmall) return "mobile-small";
     if (isMobile) return "mobile";
+    if (isMobileLarge) return "mobile-large";
+
+    // Tablet categories
+    if (isTabletSmall) return isShort ? "tablet-small-short" : "tablet-small";
     if (isTablet) return isShort ? "tablet-short" : "tablet";
-    if (isUltraWide) return isVeryShort ? "ultrawide-very-short" : "ultrawide";
-    return isShort ? "desktop-short" : isDesktop ? "desktop" : "desktop";
+    if (isTabletLarge) return isShort ? "tablet-large-short" : "tablet-large";
+
+    // Laptop categories
+    if (isLaptop)
+      return isShort ? "laptop-short" : isTall ? "laptop-tall" : "laptop";
+    if (isLaptopLarge)
+      return isShort
+        ? "laptop-large-short"
+        : isTall
+        ? "laptop-large-tall"
+        : "laptop-large";
+
+    // Desktop categories
+    if (isDesktop)
+      return isShort ? "desktop-short" : isTall ? "desktop-tall" : "desktop";
+    if (isDesktopLarge)
+      return isShort
+        ? "desktop-large-short"
+        : isTall
+        ? "desktop-large-tall"
+        : "desktop-large";
+
+    // Ultrawide categories
+    if (isUltraWide) {
+      if (isVeryShort) return "ultrawide-very-short";
+      if (isShort) return "ultrawide-short";
+      if (isTall) return "ultrawide-tall";
+      return "ultrawide";
+    }
+
+    return "desktop"; // fallback
   }, [vp]);
 
-  return { category, mounted: vp.mounted, width: vp.w, height: vp.h, aspect: vp.ar };
+  return {
+    category,
+    mounted: vp.mounted,
+    width: vp.w,
+    height: vp.h,
+    aspect: vp.ar,
+  };
 }
 
 /** Choose per-section scale arrays based on viewport category */
 function useScaleStages(category: string, totalItems: number) {
   // Adjust scales based on number of snap items
   const base = {
-    mobile:       [1.1, 3.5, 7, 50],
-    tablet:       [1.0, 2.8, 5.8, 8.2],
-    desktop:      [1.0, 3.5, 6.0, 9.0],
-    desktopShort: [0.95, 3.2, 5.4, 8.2],
-    ultrawide:    [1.0, 3.2, 5.4, 8.4],
-    ultraVery:    [0.92, 3.0, 5.0, 7.8],
+    // Mobile devices
+    "mobile-small": [1.0, 1.1, 8.2, 11],
+    mobile: [1.1, 1.3, 7.3, 10],
+    "mobile-large": [1.1, 1.4, 5.7, 9],
+
+    // Small tablets
+    "tablet-small": [0, 3.2, 6.2],
+    "tablet-small-short": [0.9, 4.2, 6.4],
+
+    // Standard tablets
+    tablet: [0.9, 2.5, 5.8],
+    "tablet-short": [0.92, 2.5, 6.0],
+
+    // Large tablets
+    "tablet-large": [0.8, 5, 6],
+    "tablet-large-short": [0.9, 5.2, 6.2],
+
+    // Laptops
+    laptop: [1.0, 2.5, 6.0, 9.0],
+    "laptop-short": [1.0, 2.5, 4.0, 9.0],
+    "laptop-tall": [1.0, 2.9, 4.4, 9.0],
+
+    "laptop-large": [1.0, 3, 4.6, 9.0],
+    "laptop-large-short": [1.0, 3.1, 4.9, 9.0],
+    "laptop-large-tall": [1.0, 3.4, 5.3, 9.0],
+
+    // Desktops
+    desktop: [1, 3.5, 4.0, 16],
+    "desktop-short": [1, 3.5, 4.2, 17],
+    "desktop-tall": [1, 3.5, 3.8, 15],
+
+    "desktop-large": [1, 3.5, 3.5, 14],
+    "desktop-large-short": [0.67, 3.5, 3.7, 15],
+    "desktop-large-tall": [0.63, 3.5, 3.3, 13],
+
+    // Ultrawide
+    ultrawide: [1.0, 3.2, 5.4, 8.4],
+    "ultrawide-short": [1.0, 3.2, 5.4, 8.4],
+    "ultrawide-tall": [1.0, 3.2, 5.4, 8.4],
+    "ultrawide-very-short": [1.0, 3.2, 5.4, 8.4],
   };
 
   let stages: number[];
-  
+
   switch (category) {
-    case "mobile": stages = base.mobile; break;
-    case "tablet": 
-    case "tablet-short": stages = base.tablet; break;
-    case "desktop": stages = base.desktop; break;
-    case "desktop-short": stages = base.desktopShort; break;
-    case "ultrawide": stages = base.ultrawide; break;
-    case "ultrawide-very-short": stages = base.ultraVery; break;
-    default: stages = base.desktop;
+    // Mobile categories
+    case "mobile-small":
+      stages = base["mobile-small"];
+      break;
+    case "mobile":
+      stages = base.mobile;
+      break;
+    case "mobile-large":
+      stages = base["mobile-large"];
+      break;
+
+    // Small tablet categories
+    case "tablet-small":
+      stages = base["tablet-small"];
+      break;
+    case "tablet-small-short":
+      stages = base["tablet-small-short"];
+      break;
+
+    // Standard tablet categories
+    case "tablet":
+      stages = base.tablet;
+      break;
+    case "tablet-short":
+      stages = base["tablet-short"];
+      break;
+
+    // Large tablet categories
+    case "tablet-large":
+      stages = base["tablet-large"];
+      break;
+    case "tablet-large-short":
+      stages = base["tablet-large-short"];
+      break;
+
+    // Laptop categories
+    case "laptop":
+      stages = base.laptop;
+      break;
+    case "laptop-short":
+      stages = base["laptop-short"];
+      break;
+    case "laptop-tall":
+      stages = base["laptop-tall"];
+      break;
+    case "laptop-large":
+      stages = base["laptop-large"];
+      break;
+    case "laptop-large-short":
+      stages = base["laptop-large-short"];
+      break;
+    case "laptop-large-tall":
+      stages = base["laptop-large-tall"];
+      break;
+
+    // Desktop categories
+    case "desktop":
+      stages = base.desktop;
+      break;
+    case "desktop-short":
+      stages = base["desktop-short"];
+      break;
+    case "desktop-tall":
+      stages = base["desktop-tall"];
+      break;
+    case "desktop-large":
+      stages = base["desktop-large"];
+      break;
+    case "desktop-large-short":
+      stages = base["desktop-large-short"];
+      break;
+    case "desktop-large-tall":
+      stages = base["desktop-large-tall"];
+      break;
+
+    // Ultrawide categories
+    case "ultrawide":
+      stages = base.ultrawide;
+      break;
+    case "ultrawide-short":
+      stages = base["ultrawide-short"];
+      break;
+    case "ultrawide-tall":
+      stages = base["ultrawide-tall"];
+      break;
+    case "ultrawide-very-short":
+      stages = base["ultrawide-very-short"];
+      break;
+
+    default:
+      stages = base.desktop;
   }
 
   // If we have more or fewer items, adjust
@@ -120,7 +291,10 @@ function useScaleStages(category: string, totalItems: number) {
   return stages;
 }
 
-export default function SectionZoomComponent({ currentSnapIndex = 0, totalSnapItems = 4 }: Props) {
+export default function SectionZoomComponent({
+  currentSnapIndex = 0,
+  totalSnapItems = 4,
+}: Props) {
   // 🔹 Lens flare animation
   const [flarePositions, setFlarePositions] = useState<FlarePosition[]>([
     { x: 20, y: 30, time: 0 },
@@ -130,7 +304,7 @@ export default function SectionZoomComponent({ currentSnapIndex = 0, totalSnapIt
 
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 }); // For mouse hover parallax
 
-// Track mouse position for hover parallax effect (first snap only)
+  // Track mouse position for hover parallax effect (first snap only)
   useEffect(() => {
     const updateMousePosition = (e: MouseEvent) => {
       // Only track if on first snap section
@@ -139,26 +313,26 @@ export default function SectionZoomComponent({ currentSnapIndex = 0, totalSnapIt
       // Use the entire viewport for tracking
       const x = e.clientX / window.innerWidth;
       const y = e.clientY / window.innerHeight;
-      
+
       // Clamp values between 0 and 1
       const clampedX = Math.max(0, Math.min(1, x));
       const clampedY = Math.max(0, Math.min(1, y));
-      
+
       setMousePosition({
         x: clampedX,
-        y: clampedY
+        y: clampedY,
       });
-
     };
 
     if (currentSnapIndex === 0) {
-      window.addEventListener('mousemove', updateMousePosition, { passive: true });
+      window.addEventListener("mousemove", updateMousePosition, {
+        passive: true,
+      });
     }
 
     return () => {
-      window.removeEventListener('mousemove', updateMousePosition);
+      window.removeEventListener("mousemove", updateMousePosition);
     };
-
   }, [currentSnapIndex]);
 
   useEffect(() => {
@@ -182,7 +356,7 @@ export default function SectionZoomComponent({ currentSnapIndex = 0, totalSnapIt
 
   const { category, mounted, height } = useViewportCategory();
   const stages = useScaleStages(category, totalSnapItems);
-  
+
   // Use the snap index directly from parent
   const effectiveSection = currentSnapIndex;
 
@@ -191,8 +365,12 @@ export default function SectionZoomComponent({ currentSnapIndex = 0, totalSnapIt
 
   const parallaxX = currentSnapIndex === 0 ? (mousePosition.x - 0.5) * 30 : 0; // Move left/right up to 15px
   const parallaxY = currentSnapIndex === 0 ? (mousePosition.y - 0.5) * 30 : 0; // Move up/down up to 15px
-  const parallaxScale = currentSnapIndex === 0 ? 1 + (Math.abs(mousePosition.x - 0.5) + Math.abs(mousePosition.y - 0.5)) * 0.05 : 1; // Slight scale
-
+  const parallaxScale =
+    currentSnapIndex === 0
+      ? 1 +
+        (Math.abs(mousePosition.x - 0.5) + Math.abs(mousePosition.y - 0.5)) *
+          0.05
+      : 1; // Slight scale
 
   return (
     <div className="relative w-full h-full">
@@ -237,15 +415,19 @@ export default function SectionZoomComponent({ currentSnapIndex = 0, totalSnapIt
           className="transition-all duration-[1200ms] ease-[cubic-bezier(0.45,0,0.25,1)] object-contain"
           style={{
             transform: (() => {
-              const transformValue = currentSnapIndex === 0
-                ? `scale(${mounted ? imageScale : 1}) translate3d(${parallaxX}px, ${parallaxY}px, 0)`
-                : `scale(${mounted ? imageScale : 1})`;
+              const transformValue =
+                currentSnapIndex === 0
+                  ? `scale(${
+                      mounted ? imageScale : 1
+                    }) translate3d(${parallaxX}px, ${parallaxY}px, 0)`
+                  : `scale(${mounted ? imageScale : 1})`;
               return transformValue;
             })(),
-            transition: currentSnapIndex === 0 
-              ? 'transform 0.8s ease-out' 
-              : 'transform 1200ms cubic-bezier(0.45,0,0.25,1)',
-            willChange: currentSnapIndex === 0 ? 'transform' : 'auto',
+            transition:
+              currentSnapIndex === 0
+                ? "transform 0.8s ease-out"
+                : "transform 1200ms cubic-bezier(0.45,0,0.25,1)",
+            willChange: currentSnapIndex === 0 ? "transform" : "auto",
             width: "min(65vw, 560px)",
             height: "auto",
             filter: "drop-shadow(0 12px 30px rgba(0,0,0,0.35))",

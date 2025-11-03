@@ -14,7 +14,7 @@ export default function ServiceCarouselIntro({ data }: Props) {
 
   return (
      <div className="w-full flex items-center backdrop-blur-sm text-[#1a1a1a] bg-[#E5D4C3]">
-              <div className="w-full h-full flex items-center justify-center px-4 pt-20">
+              <div className="w-full h-full flex px-4 pt-20">
                 <div className="max-w-2xl text-left">
                   <p className="text-[28px] leading-[1.2] font-light mb-8">
                     {eyebrow}
