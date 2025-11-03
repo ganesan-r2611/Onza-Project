@@ -137,7 +137,7 @@ function useScaleStages(category: string, totalItems: number) {
   const base = {
     // Mobile devices
     "mobile-small": [1.0, 1.1, 8.2, 11],
-    mobile: [1.1, 1.3, 7.3, 10],
+    "mobile": [1.1, 1.3, 7.3, 10],
     "mobile-large": [1.1, 1.4, 5.7, 9],
 
     // Small tablets
@@ -145,15 +145,15 @@ function useScaleStages(category: string, totalItems: number) {
     "tablet-small-short": [0.9, 4.2, 6.4],
 
     // Standard tablets
-    tablet: [0.9, 2.5, 5.8],
+    "tablet": [0.9, 2.5, 5.8],
     "tablet-short": [0.92, 2.5, 6.0],
 
     // Large tablets
-    "tablet-large": [0.8, 5, 6],
-    "tablet-large-short": [0.9, 5.2, 6.2],
+    "tablet-large": [0.8,2.5, 6],
+    "tablet-large-short": [0.9, 3.2, 6.2],
 
     // Laptops
-    laptop: [1.0, 2.5, 6.0, 9.0],
+    "laptop": [1.0, 2.5, 6.0, 9.0],
     "laptop-short": [1.0, 2.5, 4.0, 9.0],
     "laptop-tall": [1.0, 2.9, 4.4, 9.0],
 
@@ -162,7 +162,7 @@ function useScaleStages(category: string, totalItems: number) {
     "laptop-large-tall": [1.0, 3.4, 5.3, 9.0],
 
     // Desktops
-    desktop: [1, 3.5, 4.0, 16],
+    "desktop": [1, 3.5, 4.0, 16],
     "desktop-short": [1, 3.5, 4.2, 17],
     "desktop-tall": [1, 3.5, 3.8, 15],
 
@@ -171,7 +171,7 @@ function useScaleStages(category: string, totalItems: number) {
     "desktop-large-tall": [0.63, 3.5, 3.3, 13],
 
     // Ultrawide
-    ultrawide: [1.0, 3.2, 5.4, 8.4],
+    "ultrawide": [1.0, 3.2, 5.4, 8.4],
     "ultrawide-short": [1.0, 3.2, 5.4, 8.4],
     "ultrawide-tall": [1.0, 3.2, 5.4, 8.4],
     "ultrawide-very-short": [1.0, 3.2, 5.4, 8.4],
