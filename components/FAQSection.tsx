@@ -24,14 +24,14 @@ export default function FAQSection({ data }: { data: FAQData }) {
       className="bg-[#121819] pt-10 md:pt-[78px] pb-[78px]"
       data-theme="light"
     >
-      <div className="mx-auto px-3 2xl:px-3-[0.833vw] sm:px-9 lg:px-9">
+      <div className="mx-auto px-3 sm:px-9 lg:px-10 2xl:px-[2.78vw]">
         <div className="mx-auto">
           {/* Header */}
-          <div className="flex flex-col gap-4 2xl:gap-4-[1.111vw] mb-10">
+          <div className="flex flex-col gap-4 2xl:gap-[1.111vw] mb-10">
             <h2 className="text-[18px] md:text-[20px] font-regular text-[#ffdc81]">
               {data.title}
             </h2>
-            <p className="text-[24px] 2xl:24-[63.403vw] md:text-[38px] 2xl:38-[64.444vw] font-light text-[#bbbbbb] w-full lg:w-[50%]">
+            <p className="text-[24px] md:text-[38px] 2xl:text-[2.64vw] font-light 2xl:font-regular leading-none text-[#bbbbbb] w-full lg:w-[50%]">
               {data.subtitle}
             </p>
           </div>

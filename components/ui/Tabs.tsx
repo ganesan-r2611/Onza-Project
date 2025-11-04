@@ -59,23 +59,70 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
     return () => window.removeEventListener("resize", onResize);
   }, [centerActiveInContainer]);
 
-  /** Swipe gesture for mobile (content area) */
+  /** Swipe gesture for mobile (content area) - PREVENT VERTICAL SCROLL */
   const startX = useRef(0);
+  const startY = useRef(0);
+  const isSwiping = useRef(false);
+
   const onStart = (e: React.TouchEvent) => {
     startX.current = e.touches[0].clientX;
+    startY.current = e.touches[0].clientY;
+    isSwiping.current = false;
   };
+
+  const onMove = (e: React.TouchEvent) => {
+    if (!isSwiping.current) {
+      const deltaX = Math.abs(e.touches[0].clientX - startX.current);
+      const deltaY = Math.abs(e.touches[0].clientY - startY.current);
+
+      // If horizontal movement is greater than vertical, it's a swipe
+      if (deltaX > deltaY && deltaX > 10) {
+        isSwiping.current = true;
+        e.preventDefault(); // Prevent vertical scroll
+      }
+    }
+  };
+
   const onEnd = (e: React.TouchEvent) => {
+    if (!isSwiping.current) return;
+
     const delta = startX.current - e.changedTouches[0].clientX;
     const idx = tabs.findIndex((t) => t.id === activeId);
-    if (delta > 50 && idx < tabs.length - 1) setActiveId(tabs[idx + 1].id);
-    if (delta < -50 && idx > 0) setActiveId(tabs[idx - 1].id);
+
+    if (delta > 50 && idx < tabs.length - 1) {
+      setActiveId(tabs[idx + 1].id);
+      e.preventDefault(); // Prevent any default behavior
+    }
+    if (delta < -50 && idx > 0) {
+      setActiveId(tabs[idx - 1].id);
+      e.preventDefault(); // Prevent any default behavior
+    }
+
+    isSwiping.current = false;
   };
+
+  // Add CSS to prevent scroll on mobile
+  useEffect(() => {
+    const preventScroll = (e: TouchEvent) => {
+      // Only prevent scroll if we're actively swiping horizontally
+      if (isSwiping.current) {
+        e.preventDefault();
+      }
+    };
+
+    // Add passive: false to allow preventDefault
+    document.addEventListener("touchmove", preventScroll, { passive: false });
+
+    return () => {
+      document.removeEventListener("touchmove", preventScroll);
+    };
+  }, []);
 
   return (
     <div className="w-full mx-auto xl:pb-24">
       {/* --- Tabs Navigation (glassy) --- */}
-      <div className="relative bg-[#ffffff26] border border-[#ffffff21] md:rounded-t-[16px] 2xl:rounded-t-[1.111vw] lg:rounded-t-[16px] 2xl:rounded-t-[1.111vw] shadow-[0px_4px_176px_#888888ff] ">
-        <div className="flex flex-col w-full h-[51px] 2xl:h-[3.542vw] lg:h-full px-6 2xl:px-6 2xl:px-6-[1.667vw]-[1.667vw] pt-2">
+      <div className="relative bg-[#ffffff26] border border-[#ffffff21] sm:rounded-t-[16px] lg:rounded-t-[16px] shadow-[0px_4px_176px_#888888ff] ">
+        <div className="flex flex-col px-2 sm:px-3 md:px-4 lg:px-6 pt-2">
           {/* OUTER scroller */}
           <div
             ref={scrollerRef}
@@ -83,7 +130,7 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
             style={{ overscrollBehaviorX: "contain" }}
             role="tablist"
           >
-            <div className="relative flex gap-2 sm:gap-1 md:gap-9 lg:gap-12 2xl:gap-12-[3.333vw] w-max">
+            <div className="relative flex justify-between">
               {tabs.map((tab) => (
                 <TabButton
                   key={tab.id}
@@ -106,12 +153,17 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
 
       {/* --- Content Section --- */}
       <div
-        className="w-full lg:rounded-b-[24px] 2xl:rounded-b-[1.667vw] lg:pt-0"
+        className="w-full lg:rounded-b-[24px] 2xl:rounded-b-[1.667vw] lg:pt-0 touch-pan-y" // Added touch-pan-y for better control
         onTouchStart={onStart}
+        onTouchMove={onMove}
         onTouchEnd={onEnd}
+        style={{
+          // Prevent browser's touch actions that cause scroll
+          touchAction: "pan-y pinch-zoom",
+        }}
       >
         <div
-          className="flex flex-col lg:flex-row justify-center items-center w-full px-6 lg:px-[56px] 2xl:px-[3.889vw] rounded-b-none md:rounded-b-[24px] 2xl:rounded-b-[1.667vw] lg:rounded-b-[24px] 2xl:rounded-b-[1.667vw] h-auto lg:h-[532px] 2xl:h-[36.944vw] min-h-[532px] 2xl:min-h-[36.944vw] lg:min-h-[532px] 2xl:min-h-[36.944vw]"
+          className="flex flex-col lg:flex-row justify-center items-center w-full px-6 lg:px-[56px] rounded-b-none md:rounded-b-[24px] lg:rounded-b-[24px] h-auto lg:h-[532px] min-h-[532px] lg:min-h-[532px]"
           style={{
             backgroundImage: `
       linear-gradient(116deg, rgba(0, 0, 0, 1) 9%, rgba(19, 159, 140, 1) 53%, rgba(255, 220, 129, 1) 93%),
@@ -122,6 +174,9 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
             backgroundRepeat: "no-repeat, no-repeat",
             backgroundBlendMode: "multiply, normal",
             overflow: "hidden",
+            // Additional CSS to prevent scroll
+            overscrollBehavior: "contain",
+            WebkitOverflowScrolling: "touch",
           }}
         >
           <AnimatePresence mode="wait">
@@ -136,10 +191,10 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
               >
                 {/* Text */}
                 <div className="flex flex-col gap-2 items-start w-full lg:w-[60%] mb-8 lg:mb-0 mt-10 2xl:mt-10-[2.778vw] lg:mt-0">
-                  <h3 className="text-[20px] sm:text-[32px] font-regular leading-[42px] text-[#ffdc81]">
+                  <h3 className="text-[20px] sm:text-[32px] 2xl:text-[2.083vw] font-regular leading-[42px] text-[#ffdc81]">
                     {activeTab.title}
                   </h3>
-                  <p className="text-[18px] 2xl:18-[360.833vw] sm:text-[17px] 2xl:17-[361.875vw] font-light leading-[27px] 2xl:leading-[1.875vw] text-[#fafafa] w-full lg:w-[66%]">
+                  <p className="text-[16px] md:text-[18px] 2xl:text-[1.25vw] font-light leading-[27px] 2xl:leading-[1.875vw] text-[#fafafa] w-full lg:w-[66%]">
                     {activeTab.content}
                   </p>
                 </div>
@@ -155,7 +210,7 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
                   <Image
                     src={imageMap[activeTab.imageKey]}
                     alt={activeTab.title}
-                    className="object-cover rounded-lg w-[360px] 2xl:w-[25.000vw] h-[420px] 2xl:h-[29.167vw] md:w-[340px] 2xl:w-[23.611vw] md:h-[520px] 2xl:h-[36.111vw] lg:w-[368px] 2xl:w-[25.556vw] lg:h-[532px] 2xl:h-[36.944vw]"
+                    className="object-cover rounded-lg w-[360px] h-[420px] md:w-[340px] md:h-[520px] lg:w-[368px] lg:h-[532px]"
                   />
                 </motion.div>
               </motion.div>

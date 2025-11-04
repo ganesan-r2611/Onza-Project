@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 type Props = {
@@ -11,9 +11,6 @@ type Props = {
   buttonRef?: (el: HTMLButtonElement | null) => void;
 };
 
-/**
- * Animated tab with shared-layout "pill" that slides/reshapes between active tabs.
- */
 export default function TabButton({
   id,
   label,
@@ -21,6 +18,18 @@ export default function TabButton({
   onClick,
   buttonRef,
 }: Props) {
+  const textRef = useRef<HTMLSpanElement>(null);
+  const [buttonWidth, setButtonWidth] = useState<number>(160); // Default w-32
+
+  useEffect(() => {
+    if (textRef.current) {
+      // Get the actual text width and add padding
+      const textWidth = textRef.current.scrollWidth;
+      const totalWidth = textWidth + 32; // 32px for px-4 (16px left + 16px right)
+      setButtonWidth(totalWidth);
+    }
+  }, [label]);
+
   return (
     <motion.button
       ref={buttonRef}
@@ -29,7 +38,11 @@ export default function TabButton({
       type="button"
       aria-pressed={active}
       whileTap={{ scale: 0.98 }}
-      className="relative flex items-center justify-center md:w-48 lg:w-56 px-4 py-4 text-[16px] md:text-[20px] lg:text-[22px] transition-colors"
+      className="relative flex items-center justify-center px-4 py-4 text-[16px] md:text-[18px] lg:text-[22px] xl:text-[22px] transition-colors flex-shrink-0"
+      style={{
+        width: `${buttonWidth}px`,
+        minWidth: '8rem', // Fallback min-width (w-32)
+      }}
     >
       {active && (
         <motion.span
@@ -40,6 +53,7 @@ export default function TabButton({
       )}
 
       <span
+        ref={textRef}
         className={`relative z-10 text-center font-regular whitespace-nowrap ${
           active ? "text-[#4a4a4a]" : "text-[#a4a4a4] hover:text-[#fafafa]"
         }`}
