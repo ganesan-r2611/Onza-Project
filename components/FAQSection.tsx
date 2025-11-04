@@ -24,14 +24,14 @@ export default function FAQSection({ data }: { data: FAQData }) {
       className="bg-[#121819] pt-10 md:pt-[78px] pb-[78px]"
       data-theme="light"
     >
-      <div className="mx-auto px-3 sm:px-9 lg:px-9">
+      <div className="mx-auto px-3 2xl:px-3-[0.833vw] sm:px-9 lg:px-9">
         <div className="mx-auto">
           {/* Header */}
-          <div className="flex flex-col gap-4 mb-10">
+          <div className="flex flex-col gap-4 2xl:gap-4-[1.111vw] mb-10">
             <h2 className="text-[18px] md:text-[20px] font-regular text-[#ffdc81]">
               {data.title}
             </h2>
-            <p className="text-[24px] md:text-[38px] font-light text-[#bbbbbb] w-full lg:w-[50%]">
+            <p className="text-[24px] 2xl:24-[63.403vw] md:text-[38px] 2xl:38-[64.444vw] font-light text-[#bbbbbb] w-full lg:w-[50%]">
               {data.subtitle}
             </p>
           </div>
@@ -51,7 +51,7 @@ export default function FAQSection({ data }: { data: FAQData }) {
           )}
 
           {/* Content: Two-column layout for desktop */}
-          <div className="flex flex-col lg:flex-row items-start justify-between gap-8">
+          <div className="flex flex-col lg:flex-row items-start justify-between gap-8 2xl:gap-8-[2.222vw]">
             {/* Left: Image - Hidden on mobile, shown on desktop */}
             {illustration && (
               <div className="hidden lg:flex w-full lg:w-[55%] justify-center lg:justify-start">
@@ -59,7 +59,7 @@ export default function FAQSection({ data }: { data: FAQData }) {
                   <Image
                     src={illustration}
                     alt="FAQ Illustration"
-                    className="lg:w-[708px] lg:h-[702px] w-full h-auto object-cover rounded-[24px]"
+                    className="lg:w-[708px] 2xl:w-[49.167vw] lg:h-[702px] 2xl:h-[48.750vw] w-full h-auto object-cover rounded-[24px]"
                     priority
                   />
                 </div>

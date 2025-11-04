@@ -51,23 +51,23 @@ export default function ContactForm({
   };
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-8 mx-auto">
+    <form onSubmit={onSubmit} className="flex flex-col gap-8 2xl:gap-[2.222vw] mx-auto">
       {/* Two Column Inputs */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <div className="flex flex-col gap-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 2xl:gap-[3.333vw]">
+        <div className="flex flex-col gap-10 2xl:gap-[0.69vw]">
           <input
             type="text"
             placeholder={data.namePlaceholder}
             value={formData.name}
             onChange={(e) => onChange("name", e.target.value)}
-            className="w-[291px] h-[70px] bg-transparent border-b border-[#0A5060] placeholder:text-[#8e8e8e] text-[16px] font-light text-[#A4A4A4] focus:outline-none focus:border-[#ffdc81] py-3"
+            className="w-[291px] 2xl:w-[20.21vw] h-[70px] 2xl:h-[4.86vw] bg-transparent border-b border-[#0A5060] placeholder:text-[#8e8e8e] text-[16px]  2xl:text-[1.11vw] font-light text-[#A4A4A4] focus:outline-none focus:border-[#ffdc81] py-3 2xl:py-[0.21vw]"
           />
           <input
             type="text"
             placeholder={data.contactNumberPlaceholder}
             value={formData.contactNumber}
             onChange={(e) => onChange("contactNumber", e.target.value)}
-            className="w-[291px] h-[70px] bg-transparent border-b border-[#0A5060] placeholder:text-[#8e8e8e] text-[16px] font-light text-[#A4A4A4] focus:outline-none focus:border-[#ffdc81] py-3"
+            className="w-[291px] 2xl:w-[20.21vw] h-[70px] 2xl:h-[4.86vw] bg-transparent border-b border-[#0A5060] placeholder:text-[#8e8e8e] text-[16px]  2xl:text-[1.11vw] font-light text-[#A4A4A4] focus:outline-none focus:border-[#ffdc81] py-3 2xl:py-[0.21vw]"
           />
         </div>
         <div className="flex flex-col gap-10">
@@ -76,34 +76,34 @@ export default function ContactForm({
             placeholder={data.emailPlaceholder}
             value={formData.email}
             onChange={(e) => onChange("email", e.target.value)}
-            className="w-[291px] h-[70px] bg-transparent border-b border-[#0A5060] placeholder:text-[#8e8e8e] text-[16px] font-light text-[#A4A4A4] focus:outline-none focus:border-[#ffdc81] py-3"
+            className="w-[291px] 2xl:w-[20.21vw] h-[70px] 2xl:h-[4.86vw] bg-transparent border-b border-[#0A5060] placeholder:text-[#8e8e8e] text-[16px] 2xl:text-[1.11vw] font-light text-[#A4A4A4] focus:outline-none focus:border-[#ffdc81] py-3 2xl:py-[0.21vw]"
           />
           <input
             type="text"
             placeholder={data.cityPlaceholder}
             value={formData.city}
             onChange={(e) => onChange("city", e.target.value)}
-            className="w-[291px] h-[70px] bg-transparent border-b border-[#0A5060] placeholder:text-[#8e8e8e] text-[16px] font-light text-[#A4A4A4] focus:outline-none focus:border-[#ffdc81] py-3"
+            className="w-[291px] 2xl:w-[20.21vw] h-[70px] 2xl:h-[4.86vw] bg-transparent border-b border-[#0A5060] placeholder:text-[#8e8e8e] text-[16px] 2xl:text-[1.11vw] font-light text-[#A4A4A4] focus:outline-none focus:border-[#ffdc81] py-3 2xl:py-[0.21vw]"
           />
         </div>
       </div>
 
       {/* Service Interests */}
       <div className="w-full">
-        <label className="text-[14px] font-light text-[#A4A4A4] mb-4 block">
+        <label className="text-[14px] 2xl:text-[0.97vw] font-light text-[#A4A4A4] mb-4 2xl:mb-[1.111vw] block">
           Select Your Interest of Service
         </label>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 2xl:gap-3 2xl:gap-3-[0.833vw]-[0.833vw] mt-3 2xl:mt-3 2xl:mt-3-[0.833vw]-[0.833vw]">
           {formData.serviceInterests.map((interest) => (
             <label
               key={interest.id}
-              className="flex items-center gap-3 text-[16px] text-[#A4A4A4] font-light cursor-pointer"
+              className="flex items-center gap-3 2xl:gap-3 2xl:gap-3-[0.833vw]-[0.833vw] text-[16px] text-[#A4A4A4] font-light cursor-pointer"
             >
               <input
                 type="checkbox"
                 checked={interest.checked}
                 onChange={() => handleServiceInterestChange(interest.id)}
-                className="w-5 h-5 bg-transparent border border-[#0A5060] rounded focus:ring-[#0A5060] focus:border-[#0A5060] checked:bg-[#ffdc81] checked:border-[#ffdc81] appearance-none relative cursor-pointer"
+                className="w-5 2xl:w-5-[1.389vw] h-5 2xl:h-5-[1.389vw] bg-transparent border border-[#0A5060] rounded focus:ring-[#0A5060] focus:border-[#0A5060] checked:bg-[#ffdc81] checked:border-[#ffdc81] appearance-none relative cursor-pointer"
               />
               {interest.label}
             </label>
@@ -113,10 +113,10 @@ export default function ContactForm({
 
       {/* Asset Range */}
       <div className="w-full">
-        <label className="text-[16px] font-regular text-[#A4A4A4] mb-4 block">
+        <label className="text-[16px] font-regular text-[#A4A4A4] mb-4 2xl:mb-4 2xl:mb-4-[1.111vw]-[1.111vw] block">
           Choose Your Investable Assets
         </label>
-        <div className="relative mt-3">
+        <div className="relative mt-3 2xl:mt-3 2xl:mt-3-[0.833vw]-[0.833vw]">
           <select
             value={formData.assetRange}
             onChange={(e) => handleAssetRangeChange(e.target.value)}

@@ -15,14 +15,14 @@ export default function Accordion({ items }: { items: AccordionItem[] }) {
     setActiveId((prev) => (prev === id ? null : id));
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 2xl:gap-4-[1.111vw]">
       {items.map((faq) => {
         const expanded = activeId === faq.id;
 
         return (
           <div key={faq.id}>
             <div
-              className={`bg-[#0a0a0a] w-auto md:w-auto lg:w-[628px] rounded-[24px] p-8 md:p-8 lg:p-8 cursor-pointer transition-all duration-500 ease-in-out ${
+              className={`bg-[#0a0a0a] w-auto md:w-auto lg:w-[628px] 2xl:w-[43.611vw] rounded-[24px] 2xl:rounded-[1.667vw] p-8 md:p-8 lg:p-8 cursor-pointer transition-all duration-500 ease-in-out ${
                 expanded ? "shadow-lg" : ""
               }`}
               style={{
@@ -33,7 +33,7 @@ export default function Accordion({ items }: { items: AccordionItem[] }) {
             >
               <div className="flex justify-between items-start">
                 <span
-                  className={`text-[16px] md:text-[22px] lg:text-[22px] font-regular leading-[20px] transition-colors duration-300 ${
+                  className={`text-[16px] 2xl:16-[79.236vw] md:text-[22px] 2xl:22-[80.278vw] lg:text-[22px] 2xl:22-[81.319vw] font-regular leading-[20px] 2xl:leading-[1.389vw] transition-colors duration-300 ${
                     expanded ? "text-[#FFDC81]" : "text-white"
                   }`}
                 >
@@ -43,7 +43,7 @@ export default function Accordion({ items }: { items: AccordionItem[] }) {
                 {/* Icon with rotation animation */}
                 <div className={`transform transition-transform duration-500 ${expanded ? 'rotate-180' : 'rotate-0'}`}>
                   <svg
-                    className="w-5 h-5 flex-shrink-0"
+                    className="w-5 2xl:w-5-[1.389vw] h-5 2xl:h-5-[1.389vw] flex-shrink-0"
                     viewBox="0 0 24 24"
                     fill="none"
                     aria-hidden="true"

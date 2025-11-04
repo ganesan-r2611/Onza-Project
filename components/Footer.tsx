@@ -22,11 +22,11 @@ export interface FooterData {
 
 export default function Footer({ data }: { data: FooterData }) {
   return (
-    <footer className="bg-black text-[#E6E0DA] pt-6 px-4 md:px-6 lg:px-0">
+    <footer className="bg-black text-[#E6E0DA] pt-6 px-4 2xl:px-4-[1.111vw] md:px-6 2xl:px-6-[1.667vw] lg:px-0">
       {/* Main Footer Content */}
       <div className="mx-auto max-w-full">
         {/* Top Row - Logo, Home, Services, Contact Info */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 lg:gap-12 mb-12 lg:px-20 lg:py-12 md:px-8 md:py-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 2xl:gap-8 2xl:gap-8-[2.222vw]-[2.222vw] md:gap-10 lg:gap-12 mb-12 lg:px-20 lg:py-12 md:px-8 md:py-10">
           {/* Logo - Full width on mobile, 2 columns on tablet */}
           <div className="md:col-span-2 lg:col-span-1">
             <Image
@@ -57,7 +57,7 @@ export default function Footer({ data }: { data: FooterData }) {
 
           {/* Services Links */}
           <div className="md:col-span-1 lg:ml-4 pl-0 md:pl-4">
-            <h4 className="text-[14px] font-medium text-[#E6E0DA] mb-4">
+            <h4 className="text-[14px] font-medium text-[#E6E0DA] mb-4 2xl:mb-4 2xl:mb-4 2xl:mb-4-[1.111vw]-[1.111vw]-[1.111vw]">
               SERVICES
             </h4>
             <ul className="space-y-3">
@@ -77,12 +77,12 @@ export default function Footer({ data }: { data: FooterData }) {
 
           {/* Contact Info - Full width on mobile, 2 columns on tablet */}
           <div className="md:col-span-2 lg:col-span-1 lg:ml-20 pl-0 md:pl-4 mt-6 md:mt-0">
-            <h4 className="text-[16px] font-medium text-[#E6E0DA] mb-4">
+            <h4 className="text-[16px] font-medium text-[#E6E0DA] mb-4 2xl:mb-4 2xl:mb-4 2xl:mb-4-[1.111vw]-[1.111vw]-[1.111vw]">
               CONTACT INFO
             </h4>
 
-            <div className="mb-6">
-              <h5 className="text-[14px] font-medium text-[#E6E0DA] mb-3">
+            <div className="mb-6 2xl:mb-6-[1.667vw]">
+              <h5 className="text-[14px] font-medium text-[#E6E0DA] mb-3 2xl:mb-3-[0.833vw]">
                 Registered Office
               </h5>
               <p className="text-[12px] font-medium text-[#E6E0DA] leading-relaxed">
@@ -96,7 +96,7 @@ export default function Footer({ data }: { data: FooterData }) {
 
             {/* Follow Us */}
             <div>
-              <h5 className="text-[14px] font-medium text-[#E6E0DA] mb-4">
+              <h5 className="text-[14px] font-medium text-[#E6E0DA] mb-4 2xl:mb-4 2xl:mb-4 2xl:mb-4-[1.111vw]-[1.111vw]-[1.111vw]">
                 Follow Us
               </h5>
               <div className="flex space-x-4">
@@ -107,7 +107,7 @@ export default function Footer({ data }: { data: FooterData }) {
                     onClick={(e) => e.preventDefault()}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center hover:bg-[#ffdc81] transition-colors"
+                    className="w-8 h-8 md:w-10 2xl:w-10-[2.778vw] md:h-10 2xl:h-10-[2.778vw] flex items-center justify-center hover:bg-[#ffdc81] transition-colors"
                   >
                     <Image
                       src={imageMap[social.icon]}
@@ -125,7 +125,7 @@ export default function Footer({ data }: { data: FooterData }) {
 
         {/* Company Info Section */}
         <div className="border-t border-[#d1b67c]/40 pt-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mb-8 lg:px-20 lg:py-12 md:px-8 md:py-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 2xl:gap-6 2xl:gap-6 2xl:gap-6-[1.667vw]-[1.667vw]-[1.667vw] md:gap-8 2xl:gap-8 2xl:gap-8-[2.222vw]-[2.222vw] mb-8 lg:px-20 lg:py-12 md:px-8 md:py-10">
             {data.companyInfo.map((company, index) => (
               <div key={index} className="pl-0 md:pl-4">
                 <h5 className="text-[18px] md:text-[20px] font-regular text-[#E6E0DA] mb-2">
@@ -144,12 +144,12 @@ export default function Footer({ data }: { data: FooterData }) {
 
         {/* Bottom Section */}
         <div className="border-t border-[#d1b67c]/40 pt-8 lg:px-20 lg:py-12 md:px-8 md:py-10">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 2xl:gap-4 2xl:gap-4-[1.111vw]-[1.111vw] md:gap-6 2xl:gap-6 2xl:gap-6 2xl:gap-6-[1.667vw]-[1.667vw]-[1.667vw]">
             <p className="text-[14px] text-gray-400 text-center md:text-left">
               © 2025 Onza. All Rights Reserved
             </p>
 
-            <div className="flex flex-wrap justify-center gap-4 md:gap-6">
+            <div className="flex flex-wrap justify-center gap-4 2xl:gap-4 2xl:gap-4-[1.111vw]-[1.111vw] md:gap-6 2xl:gap-6 2xl:gap-6 2xl:gap-6-[1.667vw]-[1.667vw]-[1.667vw]">
               {data.legal.map((legal, index) => (
                 <Link
                   key={index}
