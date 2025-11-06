@@ -32,15 +32,14 @@ function Card({ post }: { post: BlogPost }) {
     max-w-[412.92px]                      
     md:max-w-[437.33px]
     lg:max-w-[437.33px]
-    xl:max-w-[450px]
-    2xl:w-[28.5vw] 2xl:max-w-none         
+    2xl:w-[30.37vw] 2xl:max-w-none         
     2xl:aspect-[472/450]
   `}
       >
         <Image src={img} alt={post.title} fill className="object-cover" />
 
         <div className="card-overlay pointer-events-none" />
-        <div className="card-highlight pointer-events-none" />
+        {/* <div className="card-highlight pointer-events-none" /> */}
 
         <div
           className="absolute inset-x-0 bottom-0 top-1/3 backdrop-blur-[2px] pointer-events-none"
@@ -176,12 +175,12 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
         </div>
 
         {/* Desktop */}
-        <div className="hidden lg:grid grid-cols-3 gap-6 xl:gap-8 2xl:gap-10 3xl:gap-12 mx-auto min-w-0 items-start">
-          <div className="flex flex-col gap-6 xl:gap-8 min-w-0">
+        <div className="hidden lg:grid grid-cols-3 gap-6 2xl:gap-[2.08vw] mx-auto min-w-0 items-start">
+          <div className="flex flex-col gap-6 2xl:gap-[2.08vw] min-w-0">
             <h2
-              className="text-[32px] xl:text-[34px] 2xl:text-[36px] 3xl:text-[38px]
+              className="text-[32px] xl:text-[38px] 2xl:text-[2.64vw]
                          font-light text-[#FBFBFB] leading-tight
-                         max-w-full xl:max-w-[437px] pb-4 xl:pb-6"
+                         max-w-full xl:max-w-[437px] pb-4 xl:pb-6 2xl:pb-[2.08vw]"
             >
               <span className="block">Insights</span>
               <span className="block">Unlocked</span>
@@ -190,10 +189,10 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
             {p(1) && <Card post={p(1)!} />}
           </div>
 
-          <div className="flex flex-col gap-6 xl:gap-8 min-w-0">
+          <div className="flex flex-col gap-6 2xl:gap-[2.08vw] min-w-0">
             {p(2) && <Card post={p(2)!} />}
             {p(3) && <Card post={p(3)!} />}
-            <div className="glass-card items-center pt-1 mt-3">
+            <div className="glass-card items-center pt-1 2xl:pt-[0.35vw] mt-3 2xl:mt-[1.04vw]">
               <div className="rounded-[16px] p-6 xl:p-8 bg-gradient-to-br from-white/6 to-black/10 items-center justify-center flex">
                 <Link
                   href={""}
@@ -208,8 +207,8 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
             </div>
           </div>
 
-          <div className="flex flex-col gap-6 xl:gap-8 min-w-0">
-            <p className="text-[18px] xl:text-[20px] 2xl:text-[22px] text-[#bbbbbb] max-w-full xl:max-w-[362px] self-end text-left">
+          <div className="flex flex-col gap-6 2xl:gap-[2.08vw] min-w-0">
+            <p className="text-[18px] xl:text-[20px] 2xl:text-[1.39vw] text-[#bbbbbb] max-w-full xl:max-w-[362px] leading-[2.08vw] self-end text-left">
               {blogs.sectionSubtitle}
             </p>
             {p(4) && <Card post={p(4)!} />}
