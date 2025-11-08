@@ -87,10 +87,10 @@ export default function ServicesCarouselSection({
                       </div>
                     </div>
 
-                    <h4 className="mt-3 pb-1 text-[20px] sm:text-[20px] md:text-[30px] lg:text-[32px] font-regular leading-none">
+                    <h4 className="pt-3 2xl:pt-[1.11vw] text-[20px] sm:text-[20px] md:text-[30px] lg:text-[32px] 2xl:text-[2.222vw] font-regular leading-none 2xl:leading-[2.64vw]">
                       {item.title}
                     </h4>
-                    <p className="mt-1 text-[18px] sm:text-[18px] md:text-[18px] lg:text-[20px] leading-[20px] sm:leading-[22px] font-light">
+                    <p className="pt-3 2xl:pt-[1.11vw] text-[18px] sm:text-[18px] md:text-[18px] lg:text-[20px] 2xl:text-[1.389vw] leading-[20px] sm:leading-[22px] 2xl:leading-[1.94vw] font-light">
                       {item.desc}
                     </p>
                   </div>
