@@ -35,9 +35,37 @@ export default function LensFlareBackground({
     Array.from({ length: count }, (_, i) => ({
       x: 50,
       y: 50,
-      t: (i * (2 * Math.PI)) / Math.max(1, count), // evenly spaced angles
+      t: (i * (2 * Math.PI)) / Math.max(1, count),
     }))
   );
+
+  // Calculate capped viewport width (max at 1440px)
+  // const getCappedVw = (pxValue: number) => {
+  //   if (typeof window === "undefined") return `${pxValue}px`;
+  //   const actualVw = window.innerWidth;
+  //   if (actualVw > 1440) {
+  //     // Convert vw to px based on 1440px viewport
+  //     const pxValue = (vwValue / 100) * 1440;
+  //     return `${pxValue}px`;
+  //   }
+  //   return `${pxValue}px`;
+  // };
+
+  // const [flareSize, setFlareSize] = useState(getCappedVw(75));
+  // const [blurSize, setBlurSize] = useState(getCappedVw(3.33));
+
+  // Update sizes on window resize
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     setFlareSize(getCappedVw(75));
+  //     setBlurSize(getCappedVw(3.33));
+  //   };
+
+  //   handleResize(); // Set initial values
+  //   window.addEventListener("resize", handleResize);
+  //   return () => window.removeEventListener("resize", handleResize);
+  // }, []);
+
 
   // Reduce motion preference support
   const prefersReducedMotion = useMemo(() => {
@@ -46,7 +74,7 @@ export default function LensFlareBackground({
   }, []);
 
   useEffect(() => {
-    if (prefersReducedMotion) return; // keep static if user prefers less motion
+    if (prefersReducedMotion) return;
     const id = setInterval(() => {
       setPositions((prev) =>
         prev.map((f) => {
@@ -66,7 +94,7 @@ export default function LensFlareBackground({
     <div className={`absolute inset-0 ${className}`}>
       {withSpaceGradient && (
         <div
-          className="absolute inset-0 -z-10 transition-opacity duration-700"
+          className="absolute inset-0 -z-10 transition-opacity duration-[700ms]"
           style={{
             background:
               "radial-gradient(ellipse at 50% 30%, #0A0A0A 0%, #0A0A0A 50%, #051a1a 80%, #020f0f 100%)",
@@ -79,10 +107,10 @@ export default function LensFlareBackground({
         return (
           <div
             key={i}
-            className="absolute rounded-full blur-3xl opacity-60 pointer-events-none"
+            className="absolute rounded-full blur-3xl 2xl:blur-[4.44vw] opacity-60 pointer-events-none"
             style={{
-              width: "clamp(750px, 75vw, 1200px)",
-              height: "clamp(750px, 75vw, 1200px)",
+              width: "clamp(750px, 75vw, 100vw)",
+              height: "clamp(750px, 75vw, 100vw)",
               left: `${p.x}%`,
               top: `${p.y}%`,
               transform: "translate(-50%, -50%)",
