@@ -119,10 +119,10 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
   }, []);
 
   return (
-    <div className="w-full mx-auto xl:pb-24">
+    <div className="w-full mx-auto xl:pb-24 2xl:pb-[8.33vw]">
       {/* --- Tabs Navigation (glassy) --- */}
-      <div className="relative bg-[#ffffff26] border border-[#ffffff21] sm:rounded-t-[16px] lg:rounded-t-[16px] shadow-[0px_4px_176px_#888888ff] ">
-        <div className="flex flex-col px-2 sm:px-3 md:px-4 lg:px-6 pt-2">
+      <div className="relative bg-[#ffffff26] border border-[#ffffff21] sm:rounded-t-[16px] lg:rounded-t-[16px] 2xl:rounded-t-[1.11vw] shadow-[0px_4px_176px_#888888ff] ">
+        <div className="flex flex-col px-2 sm:px-3 md:px-4 lg:px-6 2xl:px-[2.08vw] pt-2 2xl:pt-[0.69vw]">
           {/* OUTER scroller */}
           <div
             ref={scrollerRef}
@@ -163,7 +163,7 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
         }}
       >
         <div
-          className="flex flex-col lg:flex-row justify-center items-center w-full px-6 lg:px-[56px] rounded-b-none md:rounded-b-[24px] lg:rounded-b-[24px] h-auto lg:h-[532px] min-h-[532px] lg:min-h-[532px]"
+          className="flex flex-col lg:flex-row justify-center items-center w-full px-6 lg:px-[56px] 2xl:px-[3.89vw] rounded-b-none md:rounded-b-[24px] lg:rounded-b-[24px] 2xl:rounded-b-[1.67vw] h-auto lg:h-[532px] 2xl:h-[36.94vw] min-h-[532px] lg:min-h-[532px] 2xl:min-h-[36.94vw]"
           style={{
             backgroundImage: `
       linear-gradient(116deg, rgba(0, 0, 0, 1) 9%, rgba(19, 159, 140, 1) 53%, rgba(255, 220, 129, 1) 93%),
@@ -190,8 +190,8 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
                 className="contents"
               >
                 {/* Text */}
-                <div className="flex flex-col gap-2 items-start w-full lg:w-[60%] mb-8 lg:mb-0 mt-10 2xl:mt-10-[2.778vw] lg:mt-0">
-                  <h3 className="text-[20px] sm:text-[32px] 2xl:text-[2.083vw] font-regular leading-[42px] text-[#ffdc81]">
+                <div className="flex flex-col gap-2 2xl:gap-[0.69vw] items-start w-full lg:w-[60%] mb-8 lg:mb-0 mt-10 lg:mt-0">
+                  <h3 className="text-[20px] sm:text-[32px] 2xl:text-[2.083vw] font-regular leading-[42px] 2xl:leading-[2.92vw] text-[#ffdc81]">
                     {activeTab.title}
                   </h3>
                   <p className="text-[16px] md:text-[18px] 2xl:text-[1.25vw] font-light leading-[27px] 2xl:leading-[1.875vw] text-[#fafafa] w-full lg:w-[66%]">
@@ -205,12 +205,12 @@ export default function ServicesTabs({ tabs }: { tabs: ServiceTab[] }) {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.98 }}
                   transition={{ duration: 0.28 }}
-                  className="w-full md:w-[75%] lg:w-[50%] flex justify-between items-center md:pl-[50px] 2xl:pl-[3.472vw] lg:pl-0"
+                  className="w-full md:w-[75%] lg:w-[50%] flex justify-between items-center md:pl-[50px] lg:pl-0"
                 >
                   <Image
                     src={imageMap[activeTab.imageKey]}
                     alt={activeTab.title}
-                    className="object-cover rounded-lg w-[360px] h-[420px] md:w-[340px] md:h-[520px] lg:w-[368px] lg:h-[532px]"
+                    className="object-cover rounded-lg w-[360px] h-[420px] md:w-[340px] md:h-[520px] lg:w-[368px] lg:h-[532px] 2xl:w-[25.56vw] 2xl:h-[36.94vw]"
                   />
                 </motion.div>
               </motion.div>
