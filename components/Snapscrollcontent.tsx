@@ -113,16 +113,16 @@ export default function SnapScrollContent({ data }: SnapScrollContentProps) {
           className="scroll-section min-h-screen relative flex flex-col md:flex-row justify-end md:justify-between items-start md:items-center"
           data-speed="1"
         >
-          <div className="text-[#fbfbfb] max-w-lg lg:pl-[40px] md:mt-[100px] lg:mt-[200px]">
-            <h2 className="text-[40px] lg:text-[64px] leading-[72px] font-light drop-shadow-2xl pt-14 px-4 md:px-0 lg:pl-0">
+          <div className="text-[#fbfbfb] max-w-lg lg:pl-[40px] 2xl:pl-[2.778vw] md:mt-[100px] lg:mt-[200px] 2xl:mt-[13.889vw]">
+            <h2 className="text-[40px] lg:text-[64px] 2xl:text-[4.444vw] leading-[72px] 2xl:leading-[5.000vw] font-light drop-shadow-2xl pt-14 2xl:pt-[4.86vw] px-4 2xl:pt-[1.39vw] md:px-0 lg:pl-0">
               <span className="inline lg:block">Crafting</span>
               <span className="inline lg:hidden">&nbsp;</span>
               <span className="inline lg:block">Pathways,</span>
               <span className="block">That&nbsp;Endure</span>
             </h2>
           </div>
-          <div className="max-w-md md:self-end px-4 md:px-0 lg:pl-[47px] lg:pr-[40px]">
-            <p className="text-[18px] md:text-[18px] lg:text-[20px] font-light drop-shadow-lg leading-relaxed text-[#ffeec0]">
+          <div className="max-w-md 2xl:max-w-[38.89vw] md:self-end px-4 md:px-0 lg:pl-[47px] 2xl:pl-[3.264vw] lg:pr-[40px] 2xl:pr-[2.778vw]">
+            <p className="text-[18px] md:text-[18px] lg:text-[20px] 2xl:text-[1.389vw] font-light drop-shadow-lg leading-relaxed text-[#ffeec0]">
               Discreet and discerning guidance for those whose decisions define
               tomorrow&apos;s world.
             </p>
@@ -138,11 +138,11 @@ export default function SnapScrollContent({ data }: SnapScrollContentProps) {
           className="scroll-section min-h-screen flex flex-col justify-center items-center"
           data-speed="1"
         >
-          <div className="max-w-8xl lg:max-w-7xl p-[15px] lg:p-[178px] lg:mt-[-50px]">
-            <p className="text-[18px] md:text-[24px] lg:text-[20px] font-regular mb-6 text-[#606060]">
+          <div className="max-w-8xl lg:max-w-7xl 2xl:max-w-[111.11vw] p-[15px] lg:p-[178px] 2xl:p-[12.361vw] lg:mt-[-50px] 2xl:mt-[-3.472vw]">
+            <p className="text-[18px] md:text-[24px] lg:text-[20px] 2xl:text-[1.389vw] font-regular mb-6 2xl:mb-[2.08vw] text-[#606060]">
               Our Ethos
             </p>
-            <p className="text-[32px] md:text-[58px] lg:text-[64px] leading-[1.2] lg:leading-[1.156] font-light tracking-[0.8px] lg:tracking-[0px] text-[#0A0A0A]">
+            <p className="text-[32px] md:text-[58px] lg:text-[64px] 2xl:text-[4.444vw] leading-[1.2] lg:leading-[1.156] font-light tracking-[0.8px] lg:tracking-[0px] text-[#0A0A0A]">
               Lorem ipsum dolor sit amet consectetur. Egestas urna faucibus sit
               nibh augue morbi diam aliquet aenean. Mattis volutpat maecenas
               placerat orci. Sapien morbi ut tempus facilisis.
@@ -159,11 +159,11 @@ export default function SnapScrollContent({ data }: SnapScrollContentProps) {
           className="scroll-section min-h-screen flex flex-col justify-center"
           data-speed="1"
         >
-          <div className="max-w-8xl lg:max-w-8xl p-[15px] lg:p-[40px] lg:pl-[170px]">
-            <p className="text-[18px] md:text-[24px] lg:text-[20px] font-regular mb-6 text-[#606060]">
+          <div className="max-w-8xl lg:max-w-8xl 2xl:max-w-[122.22vw] p-[15px] lg:p-[40px] 2xl:p-[2.778vw] lg:pl-[170px] 2xl:pl-[11.806vw]">
+            <p className="text-[18px] md:text-[24px] lg:text-[20px] 2xl:text-[1.389vw] font-regular mb-6 2xl:mb-[2.08vw] text-[#606060]">
               Our Advisory Philosophy
             </p>
-            <p className="text-[32px] md:text-[58px] lg:text-[64px] leading-[1.1] lg:leading-[1.156] font-light tracking-[0.8px] text-[#0A0A0A]">
+            <p className="text-[32px] md:text-[58px] lg:text-[64px] 2xl:text-[4.444vw] leading-[1.1] lg:leading-[1.156] font-light tracking-[0.8px] 2xl:tracking-[0.056vw] text-[#0A0A0A]">
               Our approach begins with your real-life goals, not just financial
               metrics.
               <span className="hidden md:inline">

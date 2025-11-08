@@ -15,25 +15,23 @@ export default function Accordion({ items }: { items: AccordionItem[] }) {
     setActiveId((prev) => (prev === id ? null : id));
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 2xl:gap-[1.111vw]">
       {items.map((faq) => {
         const expanded = activeId === faq.id;
 
         return (
           <div key={faq.id}>
             <div
-              className={`bg-[#0a0a0a] w-auto md:w-auto lg:w-[628px] rounded-[24px] p-8 md:p-8 lg:p-8 cursor-pointer transition-all duration-500 ease-in-out ${
-                expanded ? "shadow-lg" : ""
+              className={`bg-[#0a0a0a] w-auto md:w-auto 2xl:w-auto rounded-[24px] 2xl:rounded-[1.667vw] p-8 md:p-8 lg:p-8 2xl:p-[2.22vw] cursor-pointer transition-all duration-500 ease-in-out ${
+                expanded
+                  ? "h-[166px] 2xl:h-[11.53vw] shadow-lg"
+                  : "h-[91px] 2xl:h-[6.32vw]"
               }`}
-              style={{
-                height: expanded ? '166px' : '91px',
-                transition: 'height 500ms ease-in-out, box-shadow 500ms ease-in-out'
-              }}
               onClick={() => toggle(faq.id)}
             >
               <div className="flex justify-between items-start">
                 <span
-                  className={`text-[16px] md:text-[22px] lg:text-[22px] font-regular leading-[20px] transition-colors duration-300 ${
+                  className={`text-[16px] md:text-[22px] lg:text-[22px] 2xl:text-[1.53vw] font-regular leading-[20px] 2xl:leading-[1.389vw] transition-colors duration-300 ${
                     expanded ? "text-[#FFDC81]" : "text-white"
                   }`}
                 >
@@ -41,9 +39,13 @@ export default function Accordion({ items }: { items: AccordionItem[] }) {
                 </span>
 
                 {/* Icon with rotation animation */}
-                <div className={`transform transition-transform duration-500 ${expanded ? 'rotate-180' : 'rotate-0'}`}>
+                <div
+                  className={`transform transition-transform duration-500 ${
+                    expanded ? "rotate-180" : "rotate-0"
+                  }`}
+                >
                   <svg
-                    className="w-5 h-5 flex-shrink-0"
+                    className="w-5 h-5 2xl:w-[1.39vw] 2xl:h-[1.39vw] flex-shrink-0"
                     viewBox="0 0 24 24"
                     fill="none"
                     aria-hidden="true"
@@ -60,12 +62,14 @@ export default function Accordion({ items }: { items: AccordionItem[] }) {
               </div>
 
               {/* Answer with fade-in animation */}
-              <div 
+              <div
                 className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                  expanded ? 'max-h-32 opacity-100 mt-3' : 'max-h-0 opacity-0'
+                  expanded
+                    ? "max-h-32 2xl:max-h-[8.89vw] opacity-100 mt-3 2xl:mt-[0.83vw]"
+                    : "max-h-0 opacity-0"
                 }`}
               >
-                <div className="text-[14px] md:text-[20px] text-[#bbbbbb] font-light leading-[16px]">
+                <div className="text-[14px] md:text-[20px] 2xl:text-[1.39vw] text-[#bbbbbb] font-light leading-[22px] 2xl:leading-[1.53vw]">
                   {faq.answer}
                 </div>
               </div>

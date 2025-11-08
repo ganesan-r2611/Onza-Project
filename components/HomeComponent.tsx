@@ -63,7 +63,7 @@ export default function HomeContent({ staticData }: HomeContentProps) {
 
   return (
     <>
-    <NavBar data={navbarData} />
+    {/* <NavBar data={navbarData} /> */}
       <main>
         <div className="relative">
           <section data-theme="dark">

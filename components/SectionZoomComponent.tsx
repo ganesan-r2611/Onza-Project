@@ -388,10 +388,10 @@ export default function SectionZoomComponent({
         {flarePositions.map((f, idx) => (
           <div
             key={idx}
-            className="absolute rounded-full blur-3xl opacity-60 transition-transform duration-700 ease-in-out"
+            className="absolute rounded-full blur-3xl 2xl:blur-[4.44vw] opacity-60 transition-transform duration-700 ease-in-out"
             style={{
-              width: "clamp(750px, 75vw, 1200px)",
-              height: "clamp(750px, 75vw, 1200px)",
+              width: "clamp(750px, 75vw, 75vw)",
+              height: "clamp(750px, 75vw, 75vw)",
               left: `${f.x}%`,
               top: `${f.y}%`,
               transform: "translate(-50%, -50%)",
@@ -428,7 +428,15 @@ export default function SectionZoomComponent({
                 ? "transform 0.8s ease-out"
                 : "transform 1200ms cubic-bezier(0.45,0,0.25,1)",
             willChange: currentSnapIndex === 0 ? "transform" : "auto",
-            width: "min(65vw, 560px)",
+            width: (() => {
+              if (!mounted) return "560px";
+              // Large screens
+              if (category.includes("desktop-large") || category.includes("ultrawide")) {
+                return "min(65vw, 38.89vw)";
+              }
+              // Default
+              return "min(65vw, 560px)";
+            })(),
             height: "auto",
             filter: "drop-shadow(0 12px 30px rgba(0,0,0,0.35))",
           }}
