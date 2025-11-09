@@ -38,6 +38,25 @@ import onzaLgBG from "@/assets/onza-lg-bg.png";
 import backgroundOZ from "@/assets/backgroundoz.png";
 import footerlogo from "@/assets/footerlogo.png";
 
+import contactUsBg from "@/assets/contactUs_bg.png";
+import findUsImg from "@/assets/find_us_img.jpg"; 
+import mail from "@/assets/mail.png";
+import phone from "@/assets/phone.png";
+import subscribe_bg from "@/assets/subscribe_bg.png";
+import subscribe_btn from "@/assets/subscribe_btn.png";
+import submit_btn from "@/assets/submit_btn.png";
+import blog_bg from "@/assets/blog_bg.jpg" ;
+import blog_img from "@/assets/blog_image.png" ;
+import blog_01 from "@/assets/blog_01.png" ;
+import blog_02 from "@/assets/blog_02.png" ;
+import blog_03 from "@/assets/blog_03.png" ;
+
+// blg card
+import blog_card_01 from "@/assets/blg_card_01.png" ;
+import blog_card_02 from "@/assets/blg_card_02.png" ;
+import blog_card_03 from "@/assets/blg_card_03.png" ;
+import blog_card_04 from "@/assets/blg_card_04.png" ;
+
 export const imageMap: Record<string, StaticImageData> = {
   logo,
   bannerContact,
@@ -67,5 +86,21 @@ export const imageMap: Record<string, StaticImageData> = {
   cardbg2,
   onzaLgBG,
   backgroundOZ,
-  footerlogo
+  footerlogo,
+  contactUsBg,
+  findUsImg,
+  mail,
+  phone,
+  subscribe_bg,
+  subscribe_btn,
+  submit_btn,
+  blog_bg,
+  blog_img,
+  blog_01,
+  blog_02,
+  blog_03,
+  blog_card_01,
+  blog_card_02,
+  blog_card_03,
+  blog_card_04
 };

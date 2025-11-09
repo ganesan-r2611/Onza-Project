@@ -180,7 +180,7 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
             <h2
               className="text-[32px] xl:text-[38px] 2xl:text-[2.64vw]
                          font-light text-[#FBFBFB] leading-tight
-                         max-w-full xl:max-w-[437px] 2xl:max-w-[30.35vw] pb-4 xl:pb-6 2xl:pb-[2.08vw]"
+                         max-w-full xl:max-w-[437px] pb-4 xl:pb-6 2xl:pb-[2.08vw]"
             >
               <span className="block">Insights</span>
               <span className="block">Unlocked</span>
@@ -193,7 +193,7 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
             {p(2) && <Card post={p(2)!} />}
             {p(3) && <Card post={p(3)!} />}
             <div className="glass-card items-center pt-1 2xl:pt-[0.35vw] mt-3 2xl:mt-[1.04vw]">
-              <div className="rounded-[16px] 2xl:rounded-[1.11vw] p-6 xl:p-8 2xl:p-[2.78vw] bg-gradient-to-br from-white/6 to-black/10 items-center justify-center flex">
+              <div className="rounded-[16px] p-6 xl:p-8 bg-gradient-to-br from-white/6 to-black/10 items-center justify-center flex">
                 <Link
                   href={""}
                   onClick={(e) => e.preventDefault()}
@@ -208,7 +208,7 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
           </div>
 
           <div className="flex flex-col gap-6 2xl:gap-[2.08vw] min-w-0">
-            <p className="text-[18px] xl:text-[20px] 2xl:text-[1.39vw] text-[#bbbbbb] max-w-full xl:max-w-[362px] 2xl:max-w-[25.14vw] leading-[2.08vw] self-end text-left">
+            <p className="text-[18px] xl:text-[20px] 2xl:text-[1.39vw] text-[#bbbbbb] max-w-full xl:max-w-[362px] leading-[2.08vw] self-end text-left">
               {blogs.sectionSubtitle}
             </p>
             {p(4) && <Card post={p(4)!} />}
