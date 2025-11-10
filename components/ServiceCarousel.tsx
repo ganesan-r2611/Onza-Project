@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { imageMap } from "@/libs/imageMap";
@@ -20,13 +19,12 @@ type Props = {
 export default function ServicesCarouselSection({
   data,
   horizontalProgress = 0,
-  isScrolling = false,
   showIntro = false,
 }: Props) {
   const { eyebrow, cta, items } = data;
-  const [mounted, setMounted] = useState(false);
+  // const [mounted, setMounted] = useState(false);
 
-  useEffect(() => setMounted(true), []);
+  // useEffect(() => setMounted(true), []);
 
   return (
     <div

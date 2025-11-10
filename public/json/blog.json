@@ -1,0 +1,120 @@
+{
+    "heroSection": {
+        "backgroundImage": "blog_bg",
+        "image": "blog_img",
+        "title": "Blogs",
+        "heading": "The Onza Wealth Journal",
+        "description": "When most people think about investing, they envision buying stocks, bonds, and mutual funds. While these traditional investment options have their place, they ma…",
+        "cta": {
+            "text": "Read More",
+            "href": "/blogs"
+        }
+    },
+    "featuredSection": {
+        "title": "Featured Blogs",
+        "description": "Fresh ideas, sharp strategies, and stories that move brands forward. Lorem ipsum dolor sit amet consectetur. Blandit morbi ultricies",
+        "featuredPosts": [
+            {
+                "id": 1,
+                "category": "Wealth",
+                "title": "Impact Of Extrinsic Motivation On Intrinsic",
+                "excerpt": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna al",
+                "date": "April 21, 2025",
+                "readTime": "7 min read",
+                "imageKey": "blog_01",
+                "isFeatured": true
+            },
+            {
+                "id": 2,
+                "category": "Wealth",
+                "title": "Impact Of Extrinsic Motivation On Intrinsic",
+                "excerpt": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna al",
+                "date": "April 21, 2025",
+                "readTime": "7 min read",
+                "imageKey": "blog_02"
+            },
+            {
+                "id": 3,
+                "category": "Wealth",
+                "title": "Impact Of Extrinsic Motivation On Intrinsic",
+                "excerpt": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna al",
+                "date": "April 21, 2025",
+                "readTime": "7 min read",
+                "imageKey": "blog_03"
+            }
+        ]
+    },
+    "discoverSection": {
+        "title": "Discover Knowledge",
+        "subtitle": "Curated insights to guide your decisions and fuel your growth.",
+        "categories": [
+            {
+                "id": 1,
+                "name": "All Blogs",
+                "isActive": true
+            },
+            {
+                "id": 2,
+                "name": "Category 1",
+                "isActive": false
+            },
+            {
+                "id": 3,
+                "name": "Category 2",
+                "isActive": false
+            },
+            {
+                "id": 4,
+                "name": "Category 3",
+                "isActive": false
+            },
+            {
+                "id": 5,
+                "name": "Category 4",
+                "isActive": false
+            }
+        ],
+        "posts": [
+            {
+                "id": 1,
+                "category": "Wealth",
+                "title": "Impact Of Extrinsic Motivation On Intrinsic",
+                "excerpt": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna al",
+                "date": "April 21, 2025",
+                "readTime": "7 min read",
+                "imageKey": "blog_card_01"
+            },
+            {
+                "id": 2,
+                "category": "Wealth",
+                "title": "Impact Of Extrinsic Motivation On Intrinsic",
+                "excerpt": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna al",
+                "date": "April 21, 2025",
+                "readTime": "7 min read",
+                "imageKey": "blog_card_02"
+            },
+            {
+                "id": 3,
+                "category": "Wealth",
+                "title": "Impact Of Extrinsic Motivation On Intrinsic",
+                "excerpt": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna al",
+                "date": "April 21, 2025",
+                "readTime": "7 min read",
+                "imageKey": "blog_card_03"
+            },
+            {
+                "id": 4,
+                "category": "Wealth",
+                "title": "Impact Of Extrinsic Motivation On Intrinsic",
+                "excerpt": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna al",
+                "date": "April 21, 2025",
+                "readTime": "7 min read",
+                "imageKey": "blog_card_04"
+            }
+        ],
+        "cta": {
+            "text": "View more",
+            "href": "/blogs"
+        }
+    }
+}

@@ -10,9 +10,9 @@
   "links": {
     "general": [
       { "label": "HOME", "href": "/" },
-      { "label": "ABOUT US", "href": "#" },
-      { "label": "BLOGS", "href": "#" },
-      { "label": "CONTACT US", "href": "#" }
+      { "label": "ABOUT US", "href": "/about" },
+      { "label": "BLOGS", "href": "/blogs" },
+      { "label": "CONTACT US", "href": "/contact" }
     ],
     "services": [
       { "label": "Wealth & Investment Advisory", "href": "#" },

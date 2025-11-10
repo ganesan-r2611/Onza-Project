@@ -105,7 +105,10 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
   const p = (i: number) => posts[i] ?? null;
 
   return (
-    <section className="bg-[#121819] pt-16 2xl:pt-[5.56vw] pb-20 2xl:pb-[6.94vw]" data-theme="light">
+    <section
+      className="bg-[#121819] pt-16 2xl:pt-[5.56vw] pb-20 2xl:pb-[6.94vw]"
+      data-theme="light"
+    >
       <div
         className="mx-auto px-3 sm:px-4 md:px-6 lg:px-10 2xl:px-[3.47vw]
                    max-w-[1440px] xl:max-w-[1536px] 2xl:max-w-[100vw]
@@ -122,14 +125,28 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
           {[0, 1, 2, 3, 4, 5].map(
             (i) => p(i) && <Card key={p(i)!.id ?? i} post={p(i)!} />
           )}
-          <div className="glass-card items-center pt-1 mt-3">
-            <div className="rounded-[16px] p-4 sm:p-6 bg-gradient-to-br from-white/6 to-black/10">
+          <div
+            className="items-center pt-1 mt-3"
+            style={{
+              backgroundImage: `url${imageMap?.blog_btn_bg}`,
+            }}
+          >
+            <div className="rounded-[16px] p-4 sm:p-6 bg-gradient-to-br from-white/6 to-black/10 relative overflow-hidden">
+              {/* Gradient Background Colors */}
+              <div className="absolute w-[161.2px] h-[244px] top-[-105px] left-[114px] filter blur-[167.36px]">
+                <div className="absolute top-[153px] left-0 rounded-[5103.6px] bg-[#37ffdc] w-[63px] h-[91px]" />
+                <div className="absolute top-[80.29px] left-[47.56px] rounded-[5103.6px] bg-[#73ffd6] w-[44.3px] h-[84.2px] -rotate-30" />
+                <div className="absolute top-0 left-[12px] rounded-[5103.6px] bg-[#ff502f] w-[78px] h-[132px]" />
+                <div className="absolute top-[61.26px] left-[116.71px] rounded-[5103.6px] bg-[#51dacf] w-[48.7px] h-[78px] rotate-24" />
+                <div className="absolute top-[132px] left-[73px] rounded-[5103.6px] bg-[#9ef5cf] w-[87px] h-[88px]" />
+              </div>
+
               <Link
                 href={""}
                 onClick={(e) => e.preventDefault()}
-                className="w-full"
+                className="w-full relative z-10"
               >
-                <button className="glass-btn w-full rounded-[24px] py-3 text-sm text-white/95">
+                <button className="w-full rounded-[24px] py-3 text-sm text-white/95 bg-black/30 backdrop-blur-sm border border-white/20 hover:bg-black/40 hover:border-white/30 transition-all duration-300">
                   {blogs.cta?.label || "View All Blogs"}
                 </button>
               </Link>
@@ -158,14 +175,28 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
             {p(3) && <Card post={p(3)!} />}
             {p(4) && <Card post={p(4)!} />}
             {p(5) && <Card post={p(5)!} />}
-            <div className="glass-card items-center pt-1 mt-3">
-              <div className="rounded-[16px] p-4 lg:p-6 bg-gradient-to-br from-white/6 to-black/10">
+            <div
+              className="items-center pt-1 mt-3"
+              style={{
+                backgroundImage: `url${imageMap?.blog_btn_bg}`,
+              }}
+            >
+              <div className="rounded-[16px] p-4 lg:p-6 bg-gradient-to-br from-white/6 to-black/10 relative overflow-hidden">
+                {/* Gradient Background Colors */}
+                <div className="absolute w-[161.2px] h-[244px] top-[-105px] left-[114px] filter blur-[167.36px]">
+                  <div className="absolute top-[153px] left-0 rounded-[5103.6px] bg-[#37ffdc] w-[63px] h-[91px]" />
+                  <div className="absolute top-[80.29px] left-[47.56px] rounded-[5103.6px] bg-[#73ffd6] w-[44.3px] h-[84.2px] -rotate-30" />
+                  <div className="absolute top-0 left-[12px] rounded-[5103.6px] bg-[#ff502f] w-[78px] h-[132px]" />
+                  <div className="absolute top-[61.26px] left-[116.71px] rounded-[5103.6px] bg-[#51dacf] w-[48.7px] h-[78px] rotate-24" />
+                  <div className="absolute top-[132px] left-[73px] rounded-[5103.6px] bg-[#9ef5cf] w-[87px] h-[88px]" />
+                </div>
+
                 <Link
                   href={""}
                   onClick={(e) => e.preventDefault()}
-                  className="w-full"
+                  className="w-full relative z-10"
                 >
-                  <button className="glass-btn w-full rounded-[24px] py-3 text-sm text-white/95">
+                  <button className="w-full rounded-[24px] py-3 text-sm text-white/95 bg-black/30 backdrop-blur-sm border border-white/20 hover:bg-black/40 hover:border-white/30 transition-all duration-300">
                     {blogs.cta?.label || "View All Blogs"}
                   </button>
                 </Link>
@@ -180,7 +211,7 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
             <h2
               className="text-[32px] xl:text-[38px] 2xl:text-[2.64vw]
                          font-light text-[#FBFBFB] leading-tight
-                         max-w-full xl:max-w-[437px] 2xl:max-w-[30.35vw] pb-4 xl:pb-6 2xl:pb-[2.08vw]"
+                         max-w-full xl:max-w-[437px] pb-4 xl:pb-6 2xl:pb-[2.08vw]"
             >
               <span className="block">Insights</span>
               <span className="block">Unlocked</span>
@@ -192,23 +223,37 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
           <div className="flex flex-col gap-6 2xl:gap-[2.08vw] min-w-0">
             {p(2) && <Card post={p(2)!} />}
             {p(3) && <Card post={p(3)!} />}
-            <div className="glass-card items-center pt-1 2xl:pt-[0.35vw] mt-3 2xl:mt-[1.04vw]">
-              <div className="rounded-[16px] 2xl:rounded-[1.11vw] p-6 xl:p-8 2xl:p-[2.78vw] bg-gradient-to-br from-white/6 to-black/10 items-center justify-center flex">
+            <div
+              className="items-center pt-1 2xl:pt-[0.35vw] mt-3 2xl:mt-[1.04vw]"
+              style={{
+                backgroundImage: `url${imageMap?.blog_btn_bg}`,
+              }}
+            >
+              <div className="w-full rounded-[16px] p-4 flex flex-col items-center relative overflow-hidden bg-gradient-to-br from-white/6 to-black/10">
+                {/* Gradient Background Colors */}
+                <div className="absolute w-[161.2px] h-[244px] top-[-105px] left-[114px] filter blur-[167.36px]">
+                  <div className="absolute top-[153px] left-0 rounded-[5103.6px] bg-[#37ffdc] w-[63px] h-[91px]" />
+                  <div className="absolute top-[80.29px] left-[47.56px] rounded-[5103.6px] bg-[#73ffd6] w-[44.3px] h-[84.2px] -rotate-30" />
+                  <div className="absolute top-0 left-[12px] rounded-[5103.6px] bg-[#ff502f] w-[78px] h-[132px]" />
+                  <div className="absolute top-[61.26px] left-[116.71px] rounded-[5103.6px] bg-[#51dacf] w-[48.7px] h-[78px] rotate-24" />
+                  <div className="absolute top-[132px] left-[73px] rounded-[5103.6px] bg-[#9ef5cf] w-[87px] h-[88px]" />
+                </div>
+
                 <Link
                   href={""}
                   onClick={(e) => e.preventDefault()}
-                  className="w-full"
+                  className="w-full h-[75px] rounded-[3733.11px] border-[3.7px] border-white/40 flex items-center justify-center px-[93.4px] relative z-10 bg-transparent hover:border-white/60 transition-all duration-300"
                 >
-                  <button className="glass-btn w-full rounded-[24px] 2xl:rounded-[1.67vw] py-3 xl:py-4 2xl:py-[1.39vw] text-sm xl:text-base 2xl:text-[1.39vw] text-white/95">
+                  <span className="text-[20px] leading-[24px] text-white font-regular">
                     {blogs.cta?.label || "View All Blogs"}
-                  </button>
+                  </span>
                 </Link>
               </div>
             </div>
           </div>
 
           <div className="flex flex-col gap-6 2xl:gap-[2.08vw] min-w-0">
-            <p className="text-[18px] xl:text-[20px] 2xl:text-[1.39vw] text-[#bbbbbb] max-w-full xl:max-w-[362px] 2xl:max-w-[25.14vw] leading-[2.08vw] self-end text-left">
+            <p className="text-[18px] xl:text-[20px] 2xl:text-[1.39vw] text-[#bbbbbb] max-w-full xl:max-w-[362px] leading-[2.08vw] self-end text-left">
               {blogs.sectionSubtitle}
             </p>
             {p(4) && <Card post={p(4)!} />}
