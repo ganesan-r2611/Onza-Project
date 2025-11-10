@@ -16,7 +16,7 @@ export default async function Blog() {
       <div className="max-w-full">
         {/* Unified Hero Section */}
         <section
-          className="w-full flex flex-col lg:flex-row items-center justify-between px-[16px] lg:px-[2.78vw] py-[80px] lg:py-[11.11vw] gap-[40px] lg:gap-[1.39vw]"
+          className="w-full lg:h-[62.5vw] 2xl:h-[62.5vw] flex flex-col lg:flex-row items-center justify-between px-[16px] lg:px-[2.78vw] py-[80px] lg:py-[11.11vw] gap-[40px] lg:gap-[1.39vw]"
           style={{
             backgroundImage: `url(${
               typeof imageMap[
@@ -56,7 +56,7 @@ export default async function Blog() {
 
             {/* Main Heading */}
             <div className="w-full flex flex-col items-start justify-center">
-              <div className="w-full text-[32px] lg:text-[2.22vw] font-light text-[#0a0a0a] leading-[36px] lg:leading-[2.5vw]">
+              <div className="w-full text-[32px] lg:text-[3.89vw] font-light text-[#0a0a0a] leading-[36px] lg:leading-[4.44vw]">
                 <p className="m-0">
                   {data.heroSection.heading.split(" ")[0]}{" "}
                   {data.heroSection.heading.split(" ")[1]}
@@ -70,7 +70,7 @@ export default async function Blog() {
 
             {/* Description */}
             <div className="w-full lg:w-[34.24vw] flex flex-col items-start">
-              <div className="w-full lg:w-[34.24vw] text-[14px] lg:text-[0.97vw] font-light text-[#4a4a4a] leading-[16px] lg:leading-[1.11vw]">
+              <div className="w-full lg:w-[34.24vw] text-[14px] lg:text-[1.11vw] font-light text-[#4a4a4a] leading-[16px] lg:leading-[1.32vw]">
                 {data.heroSection.description}
               </div>
             </div>
@@ -80,7 +80,7 @@ export default async function Blog() {
 
             {/* Read More Link */}
             <div className="flex flex-col items-center justify-center gap-[1.11vw] lg:gap-[0.14vw] group">
-              <div className="text-[18px] lg:text-[1.11vw] font-regular text-[#0a0a0a] leading-[24px] lg:leading-[1.67vw] transition-colors duration-300 group-hover:text-[#0a5060]">
+              <div className="text-[18px] lg:text-[1.39vw] font-regular text-[#0a0a0a] leading-[24px] lg:leading-[1.67vw] transition-colors duration-300 group-hover:text-[#0a5060]">
                 <Link
                   href={`/blogs/${data.featuredSection.featuredPosts[0].id}`}
                 >
@@ -93,7 +93,7 @@ export default async function Blog() {
         </section>
 
         {/* Featured Blogs Section */}
-        <section className="w-full bg-gradient-to-br from-[#13181c] to-[#0a5060] px-[16px] lg:px-[2.78vw] py-[80px] lg:py-[8.33vw]">
+        <section className="w-full lg:h-[62.5vw] 2xl:h-[62.5vw] bg-gradient-to-br from-[#13181c] to-[#0a5060] px-[16px] lg:px-[2.78vw] py-[80px] lg:py-[8.33vw]">
           <div className="mx-auto">
             {/* Header */}
             <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-[24px] lg:gap-[1.67vw] mb-[16px] lg:mb-[5.83vw]">
