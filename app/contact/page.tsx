@@ -69,7 +69,7 @@ export default async function ContactSection() {
 
             {/* Right: Form */}
             <div className="w-full lg:w-[55%] flex justify-center lg:justify-end">
-              <div className="p-6 sm:p-8  md:p-0 w-full">
+              <div className="w-full">
                 <ContactForm data={data.form} />
               </div>
             </div>
@@ -217,7 +217,7 @@ export default async function ContactSection() {
             </div>
 
             <div className="w-full">
-              <div className="text-[clamp(2rem,5vw,3.5rem)] 2xl:text-[3.33vw]  font-light text-[#fbfbfb] leading-[52.9px] 2xl:leading-[3.67vw]">
+              <div className="text-[clamp(2rem,5vw,3.5rem)] 2xl:text-[3.33vw]  font-light text-[#fbfbfb] leading-[8.94vw] 2xl:leading-[3.67vw]">
                 <p className="m-0">Get More Insights Delivered Straight to</p>
                 <p className="m-0">Your Inbox</p>
               </div>

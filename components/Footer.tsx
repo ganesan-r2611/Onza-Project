@@ -46,8 +46,7 @@ export default function Footer({ data }: { data: FooterData }) {
               {data.links.general.map((link, index) => (
                 <div key={index} className="w-full rounded-[999px] 2xl:rounded-[69.44vw] flex items-center py-2 2xl:py-[0.56vw]">
                   <Link
-                    href={""}
-                    onClick={(e) => e.preventDefault()}
+                    href={link.href}
                     className="text-[14px] 2xl:text-[0.97vw] font-medium text-[#E6E0DA] hover:text-[#ffdc81] transition-colors uppercase leading-[21px] 2xl:leading-[1.46vw]"
                   >
                     {link.label}

@@ -56,6 +56,16 @@ import blog_card_01 from "@/assets/blg_card_01.png" ;
 import blog_card_02 from "@/assets/blg_card_02.png" ;
 import blog_card_03 from "@/assets/blg_card_03.png" ;
 import blog_card_04 from "@/assets/blg_card_04.png" ;
+import blog_card_05 from "@/assets/blg_card_05.png" ;
+import blog_card_06 from "@/assets/blg_card_06.png" ;
+import blog_card_07 from "@/assets/blg_card_07.png" ;
+
+import blog_profile from "@/assets/blog_profile.png" ;
+import blog_details_banner from "@/assets/blog_details_banner.png" ;
+import export_img from "@/assets/export.png" ;
+import blog_btn_bg from "@/assets/blog_btn_bg.png" ;
+import our_service_btn from "@/assets/ourService_btn.png" ;
+
 
 export const imageMap: Record<string, StaticImageData> = {
   logo,
@@ -102,5 +112,13 @@ export const imageMap: Record<string, StaticImageData> = {
   blog_card_01,
   blog_card_02,
   blog_card_03,
-  blog_card_04
+  blog_card_04,
+  blog_card_05,
+  blog_card_06,
+  blog_card_07,
+  blog_profile,
+  blog_details_banner,
+  export_img,
+  blog_btn_bg,
+  our_service_btn
 };

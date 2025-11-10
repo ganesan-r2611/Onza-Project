@@ -7,6 +7,7 @@ import testimonialData from "@/public/json/testimonial.json";
 import contactData from "@/public/json/contact.json";
 import footerData from "@/public/json/footer.json";
 import blogData from "@/public/json/blog.json";
+import blogDetails from "@/public/json/blogDetails.json";
 
 export async function getStaticData() {
   return {
@@ -18,7 +19,8 @@ export async function getStaticData() {
     testimonialData,
     contactData,
     footerData,
-    blogData
+    blogData,
+    blogDetails
   };
 }
 

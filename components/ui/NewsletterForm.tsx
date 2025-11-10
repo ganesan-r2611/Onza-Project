@@ -74,14 +74,14 @@ export default function NewsletterForm() {
           name="email"
           value={newsletterData.email}
           onChange={(e) => onNewsletterChange("email", e.target.value)}
-          className="peer w-full h-[70px] 2xl:h-[4.86vw] bg-transparent text-[16px] 2xl:text-[1.11vw] font-light text-[#F2E9DA] focus:outline-none py-3 2xl:py-[1.04vw] px-0 border-b-2 2xl:border-b-[0.14vw] border-[#D2D2D2] transition-all duration-300 hover:border-[#ffdc81]"
+          className="peer w-full h-[70px] 2xl:h-[4.86vw] bg-transparent text-[16px] 2xl:text-[1.11vw] font-light text-[#F2E9DA] focus:outline-none py-3 2xl:py-[1.04vw] px-0 border-b-2 2xl:border-b-[0.14vw] border-[#D2D2D2] transition-all duration-300"
           placeholder=" "
           required
         />
         <label className="absolute left-0 top-1/2 -translate-y-1/2 text-[16px] 2xl:text-[1.11vw] font-light text-[#F2E9DA] transition-all duration-300 pointer-events-none peer-focus:top-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-[#ffdc81] peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:-translate-y-6 peer-[:not(:placeholder-shown)]:text-[#ffdc81] origin-left">
           Your email *
         </label>
-        <div className="absolute bottom-0 left-0 w-0 h-0.5 2xl:h-[0.17vw] bg-[#ffdc81] transition-all duration-300 peer-focus:w-full group-hover:w-full"></div>
+        <div className="absolute bottom-0 left-0 w-0 h-0.5 2xl:h-[0.17vw]"></div>
       </div>
 
       {/* Status Messages */}

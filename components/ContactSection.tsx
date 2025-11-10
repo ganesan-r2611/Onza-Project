@@ -38,7 +38,7 @@ export default function ContactSection({ data }: { data: ContactData }) {
         }}
       >
         {/* Content Wrapper */}
-        <div className="relative z-10 w-full max-w-[100.000vw] mx-auto px-6 sm:px-8 lg:px-[120px] pt-[80px] lg:pt-[8.33vw] pb-[70px] 2xl:pb-[4.861vw]">
+        <div className="relative z-10 w-full max-w-[100.000vw] mx-auto px-4 sm:px-4 lg:px-[120px] pt-[40px] lg:pt-[8.33vw] pb-[40px] 2xl:pb-[4.861vw]">
           <div className="flex flex-col lg:flex-row justify-between items-start w-full gap-10 lg:gap-16 2xl:gap-[4.444vw]">
             {/* Left: Title and Email */}
             <div className="w-full lg:w-[45%] flex flex-col">
@@ -64,7 +64,7 @@ export default function ContactSection({ data }: { data: ContactData }) {
 
             {/* Right: Form */}
             <div className="w-full lg:w-[55%] flex justify-center lg:justify-end">
-              <div className="p-6 sm:p-8  md:p-0 w-full">
+              <div className="md:p-0 w-full">
                 <ContactForm data={data.form} />
               </div>
             </div>
