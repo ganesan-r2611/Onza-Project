@@ -320,13 +320,16 @@ export default function VerticalSnapScroll({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentIndex, horizontalProgress, items, shouldReleaseControl, isDesktop]);
 
-  // SIMPLIFIED WHEEL EVENT HANDLER FOR MAC
+  // MAC TRACKPAD WHEEL HANDLER - Optimized for immediate snap response
   useEffect(() => {
     const viewport = stickyViewportRef.current;
     const container = containerRef.current;
     if (!viewport || !container) return;
 
-    const handleWheel = (e: WheelEvent) => {
+    // Detect Mac trackpad
+    const isMacTrackpad = (e: WheelEvent) => e.deltaMode === 0;
+
+    const handleWheelMac = (e: WheelEvent) => {
       // Block if touch is active
       if (isTouchActiveRef.current) {
         e.preventDefault();
@@ -361,17 +364,11 @@ export default function VerticalSnapScroll({
 
       // If we've scrolled past the container, allow natural scrolling
       if (shouldReleaseControl && e.deltaY > 0) {
-        // Trigger auto-scroll to additional sections when natural scroll begins
         if (currentIndex === items.length - 1) {
           setTimeout(() => scrollToAdditionalSections(), 50);
         }
         return;
       }
-
-      const now = Date.now();
-      
-      // Don't auto-reset based on time - let the scroll timeout handle it
-      // The scroll timeout will reset after the user stops scrolling
 
       const shouldAllowNaturalScroll = () => {
         // At the last item, scrolling down
@@ -383,13 +380,11 @@ export default function VerticalSnapScroll({
             const maxScroll = getHorizontalScrollWidth(currentItem.id);
             const tolerance = 10;
             if (horizontalProgress >= maxScroll - tolerance) {
-              // Trigger auto-scroll to additional sections
               setTimeout(() => scrollToAdditionalSections(), 100);
               return true;
             }
             return false;
           }
-          // For simple items at end, trigger auto-scroll
           setTimeout(() => scrollToAdditionalSections(), 100);
           return true;
         }
@@ -419,33 +414,24 @@ export default function VerticalSnapScroll({
 
       e.preventDefault();
 
+      const now = Date.now();
+      const currentItem = items[currentIndex];
+      const isHorizontalScrollItem = currentItem.type === 'horizontal-scroll';
+
+      // Initialize scroll session if new
       if (!isActiveScrollRef.current) {
         scrollStartTimeRef.current = now;
         isActiveScrollRef.current = true;
-        // DON'T reset accumulated here - keep building it up
-        // accumulatedScrollRef.current = 0;
         setIsScrolling(true);
       }
 
-      const currentItem = items[currentIndex];
-      const isHorizontalScrollItem = currentItem.type === 'horizontal-scroll';
-      
-      // SIMPLER APPROACH: Just boost trackpad slightly
-      const isMacTrackpad = e.deltaMode === 0;
-      const boost = isMacTrackpad ? 1.8 : 1.0;
+      // Mac trackpad: Boost sensitivity for better feel
+      const boost = isMacTrackpad(e) ? 1.8 : 1.0;
       const scrollDelta = e.deltaY * scrollSpeed * boost;
       
       accumulatedScrollRef.current += scrollDelta;
 
-      // Log for debugging
-      // console.log('Wheel:', { 
-      //   deltaY: e.deltaY.toFixed(2), 
-      //   mode: e.deltaMode,
-      //   boost: boost,
-      //   accumulated: accumulatedScrollRef.current.toFixed(2),
-      //   startTime: scrollStartTimeRef.current
-      // });
-
+      // Update horizontal progress for horizontal-scroll items
       if (isHorizontalScrollItem) {
         const maxScroll = getHorizontalScrollWidth(currentItem.id);
         
@@ -462,13 +448,14 @@ export default function VerticalSnapScroll({
         setTransitionDuration(0);
       }
 
+      // Clear existing timeout
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
       }
 
-      // Simple momentum detection
+      // Detect momentum scrolling for Mac trackpad
       const isLikelyMomentum = (
-        e.deltaMode === 0 &&
+        isMacTrackpad(e) &&
         Math.abs(e.deltaY) < 10 &&
         Math.abs(e.deltaY) > 0.1 &&
         isActiveScrollRef.current
@@ -476,9 +463,9 @@ export default function VerticalSnapScroll({
       
       isMomentumScrollRef.current = isLikelyMomentum;
       
-      // Very fast timeouts for instant response
-      const timeoutDelay = isLikelyMomentum ? 40 : 80;
-      // console.log('Timeout:', timeoutDelay, 'momentum:', isLikelyMomentum);
+      // KEY FIX: Much shorter timeout for immediate snap detection
+      // This eliminates the 1-2 second delay issue
+      const timeoutDelay = isLikelyMomentum ? 35 : 60;
 
       scrollTimeoutRef.current = setTimeout(() => {
         if (!isActiveScrollRef.current) return;
@@ -487,41 +474,33 @@ export default function VerticalSnapScroll({
         const distance = Math.abs(accumulatedScrollRef.current);
         const direction = accumulatedScrollRef.current > 0 ? 1 : -1;
 
-        const FAST_GESTURE_TIME = 150;
+        // Gesture classification thresholds
+        const FAST_GESTURE_TIME = 120;  // Reduced for quicker detection
         const SLOW_SCROLL_TIME = 300;
 
         const isFastGesture = scrollDuration < FAST_GESTURE_TIME;
         const isSlowScroll = scrollDuration >= SLOW_SCROLL_TIME;
 
         let shouldSnap = false;
-        let adaptiveTransitionDuration = 800; // Default - slower and smoother
+        let adaptiveTransitionDuration = 700;
 
-        // SIMPLER THRESHOLDS
+        // Mac-optimized thresholds for immediate response
         const threshold = isMomentumScrollRef.current 
-          ? minThreshold * 0.3
-          : minThreshold * 0.6;
+          ? minThreshold * 0.25  // Lower threshold for momentum
+          : minThreshold * 0.5;  // Lower threshold for active scroll
 
         if (isFastGesture) {
-          shouldSnap = distance >= 25;
-          adaptiveTransitionDuration = 700; // Smooth but not too slow
+          shouldSnap = distance >= 20;  // Lower distance threshold
+          adaptiveTransitionDuration = 600;
         } else if (isSlowScroll) {
           shouldSnap = distance >= threshold;
-          adaptiveTransitionDuration = 900; // Very smooth for deliberate scrolls
+          adaptiveTransitionDuration = 800;
         } else {
           if (distance >= threshold) {
             shouldSnap = true;
-            adaptiveTransitionDuration = 800; // Nice medium speed
+            adaptiveTransitionDuration = 700;
           }
         }
-        
-        // console.log('Snap?', { 
-        //   shouldSnap, 
-        //   distance: distance.toFixed(2), 
-        //   threshold, 
-        //   duration: scrollDuration,
-        //   startTime: scrollStartTimeRef.current,
-        //   now: now
-        // });
 
         if (shouldSnap) {
           setTransitionDuration(adaptiveTransitionDuration);
@@ -558,7 +537,7 @@ export default function VerticalSnapScroll({
           }
         }
 
-        // Only reset if we actually stopped scrolling
+        // Reset scroll session
         isActiveScrollRef.current = false;
         accumulatedScrollRef.current = 0;
         scrollStartTimeRef.current = 0;
@@ -566,10 +545,10 @@ export default function VerticalSnapScroll({
       }, timeoutDelay);
     };
 
-    viewport.addEventListener('wheel', handleWheel, { passive: false });
+    viewport.addEventListener('wheel', handleWheelMac, { passive: false });
 
     return () => {
-      viewport.removeEventListener('wheel', handleWheel);
+      viewport.removeEventListener('wheel', handleWheelMac);
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
       }
