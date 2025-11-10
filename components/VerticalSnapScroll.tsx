@@ -53,17 +53,22 @@ export default function VerticalSnapScroll({
   const isMomentumScrollRef = useRef(false);
   const [isDesktop, setIsDesktop] = useState(true);
   const hasTriggeredScrollRef = useRef(false);
+  const [isMac, setIsMac] = useState(false);
 
   const { min: minThreshold, max: maxThreshold } = snapThreshold;
-  // Detect device type (desktop vs mobile/tablet)
+  
+  // Detect device type and OS
   useEffect(() => {
     const checkDevice = () => {
       setIsDesktop(window.innerWidth >= 1024);
+      // Detect Mac
+      setIsMac(/Mac|iPhone|iPad|iPod/.test(navigator.platform) || /Mac/.test(navigator.userAgent));
     };
     checkDevice();
     window.addEventListener('resize', checkDevice);
     return () => window.removeEventListener('resize', checkDevice);
   }, []);
+
   // Notify parent of index changes
   useEffect(() => {
     if (onIndexChange) {
@@ -209,14 +214,13 @@ export default function VerticalSnapScroll({
   };
 
   // Keyboard event handler
-  // ENHANCED: Keyboard handler with horizontal scroll support for desktop
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Only handle arrow keys
       if (!['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
         return;
       }
-// console.log(shouldReleaseControl)
+
       // Release control if additional-sections visible
       if (shouldReleaseControl) {
         return;
@@ -264,7 +268,6 @@ export default function VerticalSnapScroll({
             setHorizontalProgress(0);
             setTransitionDuration(700);
           } else if (e.key === 'ArrowRight' && newProgress >= maxScroll - tolerance && currentIndex === items.length - 1) {
-            // At last item, horizontal scroll complete, arrow right pressed - auto-scroll
             setTimeout(() => scrollToAdditionalSections(), 100);
           }
           return;
@@ -296,7 +299,6 @@ export default function VerticalSnapScroll({
             setHorizontalProgress(0);
             setTransitionDuration(700);
           } else if (e.key === 'ArrowDown' && newProgress >= maxScroll - tolerance && currentIndex === items.length - 1) {
-            // At last item, horizontal scroll complete, arrow down pressed - auto-scroll
             setTimeout(() => scrollToAdditionalSections(), 100);
           }
           return;
@@ -307,7 +309,6 @@ export default function VerticalSnapScroll({
           setCurrentIndex(currentIndex + 1);
           setTransitionDuration(700);
         } else if (e.key === 'ArrowDown' && currentIndex === items.length - 1) {
-          // At last item and arrow down pressed - auto-scroll
           setTimeout(() => scrollToAdditionalSections(), 100);
         } else if (e.key === 'ArrowUp' && currentIndex > 0) {
           setCurrentIndex(currentIndex - 1);
@@ -320,8 +321,252 @@ export default function VerticalSnapScroll({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentIndex, horizontalProgress, items, shouldReleaseControl, isDesktop]);
 
-  // SIMPLIFIED WHEEL EVENT HANDLER FOR MAC
+  // MAC-SPECIFIC: Use native scroll with wheel event tracking for snapping
   useEffect(() => {
+    if (!isMac) return;
+
+    const viewport = stickyViewportRef.current;
+    const container = containerRef.current;
+    if (!viewport || !container) return;
+
+    let wheelEndTimeout: NodeJS.Timeout;
+    let accumulatedDelta = 0;
+    let wheelEventCount = 0;
+    let snapScheduled = false;
+    let lastWheelTime = 0;
+
+    const handleWheelMac = (e: WheelEvent) => {
+      // Check if we should release control
+      if (shouldReleaseControl) {
+        if (currentIndex === items.length - 1) {
+          setTimeout(() => scrollToAdditionalSections(), 50);
+        }
+        return;
+      }
+
+      // Check if container is in viewport
+      const containerRect = container.getBoundingClientRect();
+      if (containerRect.bottom < 0 || containerRect.top > window.innerHeight) {
+        return;
+      }
+
+      // Check if additional section is visible
+      const nextSection = document.getElementById('additional-sections');
+      if (nextSection) {
+        const nextSectionRect = nextSection.getBoundingClientRect();
+        const isNextSectionVisible = 
+          nextSectionRect.top < window.innerHeight && 
+          nextSectionRect.bottom > 0;
+        
+        if (isNextSectionVisible) {
+          return;
+        }
+      }
+
+      const now = Date.now();
+      const timeSinceLastWheel = now - lastWheelTime;
+      lastWheelTime = now;
+
+      // Reset if new gesture (gap > 150ms)
+      if (timeSinceLastWheel > 150) {
+        wheelEventCount = 0;
+        accumulatedDelta = 0;
+        snapScheduled = false;
+        if (wheelEndTimeout) {
+          clearTimeout(wheelEndTimeout);
+        }
+      }
+
+      wheelEventCount++;
+
+      const currentItem = items[currentIndex];
+      const isHorizontalScrollItem = currentItem.type === 'horizontal-scroll';
+
+      // For horizontal scroll items on desktop, handle scrolling
+      if (isHorizontalScrollItem && isDesktop) {
+        e.preventDefault();
+        
+        const scrollDelta = e.deltaY * scrollSpeed * 1.8;
+        const maxScroll = getHorizontalScrollWidth(currentItem.id);
+        const newProgress = horizontalProgress + scrollDelta;
+        
+        setHorizontalProgress(Math.max(0, Math.min(maxScroll, newProgress)));
+        setTransitionDuration(0);
+
+        accumulatedDelta += scrollDelta;
+
+        // Detect momentum phase
+        const isInMomentum = Math.abs(e.deltaY) < 10 && wheelEventCount > 15;
+        const hasEnoughDistance = Math.abs(accumulatedDelta) >= 150; // Increased threshold
+
+        // Once in momentum with enough distance, schedule snap and don't reset
+        if (isInMomentum && hasEnoughDistance && !snapScheduled) {
+          snapScheduled = true;
+
+          wheelEndTimeout = setTimeout(() => {
+            const tolerance = 20;
+            const direction = accumulatedDelta > 0 ? 1 : -1;
+
+            if (direction < 0 && horizontalProgress <= tolerance && currentIndex > 0) {
+              setCurrentIndex(currentIndex - 1);
+              setHorizontalProgress(0);
+              setTransitionDuration(700);
+            } else if (direction > 0 && horizontalProgress >= maxScroll - tolerance) {
+              if (currentIndex < items.length - 1) {
+                setCurrentIndex(currentIndex + 1);
+                setHorizontalProgress(0);
+                setTransitionDuration(700);
+              } else {
+                setTimeout(() => scrollToAdditionalSections(), 100);
+              }
+            }
+
+            accumulatedDelta = 0;
+            wheelEventCount = 0;
+            snapScheduled = false;
+          }, 150);
+
+          return;
+        }
+
+        // If snap already scheduled, just update progress
+        if (snapScheduled) {
+          return;
+        }
+
+        // Clear and reset timeout only if not scheduled
+        if (wheelEndTimeout) {
+          clearTimeout(wheelEndTimeout);
+        }
+
+        wheelEndTimeout = setTimeout(() => {
+          const tolerance = 20;
+          const direction = accumulatedDelta > 0 ? 1 : -1;
+
+          if (direction < 0 && horizontalProgress <= tolerance && currentIndex > 0) {
+            setCurrentIndex(currentIndex - 1);
+            setHorizontalProgress(0);
+            setTransitionDuration(700);
+          } else if (direction > 0 && horizontalProgress >= maxScroll - tolerance) {
+            if (currentIndex < items.length - 1) {
+              setCurrentIndex(currentIndex + 1);
+              setHorizontalProgress(0);
+              setTransitionDuration(700);
+            } else {
+              setTimeout(() => scrollToAdditionalSections(), 100);
+            }
+          }
+
+          accumulatedDelta = 0;
+          wheelEventCount = 0;
+          snapScheduled = false;
+        }, 100);
+
+        return;
+      }
+
+      // For simple items, prevent default and handle snapping
+      const shouldAllowNaturalScroll = () => {
+        if (currentIndex === items.length - 1 && e.deltaY > 0) {
+          setTimeout(() => scrollToAdditionalSections(), 100);
+          return true;
+        }
+        
+        if (currentIndex === 0 && e.deltaY < 0) {
+          return true;
+        }
+        
+        return false;
+      };
+
+      if (shouldAllowNaturalScroll()) {
+        accumulatedDelta = 0;
+        wheelEventCount = 0;
+        snapScheduled = false;
+        if (wheelEndTimeout) {
+          clearTimeout(wheelEndTimeout);
+        }
+        return;
+      }
+
+      // Prevent default for simple items to control snapping
+      e.preventDefault();
+
+      accumulatedDelta += e.deltaY;
+
+      // Detect momentum phase (small deltas, many events)
+      const isInMomentum = Math.abs(e.deltaY) < 10 && wheelEventCount > 15;
+      const hasEnoughDistance = Math.abs(accumulatedDelta) >= 150; // Increased threshold
+
+      // KEY FIX: Once in momentum with enough distance, schedule snap and DON'T reset
+      if (isInMomentum && hasEnoughDistance && !snapScheduled) {
+        snapScheduled = true;
+
+        wheelEndTimeout = setTimeout(() => {
+          setTransitionDuration(700);
+          
+          if (accumulatedDelta > 0 && currentIndex < items.length - 1) {
+            setCurrentIndex(currentIndex + 1);
+          } else if (accumulatedDelta < 0 && currentIndex > 0) {
+            setCurrentIndex(currentIndex - 1);
+          }
+
+          accumulatedDelta = 0;
+          wheelEventCount = 0;
+          snapScheduled = false;
+        }, 150);
+
+        return; // Don't reset timeout below
+      }
+
+      // If snap already scheduled, just continue - don't reset timeout
+      if (snapScheduled) {
+        return;
+      }
+
+      // Clear existing timeout only if snap not scheduled
+      if (wheelEndTimeout) {
+        clearTimeout(wheelEndTimeout);
+      }
+
+      // Regular timeout for early phase
+      wheelEndTimeout = setTimeout(() => {
+        const threshold = 150; // Increased to match momentum threshold
+        
+        if (Math.abs(accumulatedDelta) >= threshold) {
+          setTransitionDuration(700);
+          
+          if (accumulatedDelta > 0 && currentIndex < items.length - 1) {
+            setCurrentIndex(currentIndex + 1);
+          } else if (accumulatedDelta < 0 && currentIndex > 0) {
+            setCurrentIndex(currentIndex - 1);
+          }
+        }
+
+        accumulatedDelta = 0;
+        wheelEventCount = 0;
+        snapScheduled = false;
+      }, 100);
+    };
+
+    viewport.addEventListener('wheel', handleWheelMac, { passive: false });
+
+    return () => {
+      viewport.removeEventListener('wheel', handleWheelMac);
+      if (wheelEndTimeout) {
+        clearTimeout(wheelEndTimeout);
+      }
+    };
+  }, [isMac, currentIndex, items, horizontalProgress, isDesktop, scrollSpeed, shouldReleaseControl]);
+
+  // WHEEL EVENT HANDLER - Skip for Mac, let native behavior work
+  useEffect(() => {
+    // On Mac, don't intercept wheel events - let native scroll behavior handle it
+    if (isMac) {
+      console.log('Mac detected - skipping custom wheel handler');
+      return;
+    }
+
     const viewport = stickyViewportRef.current;
     const container = containerRef.current;
     if (!viewport || !container) return;
@@ -361,7 +606,6 @@ export default function VerticalSnapScroll({
 
       // If we've scrolled past the container, allow natural scrolling
       if (shouldReleaseControl && e.deltaY > 0) {
-        // Trigger auto-scroll to additional sections when natural scroll begins
         if (currentIndex === items.length - 1) {
           setTimeout(() => scrollToAdditionalSections(), 50);
         }
@@ -369,9 +613,6 @@ export default function VerticalSnapScroll({
       }
 
       const now = Date.now();
-      
-      // Don't auto-reset based on time - let the scroll timeout handle it
-      // The scroll timeout will reset after the user stops scrolling
 
       const shouldAllowNaturalScroll = () => {
         // At the last item, scrolling down
@@ -383,13 +624,11 @@ export default function VerticalSnapScroll({
             const maxScroll = getHorizontalScrollWidth(currentItem.id);
             const tolerance = 10;
             if (horizontalProgress >= maxScroll - tolerance) {
-              // Trigger auto-scroll to additional sections
               setTimeout(() => scrollToAdditionalSections(), 100);
               return true;
             }
             return false;
           }
-          // For simple items at end, trigger auto-scroll
           setTimeout(() => scrollToAdditionalSections(), 100);
           return true;
         }
@@ -422,29 +661,15 @@ export default function VerticalSnapScroll({
       if (!isActiveScrollRef.current) {
         scrollStartTimeRef.current = now;
         isActiveScrollRef.current = true;
-        // DON'T reset accumulated here - keep building it up
-        // accumulatedScrollRef.current = 0;
         setIsScrolling(true);
       }
 
       const currentItem = items[currentIndex];
       const isHorizontalScrollItem = currentItem.type === 'horizontal-scroll';
       
-      // SIMPLER APPROACH: Just boost trackpad slightly
-      const isMacTrackpad = e.deltaMode === 0;
-      const boost = isMacTrackpad ? 1.8 : 1.0;
-      const scrollDelta = e.deltaY * scrollSpeed * boost;
+      const scrollDelta = e.deltaY * scrollSpeed;
       
       accumulatedScrollRef.current += scrollDelta;
-
-      // Log for debugging
-      // console.log('Wheel:', { 
-      //   deltaY: e.deltaY.toFixed(2), 
-      //   mode: e.deltaMode,
-      //   boost: boost,
-      //   accumulated: accumulatedScrollRef.current.toFixed(2),
-      //   startTime: scrollStartTimeRef.current
-      // });
 
       if (isHorizontalScrollItem) {
         const maxScroll = getHorizontalScrollWidth(currentItem.id);
@@ -453,7 +678,7 @@ export default function VerticalSnapScroll({
           const newProgress = horizontalProgress + scrollDelta;
           setHorizontalProgress(Math.max(0, Math.min(maxScroll, newProgress)));
         } else {
-          const horizontalScrollDelta = e.deltaX * scrollSpeed * boost;
+          const horizontalScrollDelta = e.deltaX * scrollSpeed;
           const newProgress = horizontalProgress + horizontalScrollDelta;
           setHorizontalProgress(Math.max(0, Math.min(maxScroll, newProgress)));
         }
@@ -466,19 +691,7 @@ export default function VerticalSnapScroll({
         clearTimeout(scrollTimeoutRef.current);
       }
 
-      // Simple momentum detection
-      const isLikelyMomentum = (
-        e.deltaMode === 0 &&
-        Math.abs(e.deltaY) < 10 &&
-        Math.abs(e.deltaY) > 0.1 &&
-        isActiveScrollRef.current
-      );
-      
-      isMomentumScrollRef.current = isLikelyMomentum;
-      
-      // Very fast timeouts for instant response
-      const timeoutDelay = isLikelyMomentum ? 40 : 80;
-      // console.log('Timeout:', timeoutDelay, 'momentum:', isLikelyMomentum);
+      const timeoutDelay = 80;
 
       scrollTimeoutRef.current = setTimeout(() => {
         if (!isActiveScrollRef.current) return;
@@ -487,41 +700,29 @@ export default function VerticalSnapScroll({
         const distance = Math.abs(accumulatedScrollRef.current);
         const direction = accumulatedScrollRef.current > 0 ? 1 : -1;
 
-        const FAST_GESTURE_TIME = 150;
+        const FAST_GESTURE_TIME = 100;
         const SLOW_SCROLL_TIME = 300;
 
         const isFastGesture = scrollDuration < FAST_GESTURE_TIME;
         const isSlowScroll = scrollDuration >= SLOW_SCROLL_TIME;
 
         let shouldSnap = false;
-        let adaptiveTransitionDuration = 800; // Default - slower and smoother
+        let adaptiveTransitionDuration = 800;
 
-        // SIMPLER THRESHOLDS
-        const threshold = isMomentumScrollRef.current 
-          ? minThreshold * 0.3
-          : minThreshold * 0.6;
+        const threshold = minThreshold * 0.6;
 
         if (isFastGesture) {
           shouldSnap = distance >= 25;
-          adaptiveTransitionDuration = 700; // Smooth but not too slow
+          adaptiveTransitionDuration = 700;
         } else if (isSlowScroll) {
           shouldSnap = distance >= threshold;
-          adaptiveTransitionDuration = 900; // Very smooth for deliberate scrolls
+          adaptiveTransitionDuration = 900;
         } else {
           if (distance >= threshold) {
             shouldSnap = true;
-            adaptiveTransitionDuration = 800; // Nice medium speed
+            adaptiveTransitionDuration = 800;
           }
         }
-        
-        // console.log('Snap?', { 
-        //   shouldSnap, 
-        //   distance: distance.toFixed(2), 
-        //   threshold, 
-        //   duration: scrollDuration,
-        //   startTime: scrollStartTimeRef.current,
-        //   now: now
-        // });
 
         if (shouldSnap) {
           setTransitionDuration(adaptiveTransitionDuration);
@@ -558,7 +759,6 @@ export default function VerticalSnapScroll({
           }
         }
 
-        // Only reset if we actually stopped scrolling
         isActiveScrollRef.current = false;
         accumulatedScrollRef.current = 0;
         scrollStartTimeRef.current = 0;
@@ -574,7 +774,7 @@ export default function VerticalSnapScroll({
         clearTimeout(scrollTimeoutRef.current);
       }
     };
-  }, [currentIndex, horizontalProgress, items, scrollSpeed, minThreshold, maxThreshold, calculatedScrollWidths, shouldReleaseControl]);
+  }, [currentIndex, horizontalProgress, items, scrollSpeed, minThreshold, maxThreshold, calculatedScrollWidths, shouldReleaseControl, isMac]);
 
   // Touch events
   useEffect(() => {
@@ -587,7 +787,7 @@ export default function VerticalSnapScroll({
       if (shouldReleaseControl) {
         return;
       }
-        // ENHANCED: Check if additional-sections is in viewport
+
       const nextSection = document.getElementById('additional-sections');
       if (nextSection) {
         const nextSectionRect = nextSection.getBoundingClientRect();
@@ -596,7 +796,7 @@ export default function VerticalSnapScroll({
           nextSectionRect.bottom > 0;
         
         if (isNextSectionVisible) {
-          return; // Don't interfere
+          return;
         }
       }
 
@@ -608,7 +808,6 @@ export default function VerticalSnapScroll({
         return;
       }
 
-      // ENHANCED: Smooth exit at last item
       const isLastItem = currentIndex === items.length - 1;
       if (isLastItem) {
         const currentItem = items[currentIndex];
@@ -637,13 +836,11 @@ export default function VerticalSnapScroll({
 
     const handleTouchMove = (e: TouchEvent) => {
       if (shouldReleaseControl) {
-        // When natural scroll is enabled at the end, trigger auto-scroll
         if (currentIndex === items.length - 1) {
           setTimeout(() => scrollToAdditionalSections(), 100);
         }
         return;
       }
-
 
       const touchY = e.touches[0].clientY;
       
@@ -669,27 +866,24 @@ export default function VerticalSnapScroll({
             isTouchActiveRef.current = false;
             setIsScrolling(false);
             lastTouchYRef.current = touchY;
-            // Trigger auto-scroll when swiping down at the end
             setTimeout(() => scrollToAdditionalSections(), 100);
             return;
           }
         } else {
-        // Simple item at end - release and auto-scroll
-        isActiveScrollRef.current = false;
-        isTouchActiveRef.current = false;
-        setIsScrolling(false);
-        lastTouchYRef.current = touchY;
-        setTimeout(() => scrollToAdditionalSections(), 100);
-        return;
+          isActiveScrollRef.current = false;
+          isTouchActiveRef.current = false;
+          setIsScrolling(false);
+          lastTouchYRef.current = touchY;
+          setTimeout(() => scrollToAdditionalSections(), 100);
+          return;
+        }
       }
-    }
     
-    // ENHANCED: Also check first item for smooth scroll back
-    if (isFirstItem && deltaY < -3) {
-      const currentItem = items[currentIndex];
-      const isHorizontalScrollItem = currentItem.type === 'horizontal-scroll';
-      
-      if (isHorizontalScrollItem && horizontalProgressRef.current <= 10) { 
+      if (isFirstItem && deltaY < -3) {
+        const currentItem = items[currentIndex];
+        const isHorizontalScrollItem = currentItem.type === 'horizontal-scroll';
+        
+        if (isHorizontalScrollItem && horizontalProgressRef.current <= 10) { 
           isActiveScrollRef.current = false;
           isTouchActiveRef.current = false;
           setIsScrolling(false);
@@ -756,7 +950,6 @@ export default function VerticalSnapScroll({
             setHorizontalProgress(0);
             horizontalProgressRef.current = 0;
           } else if (direction > 0 && atEnd && currentIndex === items.length - 1) {
-            // At last item, horizontal complete, gesture forward - auto-scroll
             setTimeout(() => scrollToAdditionalSections(), 100);
           }
         }
@@ -773,7 +966,6 @@ export default function VerticalSnapScroll({
           } else if (direction < 0 && currentIndex > 0) {
             setCurrentIndex(currentIndex - 1);
           } else if (direction > 0 && currentIndex === items.length - 1) {
-            // At last simple item, gesture forward - auto-scroll
             setTimeout(() => scrollToAdditionalSections(), 100);
           }
         }
