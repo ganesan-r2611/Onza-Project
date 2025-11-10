@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ServicesCarouselSection from "./ServiceCarousel";
-import ServiceCarouselIntro from "./ServiceCarouselIntro";
 import SectionZoomComponent from "./SectionZoomComponent";
 import VerticalSnapScroll, { SnapItem } from "./VerticalSnapScroll";
 
@@ -114,7 +113,7 @@ export default function SnapScrollContent({ data }: SnapScrollContentProps) {
           data-speed="1"
         >
           <div className="text-[#fbfbfb] max-w-lg lg:pl-[40px] 2xl:pl-[2.778vw] md:mt-[100px] lg:mt-[200px] 2xl:mt-[13.889vw]">
-            <h2 className="text-[40px] lg:text-[64px] 2xl:text-[4.444vw] leading-[72px] 2xl:leading-[5.000vw] font-light drop-shadow-2xl pt-14 2xl:pt-[4.86vw] px-4 2xl:pt-[1.39vw] md:px-0 lg:pl-0">
+            <h2 className="text-[40px] lg:text-[64px] 2xl:text-[4.444vw] leading-[72px] 2xl:leading-[5.000vw] font-light drop-shadow-2xl pt-14 px-4 2xl:pt-[1.39vw] md:px-0 lg:pl-0">
               <span className="inline lg:block">Crafting</span>
               <span className="inline lg:hidden">&nbsp;</span>
               <span className="inline lg:block">Pathways,</span>

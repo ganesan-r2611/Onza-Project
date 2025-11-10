@@ -28,7 +28,7 @@ export default async function Blog() {
                 : (
                     imageMap[
                       data.heroSection.backgroundImage as keyof typeof imageMap
-                    ] as any
+                    ] as { src: string }
                   )?.src || "/fallback-image.jpg"
             })`,
             backgroundSize: "cover",

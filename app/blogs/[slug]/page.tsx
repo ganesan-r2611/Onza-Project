@@ -5,13 +5,8 @@ import { getStaticData } from "@/libs/getStaticData";
 import BlogCard from "@/components/ui/Blog_card";
 import NewsletterForm from "@/components/ui/NewsletterForm";
 
-interface BlogPageProps {
-  params: {
-    slug: string;
-  };
-}
 
-export default async function BlogDetailPage({ params }: BlogPageProps) {
+export default async function BlogDetailPage() {
   const staticData = await getStaticData();
   const data = staticData.blogDetails;
 

@@ -119,7 +119,7 @@ export default async function ContactSection() {
                       <address className="not-italic font-light text-[14px] 2xl:text-[0.97vw] leading-relaxed">
                         262, Worldclass Tech Park
                         <br />
-                        7th "A" Cross, Phase III
+                        7th &ldquo; A &rdquo; Cross, Phase III
                         <br />
                         Bengaluru 560085
                       </address>
