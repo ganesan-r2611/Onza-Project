@@ -27,19 +27,19 @@
             {
                 "id": 2,
                 "category": "Wealth",
-                "title": "Impact Of Extrinsic Motivation On Intrinsic",
-                "excerpt": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna al",
-                "date": "April 21, 2025",
-                "readTime": "7 min read",
+                "title": "Building Sustainable Wealth Strategies",
+                "excerpt": "Learn how to build wealth that lasts through proper planning and investment strategies.",
+                "date": "April 18, 2025",
+                "readTime": "5 min read",
                 "imageKey": "blog_02"
             },
             {
                 "id": 3,
                 "category": "Wealth",
-                "title": "Impact Of Extrinsic Motivation On Intrinsic",
-                "excerpt": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna al",
-                "date": "April 21, 2025",
-                "readTime": "7 min read",
+                "title": "The Psychology of Financial Decisions",
+                "excerpt": "Understanding how psychology affects our financial choices and how to make better decisions.",
+                "date": "April 15, 2025",
+                "readTime": "8 min read",
                 "imageKey": "blog_03"
             }
         ]
@@ -55,22 +55,22 @@
             },
             {
                 "id": 2,
-                "name": "Category 1",
+                "name": "Wealth",
                 "isActive": false
             },
             {
                 "id": 3,
-                "name": "Category 2",
+                "name": "Investment",
                 "isActive": false
             },
             {
                 "id": 4,
-                "name": "Category 3",
+                "name": "Planning",
                 "isActive": false
             },
             {
                 "id": 5,
-                "name": "Category 4",
+                "name": "Strategy",
                 "isActive": false
             }
         ],
@@ -87,27 +87,171 @@
             {
                 "id": 2,
                 "category": "Wealth",
-                "title": "Impact Of Extrinsic Motivation On Intrinsic",
-                "excerpt": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna al",
-                "date": "April 21, 2025",
-                "readTime": "7 min read",
+                "title": "Building Generational Wealth",
+                "excerpt": "Strategies for creating and preserving wealth that can benefit multiple generations of your family.",
+                "date": "April 18, 2025",
+                "readTime": "6 min read",
                 "imageKey": "blog_card_02"
             },
             {
                 "id": 3,
                 "category": "Wealth",
-                "title": "Impact Of Extrinsic Motivation On Intrinsic",
-                "excerpt": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna al",
-                "date": "April 21, 2025",
-                "readTime": "7 min read",
+                "title": "Wealth Preservation Techniques",
+                "excerpt": "Essential techniques to protect your wealth from market volatility and economic downturns.",
+                "date": "April 15, 2025",
+                "readTime": "5 min read",
                 "imageKey": "blog_card_03"
             },
             {
                 "id": 4,
                 "category": "Wealth",
-                "title": "Impact Of Extrinsic Motivation On Intrinsic",
-                "excerpt": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna al",
-                "date": "April 21, 2025",
+                "title": "Digital Wealth Management",
+                "excerpt": "How technology is revolutionizing the way we manage and grow our wealth.",
+                "date": "April 12, 2025",
+                "readTime": "8 min read",
+                "imageKey": "blog_card_04"
+            },
+            {
+                "id": 5,
+                "category": "Wealth",
+                "title": "Wealth Mindset Development",
+                "excerpt": "Cultivating the right mindset for sustainable wealth creation and financial success.",
+                "date": "April 10, 2025",
+                "readTime": "7 min read",
+                "imageKey": "blog_card_01"
+            },
+            {
+                "id": 6,
+                "category": "Wealth",
+                "title": "Passive Income Strategies",
+                "excerpt": "Exploring various passive income streams to build wealth while you sleep.",
+                "date": "April 8, 2025",
+                "readTime": "6 min read",
+                "imageKey": "blog_card_02"
+            },
+            {
+                "id": 7,
+                "category": "Wealth",
+                "title": "Wealth and Lifestyle Balance",
+                "excerpt": "Finding the perfect balance between wealth accumulation and quality of life.",
+                "date": "April 5, 2025",
+                "readTime": "5 min read",
+                "imageKey": "blog_card_03"
+            },
+            {
+                "id": 8,
+                "category": "Wealth",
+                "title": "Global Wealth Trends",
+                "excerpt": "Understanding global wealth distribution and emerging opportunities worldwide.",
+                "date": "April 2, 2025",
+                "readTime": "9 min read",
+                "imageKey": "blog_card_04"
+            },
+            {
+                "id": 9,
+                "category": "Investment",
+                "title": "Stock Market Fundamentals",
+                "excerpt": "Essential knowledge for anyone starting their journey in stock market investing.",
+                "date": "March 30, 2025",
+                "readTime": "8 min read",
+                "imageKey": "blog_card_01"
+            },
+            {
+                "id": 10,
+                "category": "Investment",
+                "title": "Real Estate Investment Guide",
+                "excerpt": "Comprehensive guide to getting started with real estate investment properties.",
+                "date": "March 28, 2025",
+                "readTime": "10 min read",
+                "imageKey": "blog_card_02"
+            },
+            {
+                "id": 11,
+                "category": "Investment",
+                "title": "Cryptocurrency Opportunities",
+                "excerpt": "Understanding the risks and rewards of cryptocurrency investments in 2025.",
+                "date": "March 25, 2025",
+                "readTime": "7 min read",
+                "imageKey": "blog_card_03"
+            },
+            {
+                "id": 12,
+                "category": "Investment",
+                "title": "Bond Market Insights",
+                "excerpt": "Navigating the bond market for stable returns and portfolio diversification.",
+                "date": "March 22, 2025",
+                "readTime": "6 min read",
+                "imageKey": "blog_card_04"
+            },
+            {
+                "id": 13,
+                "category": "Planning",
+                "title": "Retirement Planning Essentials",
+                "excerpt": "Key steps to ensure a comfortable and secure retirement regardless of your age.",
+                "date": "March 20, 2025",
+                "readTime": "8 min read",
+                "imageKey": "blog_card_01"
+            },
+            {
+                "id": 14,
+                "category": "Planning",
+                "title": "Estate Planning Guide",
+                "excerpt": "Comprehensive guide to estate planning and wealth transfer strategies.",
+                "date": "March 18, 2025",
+                "readTime": "7 min read",
+                "imageKey": "blog_card_02"
+            },
+            {
+                "id": 15,
+                "category": "Planning",
+                "title": "Tax Optimization Strategies",
+                "excerpt": "Legal and effective ways to minimize your tax burden and maximize returns.",
+                "date": "March 15, 2025",
+                "readTime": "6 min read",
+                "imageKey": "blog_card_03"
+            },
+            {
+                "id": 16,
+                "category": "Planning",
+                "title": "Education Funding Plans",
+                "excerpt": "Smart strategies for saving and investing for your children's education.",
+                "date": "March 12, 2025",
+                "readTime": "5 min read",
+                "imageKey": "blog_card_04"
+            },
+            {
+                "id": 17,
+                "category": "Strategy",
+                "title": "Long-term Investment Strategy",
+                "excerpt": "Building and maintaining a successful long-term investment approach.",
+                "date": "March 10, 2025",
+                "readTime": "8 min read",
+                "imageKey": "blog_card_01"
+            },
+            {
+                "id": 18,
+                "category": "Strategy",
+                "title": "Market Timing vs Time in Market",
+                "excerpt": "Understanding why time in the market often beats timing the market.",
+                "date": "March 8, 2025",
+                "readTime": "7 min read",
+                "imageKey": "blog_card_02"
+            },
+            {
+                "id": 19,
+                "category": "Strategy",
+                "title": "Value Investing Principles",
+                "excerpt": "Core principles of value investing and how to identify undervalued assets.",
+                "date": "March 5, 2025",
+                "readTime": "6 min read",
+                "imageKey": "blog_card_03"
+            },
+            {
+                "id": 20,
+                "category": "Strategy",
+                "title": "Growth Investing Approach",
+                "excerpt": "Strategies for identifying and investing in high-growth potential companies.",
+                "date": "March 2, 2025",
                 "readTime": "7 min read",
                 "imageKey": "blog_card_04"
             }
