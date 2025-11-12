@@ -1,4 +1,5 @@
 // components/Footer.tsx
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { imageMap } from "@/libs/imageMap";
@@ -22,13 +23,14 @@ export interface FooterData {
 
 export default function Footer({ data }: { data: FooterData }) {
   return (
-    <footer className="bg-black text-[#E6E0DA] pt-6 2xl:pt-[2.08vw] px-4 2xl:px-[1.39vw] md:px-6 lg:px-0">
-      {/* Main Footer Content */}
-      <div className="mx-auto max-w-full">
-        {/* Top Row - Logo, Home, Services, Contact Info */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 2xl:gap-[2.78vw] md:gap-10 lg:gap-12 2xl:gap-[4.17vw] mb-12 2xl:mb-[4.1vw] md:px-8 md:py-10 lg:px-24 lg:py-16 2xl:px-[8.33vw] 2xl:py-[5.56vw]">
-          {/* Logo - Full width on mobile, 2 columns on tablet */}
-          <div className="md:col-span-2 lg:col-span-1">
+    <footer className="bg-[#0a0a0a] text-[#E6E0DA] pb-6 2xl:pb-[1.67vw]">
+      {/* Main Footer Content - 4 column layout */}
+      <div className="flex flex-col">
+        {/* Top Section */}
+        <div className="flex flex-col md:flex-row items-start justify-between px-8 2xl:px-[5.56vw] md:px-12 2xl:md:px-[8.33vw] lg:px-20 2xl:lg:px-[8.33vw] py-12 2xl:py-[5vw] md:py-16 2xl:md:py-[6.67vw] lg:py-20 2xl:lg:py-[8.33vw] gap-8 2xl:gap-[2.22vw] md:gap-10 2xl:md:gap-[4.17vw] lg:gap-12 2xl:lg:gap-[5vw]">
+          
+          {/* Logo */}
+          <div className="w-full md:w-auto">
             <Image
               src={imageMap.footerlogo}
               alt="ONZA Logo"
@@ -39,93 +41,98 @@ export default function Footer({ data }: { data: FooterData }) {
           </div>
 
           {/* Home Links */}
-          <div className="md:col-span-1 lg:ml-28 2xl:ml-[9.72vw] pl-0 md:pl-4 2xl:pl-[1.39vw]">
-            <ul className="space-y-3 2xl:space-y-[1.04vw]">
+          <div className="w-full md:w-auto">
+            <div className="flex flex-col items-start">
               {data.links.general.map((link, index) => (
-                <li key={index}>
+                <div key={index} className="w-full rounded-[999px] 2xl:rounded-[69.44vw] flex items-center py-2 2xl:py-[0.56vw]">
                   <Link
-                    href={""}
-                    onClick={(e) => e.preventDefault()}
-                    className="text-[14px] 2xl:text-[0.972vw] font-medium text-[#E6E0DA] hover:text-[#ffdc81] transition-colors"
+                    href={link.href}
+                    className="text-[14px] 2xl:text-[0.97vw] font-medium text-[#E6E0DA] hover:text-[#ffdc81] transition-colors uppercase leading-[21px] 2xl:leading-[1.46vw]"
                   >
                     {link.label}
                   </Link>
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
 
           {/* Services Links */}
-          <div className="md:col-span-1 lg:ml-4 2xl:ml-[1.39vw] pl-0 md:pl-4 2xl:pl-[1.39vw]">
-            <h4 className="text-[14px] 2xl:text-[0.972vw] font-medium text-[#E6E0DA] mb-4 2xl:mb-[1.39vw]">
-              SERVICES
-            </h4>
-            <ul className="space-y-3 2xl:space-y-[1.04vw]">
+          <div className="w-full md:w-auto">
+            <div className="flex flex-col items-start">
+              <div className="w-full rounded-[999px] 2xl:rounded-[69.44vw] flex items-center py-2 2xl:py-[0.56vw] mb-2 2xl:mb-[0.56vw]">
+                <span className="text-[14px] 2xl:text-[0.97vw] font-medium text-[#E6E0DA] uppercase leading-[21px] 2xl:leading-[1.46vw]">
+                  Services
+                </span>
+              </div>
               {data.links.services.map((service, index) => (
-                <li key={index}>
+                <div key={index} className="w-full rounded-[999px] 2xl:rounded-[69.44vw] flex items-center py-2 2xl:py-[0.56vw]">
                   <Link
                     href={""}
                     onClick={(e) => e.preventDefault()}
-                    className="text-[12px] 2xl:text-[0.833vw] text-[#E6E0DA] hover:text-[#ffdc81] transition-colors"
+                    className="text-[12px] 2xl:text-[0.83vw] font-medium text-[#E6E0DA] hover:text-[#ffdc81] transition-colors leading-[18px] 2xl:leading-[1.25vw]"
                   >
                     {service.label}
                   </Link>
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
 
-          {/* Contact Info - Full width on mobile, 2 columns on tablet */}
-          <div className="md:col-span-2 lg:col-span-1 lg:ml-20 2xl:ml-[6.94vw] pl-0 md:pl-4 2xl:pl-[1.39vw] mt-6 md:mt-0">
-            <h4 className="text-[16px] 2xl:text-[1.111vw] font-medium text-[#E6E0DA] mb-4 2xl:mb-[1.39vw]">
-              CONTACT INFO
-            </h4>
+          {/* Contact Info */}
+          <div className="w-full md:w-[238px] 2xl:md:w-[16.53vw]">
+            <div className="flex flex-col items-start gap-10 2xl:gap-[4.17vw]">
+              <div className="flex flex-col items-start">
+                <div className="w-full rounded-[999px] 2xl:rounded-[69.44vw] flex items-center py-2 2xl:py-[0.56vw] mb-2 2xl:mb-[0.56vw]">
+                  <span className="text-[14px] 2xl:text-[0.97vw] font-medium text-[#E6E0DA] uppercase leading-[21px] 2xl:leading-[1.46vw]">
+                    Contact Info
+                  </span>
+                </div>
+                <div className="w-full rounded-[999px] 2xl:rounded-[69.44vw] flex items-center pt-2 2xl:pt-[0.56vw]">
+                  <div className="text-[12px] 2xl:text-[0.83vw] font-medium text-[#E6E0DA] leading-[18px] 2xl:leading-[1.25vw]">
+                    <p className="mb-1 2xl:mb-[0.28vw]">Registered Office</p>
+                    <p className="mb-1 2xl:mb-[0.28vw]">Onza Private Limited</p>
+                    <p className="mb-1 2xl:mb-[0.28vw]">118, Okhla Industrial Estate Phase-III</p>
+                    <p className="mb-1 2xl:mb-[0.28vw]">Bengaluru 560033</p>
+                    <p className="mb-0">
+                      Tel: +91 123-486-8423
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-            <div className="mb-6 2xl:mb-[2.08vw]">
-              <h5 className="text-[14px] 2xl:text-[0.972vw] font-medium text-[#E6E0DA] mb-3 2xl:mb-[1.04vw]">
-                Registered Office
-              </h5>
-              <p className="text-[12px] 2xl:text-[0.833vw] font-medium text-[#E6E0DA] leading-relaxed">
-                Onza Private Limited
-                <br />
-                118, Okhla Industrial Estate Phase-III <br /> Bengaluru 560033
-                <br />
-                Tel: +91 123-486-8423
-              </p>
-            </div>
-
-            {/* Follow Us */}
-            <div>
-              <h5 className="text-[14px] 2xl:text-[0.972vw] font-medium text-[#E6E0DA] mb-4 2xl:mb-[1.39vw]">
-                Follow Us
-              </h5>
-              <div className="flex space-x-4 2xl:space-x-[1.39vw]">
-                {data.socials.map((social, index) => (
-                  <Link
-                    key={index}
-                    href={""}
-                    onClick={(e) => e.preventDefault()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-8 2xl:w-[2.78vw] h-8 2xl:h-[2.78vw] md:w-10 2xl:w-[3.47vw] md:h-10 2xl:h-[3.47vw] flex items-center justify-center hover:bg-[#ffdc81] transition-colors"
-                  >
-                    <Image
-                      src={imageMap[social.icon]}
-                      alt={social.icon}
-                      width={20}
-                      height={20}
-                      className="filter brightness-0 invert w-[20px] 2xl:w-[1.389vw] h-[20px] 2xl:h-[1.389vw]"
-                    />
-                  </Link>
-                ))}
+              {/* Follow Us */}
+              <div className="flex flex-col items-start gap-2 2xl:gap-[0.56vw]">
+                <div className="text-[12px] 2xl:text-[0.83vw] font-medium text-[#FBFBFB] leading-[18px] 2xl:leading-[1.25vw]">
+                  Follow Us
+                </div>
+                <div className="flex gap-4 2xl:gap-[1.11vw]">
+                  {data.socials.map((social, index) => (
+                    <Link
+                      key={index}
+                      href={""}
+                      onClick={(e) => e.preventDefault()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-6 2xl:w-[1.67vw] h-6 2xl:h-[1.67vw] flex items-center justify-center hover:bg-[#ffdc81] transition-colors"
+                    >
+                      <Image
+                        src={imageMap[social.icon]}
+                        alt={social.icon}
+                        width={18}
+                        height={18}
+                        className="w-[18px] 2xl:w-[1.25vw] h-[18px] 2xl:h-[1.25vw] filter brightness-0 invert"
+                      />
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Company Info Section */}
-        <div className="border-t border-[#d1b67c]/40 pt-8 2xl:pt-[2.78vw]">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 2xl:gap-[2.08vw] md:gap-8 2xl:gap-[2.78vw] mb-8 2xl:mb-[2.78vw] md:px-8 md:py-10 lg:px-20 2xl:px-[6.94vw] lg:py-12 2xl:py-[4.17vw]">
+        <div className="border-t border-[#d1b67c]/40 pt-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 2xl:gap-6-[1.667vw]-[1.667vw]-[1.667vw] md:gap-8 2xl:gap-8 2xl:gap-8-[2.222vw]-[2.222vw] mb-8 px-4 lg:px-20 lg:py-12 md:px-8 md:py-10">
             {data.companyInfo.map((company, index) => (
               <div key={index} className="pl-0 md:pl-4 2xl:pl-[1.39vw]">
                 <h5 className="text-[18px] 2xl:text-[1.25vw] md:text-[20px] 2xl:md:text-[1.389vw] font-regular text-[#E6E0DA] mb-2 2xl:mb-[0.69vw]">
@@ -143,19 +150,18 @@ export default function Footer({ data }: { data: FooterData }) {
         </div>
 
         {/* Bottom Section */}
-        <div className="border-t border-[#d1b67c]/40 pt-8 2xl:pt-[2.78vw] lg:px-20 2xl:px-[6.94vw] lg:py-12 2xl:py-[4.17vw] md:px-8 2xl:px-[2.78vw] md:py-10 2xl:py-[3.47vw]">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 2xl:gap-[1.39vw] md:gap-6 2xl:gap-[2.08vw]">
-            <p className="text-[14px] 2xl:text-[0.972vw] text-gray-400 text-center md:text-left">
-              © 2025 Onza. All Rights Reserved
-            </p>
-
-            <div className="flex flex-wrap justify-center gap-4 2xl:gap-[1.39vw] md:gap-6 2xl:gap-[2.08vw]">
+        <div className="px-8 2xl:px-[5.56vw] md:px-12 2xl:md:px-[8.33vw] lg:px-20 2xl:lg:px-[8.33vw] pt-6 2xl:pt-[1.67vw]">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 2xl:gap-[1.11vw]">
+            <div className="text-[14px] 2xl:text-[0.97vw] font-light text-[#e8e8e8] leading-[21px] 2xl:leading-[1.46vw] whitespace-pre-wrap flex-1">
+              2025 Onza.  All Rights Reserved
+            </div>
+            <div className="flex gap-10 md:gap-[40px] 2xl:gap-[2.78vw]">
               {data.legal.map((legal, index) => (
                 <Link
                   key={index}
                   href={""}
                   onClick={(e) => e.preventDefault()}
-                  className="text-[14px] 2xl:text-[0.972vw] text-gray-400 hover:text-[#ffdc81] transition-colors"
+                  className="text-[14px] 2xl:text-[0.97vw] font-light text-[#e8e8e8] hover:text-[#ffdc81] transition-colors leading-[21px] 2xl:leading-[1.46vw]"
                 >
                   {legal.label}
                 </Link>

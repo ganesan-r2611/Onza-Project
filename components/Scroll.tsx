@@ -4,15 +4,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { imageMap } from "@/libs/imageMap";
 
-type Pillar = { title: string; desc: string; imageKey: keyof typeof imageMap };
 
-type Props = {
-  data: {
-    eyebrow: string;
-    cta: { label: string; href: string };
-    items: Pillar[];
-  };
-};
 
 interface FlarePosition {
   x: number;

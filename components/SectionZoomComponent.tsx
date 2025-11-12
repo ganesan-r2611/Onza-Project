@@ -63,7 +63,7 @@ function useViewportCategory() {
 
   const category = useMemo(() => {
     if (!vp.mounted) return "server";
-    const { w, h, ar } = vp;
+    const { w, h } = vp;
 
     const isMobileSmall = w <= 375; // Small phones
     const isMobile = w <= 428; // Modern phones
@@ -365,12 +365,6 @@ export default function SectionZoomComponent({
 
   const parallaxX = currentSnapIndex === 0 ? (mousePosition.x - 0.5) * 30 : 0; // Move left/right up to 15px
   const parallaxY = currentSnapIndex === 0 ? (mousePosition.y - 0.5) * 30 : 0; // Move up/down up to 15px
-  const parallaxScale =
-    currentSnapIndex === 0
-      ? 1 +
-        (Math.abs(mousePosition.x - 0.5) + Math.abs(mousePosition.y - 0.5)) *
-          0.05
-      : 1; // Slight scale
 
   return (
     <div className="relative w-full h-full">

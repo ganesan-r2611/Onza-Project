@@ -38,6 +38,35 @@ import onzaLgBG from "@/assets/onza-lg-bg.png";
 import backgroundOZ from "@/assets/backgroundoz.png";
 import footerlogo from "@/assets/footerlogo.png";
 
+import contactUsBg from "@/assets/contactUs_bg.png";
+import findUsImg from "@/assets/find_us_img.jpg"; 
+import mail from "@/assets/mail.png";
+import phone from "@/assets/phone.png";
+import subscribe_bg from "@/assets/subscribe_bg.png";
+import subscribe_btn from "@/assets/subscribe_btn.png";
+import submit_btn from "@/assets/submit_btn.png";
+import blog_bg from "@/assets/blog_bg.jpg" ;
+import blog_img from "@/assets/blog_image.png" ;
+import blog_01 from "@/assets/blog_01.png" ;
+import blog_02 from "@/assets/blog_02.png" ;
+import blog_03 from "@/assets/blog_03.png" ;
+
+// blg card
+import blog_card_01 from "@/assets/blg_card_01.png" ;
+import blog_card_02 from "@/assets/blg_card_02.png" ;
+import blog_card_03 from "@/assets/blg_card_03.png" ;
+import blog_card_04 from "@/assets/blg_card_04.png" ;
+import blog_card_05 from "@/assets/blg_card_05.png" ;
+import blog_card_06 from "@/assets/blg_card_06.png" ;
+import blog_card_07 from "@/assets/blg_card_07.png" ;
+
+import blog_profile from "@/assets/blog_profile.png" ;
+import blog_details_banner from "@/assets/blog_details_banner.png" ;
+import export_img from "@/assets/export.png" ;
+import blog_btn_bg from "@/assets/blog_btn_bg.png" ;
+import our_service_btn from "@/assets/ourService_btn.png" ;
+
+
 export const imageMap: Record<string, StaticImageData> = {
   logo,
   bannerContact,
@@ -67,5 +96,29 @@ export const imageMap: Record<string, StaticImageData> = {
   cardbg2,
   onzaLgBG,
   backgroundOZ,
-  footerlogo
+  footerlogo,
+  contactUsBg,
+  findUsImg,
+  mail,
+  phone,
+  subscribe_bg,
+  subscribe_btn,
+  submit_btn,
+  blog_bg,
+  blog_img,
+  blog_01,
+  blog_02,
+  blog_03,
+  blog_card_01,
+  blog_card_02,
+  blog_card_03,
+  blog_card_04,
+  blog_card_05,
+  blog_card_06,
+  blog_card_07,
+  blog_profile,
+  blog_details_banner,
+  export_img,
+  blog_btn_bg,
+  our_service_btn
 };

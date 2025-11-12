@@ -130,8 +130,7 @@ export default function NavBar({ data }: { data: NavbarData }) {
                       {item.children.map((child) => (
                         <Link
                           key={child.label}
-                          href={""}
-                          onClick={(e) => e.preventDefault()}
+                          href={child.href}
                           className="block px-3 2xl:px-[0.833vw] py-2 2xl:py-[0.556vw] rounded-md 2xl:rounded-[0.417vw] hover:bg-white/10 text-[14px] 2xl:text-[0.972vw]"
                         >
                           {child.label}
@@ -142,8 +141,7 @@ export default function NavBar({ data }: { data: NavbarData }) {
                 </>
               ) : (
                 <Link
-                  href={""}
-                  onClick={(e) => e.preventDefault()}
+                  href={item.href}
                   className="hover:opacity-80 transition text-[16px] 2xl:text-[1.111vw]"
                 >
                   {item.label}
@@ -156,8 +154,7 @@ export default function NavBar({ data }: { data: NavbarData }) {
         {/* Desktop CTA */}
         <div className="hidden md:block">
           <Link
-            href={""}
-            onClick={(e) => e.preventDefault()}
+            href={data.cta.href}
             className={`${pillBtn} ${pillTheme} text-[14px] 2xl:text-[0.972vw]`}
           >
             {data.cta.label}
@@ -248,7 +245,7 @@ export default function NavBar({ data }: { data: NavbarData }) {
                         {item.children.map((child) => (
                           <li key={child.label}>
                             <Link
-                              href={""}
+                              href={child.href}
                               className="block py-2 2xl:py-[0.556vw] text-sm 2xl:text-[0.972vw] opacity-90"
                               onClick={() => setOpen(false)}
                             >
@@ -261,8 +258,8 @@ export default function NavBar({ data }: { data: NavbarData }) {
                   </>
                 ) : (
                   <Link
-                    href={""}
-                    onClick={(e) => e.preventDefault()}
+                    href={item.href}
+                    onClick={() => setOpen(false)}
                     className="block py-2 2xl:py-[0.556vw] text-[16px] 2xl:text-[1.111vw]"
                   >
                     {item.label}
@@ -274,8 +271,7 @@ export default function NavBar({ data }: { data: NavbarData }) {
             {/* CTA */}
             <li className="pt-2 2xl:pt-[0.556vw]">
               <Link
-                href={""}
-                onClick={(e) => e.preventDefault()}
+                href={data.cta.href}
                 className={`w-full inline-flex justify-center ${pillBtn} ${pillTheme} text-[14px] 2xl:text-[0.972vw]`}
               >
                 {data.cta.label}

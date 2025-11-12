@@ -1,0 +1,122 @@
+{
+  "blogDetails": {
+    "banner": {
+      "image": "blog_img",
+      "alt": "Blog banner image",
+      "width": 1440,
+      "height": 900
+    },
+    "author": {
+      "name": "Luke Roberts",
+      "role": "Written by",
+      "avatar": "blog_profile",
+      "date": "April 21, 2025",
+      "share": {
+        "text": "Share:",
+        "image": "export_img"
+      }
+    },
+    "metadata": {
+      "category": "Wealth",
+      "mainTitle": "2026 Budget",
+      "subtitle": "What you need to know!"
+    },
+    "introduction": {
+      "content": "From the very first session, it was clear that Maya didn't need more advice — she needed space. Space to slow down, to breathe, and to feel without the pressure of being \"productive\" all the time."
+    },
+    "sections": [
+      {
+        "id": 1,
+        "title": "Starting Point",
+        "content": "Lorem ipsum dolor sit amet consectetur. Diam tincidunt sed sed dis dui sollicitudin orci velit auctor. Feugiat est vitae volutpat vestibulum id. Sit sit dui urna nisi sed. Volutpat pellentesque eu et ipsum semper diam dignissim nisi pretium. Eu faucibus nam mi mi lectus cum elit odio.",
+        "type": "text"
+      },
+      {
+        "id": 2,
+        "title": "Our Approach",
+        "content": "Auctor etiam tellus integer nunc gravida. Neque aliquam fringilla egestas consectetur aliquet rhoncus ullamcorper quam. Risus sit lorem metus hendrerit eget leo vel id id. Dignissim tortor posuere volutpat id netus felis nunc. Consectetur quis condimentum rutrum tellus nisi. Lectus molestie blandit quam eget justo mi vitae.",
+        "type": "text"
+      }
+    ],
+    "fullWidthQuote": {
+      "image": "blog_details_banner",
+      "width": 898,
+      "height": 289,
+      "alt": "Blog content image",
+      "quote": "I used to think therapy was about fixing what's wrong. But this was different. It felt more like coming home to myself — quietly, slowly, and with a lot more kindness than I expected.",
+      "author": "Maya"
+    },
+    "additionalContent": [
+      {
+        "id": 1,
+        "content": "Odio dui et mattis blandit a pellentesque tristique nunc euismod. Consequat cursus euismod nulla posuere non accumsan nulla non. Sollicitudin pulvinar fermentum urna risus quam eget. Nisi urna amet facilisi tristique quam lacus auctor duis viverra. Nec orci vitae pellentesque lectus accumsan. Lobortis diam sit elit nisl urna."
+      },
+      {
+        "id": 2,
+        "content": "Commodo a proin ac tincidunt ac fames magna facilisi volutpat. Est enim lacinia in morbi sed sit non. Pretium feugiat nullam vitae eget amet sit a. Commodo et in eu sagittis ridiculus. Sapien et nunc etiam lorem imperdiet. Diam in condimentum metus maecenas."
+      },
+      {
+        "id": 3,
+        "content": "Quis congue nisl in blandit lorem tellus. At et ante vitae nibh lectus euismod ipsum tortor. Nulla aliquet nulla nulla lacus ac est faucibus. Vel cras adipiscing ridiculus adipiscing morbi dictum tortor neque. Semper faucibus enim lectus massa pharetra gravida velit malesuada aliquam. Massa nibh a natoque semper."
+      }
+    ],
+    "sideBySideSection": {
+      "image": "blog_details_banner",
+      "width": 429,
+      "height": 379,
+      "alt": "Blog insight image",
+      "quote": "I used to think wealth management was about fixing financial problems. But this felt different. It was more like coming home to my future — steadily, thoughtfully, and with a lot more clarity than I expected.",
+      "author": "Maya"
+    },
+    "finalSections": [
+      {
+        "id": 1,
+        "type": "paragraphs",
+        "content": [
+          "Eget vitae nulla ultricies leo congue posuere morbi proin. Tellus integer nisi auctor mattis pellentesque aliquam turpis eget. Tristique justo nibh bibendum tincidunt vivamus scelerisque amet id. Risus tortor interdum tempor sed quis cum sapien id adipiscing. Tortor bibendum eget adipiscing aliquam amet. Nibh vel fermentum vestibulum molestie pellentesque risus sit elit.",
+          "Porta et nullam tortor tortor facilisi fames odio. Fusce ante pretium dignissim egestas. Sed consequat neque lacus sed. Sed libero turpis vitae diam. Leo dignissim duis aliquam velit sagittis. Lacus magna gravida cursus nullam aliquam massa nibh purus.",
+          "Tempus sed vulputate ut tortor scelerisque. Eros consectetur pulvinar eget massa ornare nisl a porttitor massa. Quam consectetur adipiscing lacinia commodo vitae vulputate ac nibh. Enim mollis adipiscing quisque urna leo laoreet morbi. Penatibus et cum dictum ut ut nam in tortor leo. Purus quisque elementum nibh elit pellentesque id erat purus mi."
+        ]
+      },
+      {
+        "id": 2,
+        "type": "heading",
+        "title": "Final Reflections",
+        "content": "Mattis ut dictumst est porttitor scelerisque orci. Ullamcorper et netus posuere ultricies diam. Consectetur nunc placerat proin tempor. Erat condimentum vulputate amet auctor purus ridiculus rutrum sollicitudin. Mi libero sit sagittis enim elit a sodales. Et gravida sed viverra lacus id nisi donec."
+      }
+    ]
+  },
+  "featuredSection": {
+    "title": "Similar Reads",
+    "description": "Fresh ideas, sharp strategies, and stories that move brands forward. Lorem ipsum dolor sit amet consectetur. Blandit morbi ultricies",
+    "featuredPosts": [
+      {
+        "id": 1,
+        "category": "Wealth",
+        "title": "Impact Of Extrinsic Motivation On Intrinsic",
+        "excerpt": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna al",
+        "date": "April 21, 2025",
+        "readTime": "7 min read",
+        "imageKey": "blog_card_05"
+      },
+      {
+        "id": 2,
+        "category": "Wealth",
+        "title": "Impact Of Extrinsic Motivation On Intrinsic",
+        "excerpt": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna al",
+        "date": "April 21, 2025",
+        "readTime": "7 min read",
+        "imageKey": "blog_card_06"
+      },
+      {
+        "id": 3,
+        "category": "Wealth",
+        "title": "Impact Of Extrinsic Motivation On Intrinsic",
+        "excerpt": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna al",
+        "date": "April 21, 2025",
+        "readTime": "7 min read",
+        "imageKey": "blog_card_07"
+      }
+    ]
+  }
+}
