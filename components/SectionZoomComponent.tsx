@@ -363,8 +363,8 @@ export default function SectionZoomComponent({
   const shortBoost = mounted && height < 640 ? 0.92 : 1;
   const imageScale = (stages[effectiveSection] ?? stages[0] ?? 1) * shortBoost;
 
-  const parallaxX = currentSnapIndex === 0 ? (mousePosition.x - 0.5) * 30 : 0; // Move left/right up to 15px
-  const parallaxY = currentSnapIndex === 0 ? (mousePosition.y - 0.5) * 30 : 0; // Move up/down up to 15px
+  // const parallaxX = currentSnapIndex === 0 ? (mousePosition.x - 0.5) * 30 : 0; // Move left/right up to 15px
+  // const parallaxY = currentSnapIndex === 0 ? (mousePosition.y - 0.5) * 30 : 0; // Move up/down up to 15px
 
   return (
     <div className="relative w-full h-full">

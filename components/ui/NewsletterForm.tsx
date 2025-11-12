@@ -8,10 +8,10 @@ export default function NewsletterForm() {
   const [newsletterData, setNewsletterData] = useState({
     email: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<
-    "idle" | "success" | "error"
-  >("idle");
+  // const [isSubmitting, setIsSubmitting] = useState(false);
+  // const [submitStatus, setSubmitStatus] = useState<
+  //   "idle" | "success" | "error"
+  // >("idle");
 
   // Handle newsletter form input change
   const onNewsletterChange = (field: string, value: string) => {
@@ -85,23 +85,23 @@ export default function NewsletterForm() {
       </div>
 
       {/* Status Messages */}
-      {submitStatus === "success" && (
+      {/* {submitStatus === "success" && (
         <div className="text-green-400 text-sm">
           Thank you for subscribing! Please check your email to confirm.
         </div>
-      )}
+      )} */}
 
-      {submitStatus === "error" && (
+      {/* {submitStatus === "error" && (
         <div className="text-red-400 text-sm">
           Please enter a valid email address.
         </div>
-      )}
+      )} */}
 
       {/* Subscribe Button */}
       <div className="flex justify-end">
         <button
           type="submit"
-          disabled={isSubmitting}
+          // disabled={isSubmitting}
           className="w-full max-w-[237px] h-11 2xl:w-[16.5vw] 2xl:h-[3.34vw] rounded-[24px] 2xl:rounded-[1.39vw] flex items-center justify-center cursor-pointer transition-all duration-300 bg-gradient-to-r from-[#ffdc81] to-[#3cc2cc] hover:bg-[#3cc2cc] disabled:opacity-50 disabled:cursor-not-allowed"
           style={{
             backgroundImage: `url(${

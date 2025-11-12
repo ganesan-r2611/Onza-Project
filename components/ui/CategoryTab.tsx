@@ -38,7 +38,6 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
   const [visiblePostsCount, setVisiblePostsCount] = useState(4);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [showEndMessage, setShowEndMessage] = useState(false);
-  const tabsContainerRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const postsGridRef = useRef<HTMLDivElement>(null);
@@ -269,7 +268,7 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
           >
             <div className="flex items-center justify-center gap-3">
               <span className="text-[#0a5060]">✨</span>
-              <span>You've seen all {filteredPosts.length} posts in {activeCategory.toLowerCase()}</span>
+              <span>You&apos;ve seen all {filteredPosts.length} posts in {activeCategory.toLowerCase()}</span>
               <span className="text-[#0a5060]">✨</span>
             </div>
             <button
