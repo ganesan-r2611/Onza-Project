@@ -419,7 +419,7 @@ export default function SectionZoomComponent({
                 currentSnapIndex === 0
                   ? `scale(${
                       mounted ? imageScale : 1
-                    }) translate3d(${parallaxX}px, ${parallaxY}px, 0)`
+                    })`
                   : `scale(${mounted ? imageScale : 1})`;
               return transformValue;
             })(),
