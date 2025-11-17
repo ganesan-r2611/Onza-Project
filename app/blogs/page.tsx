@@ -93,7 +93,11 @@ export default async function Blog() {
         </section>
 
         {/* Featured Blogs Section */}
-        <section className="w-full lg:h-[62.5vw] 2xl:h-[62.5vw] bg-gradient-to-br from-[#13181c] to-[#0a5060] px-[16px] lg:px-[2.78vw] py-[80px] lg:py-[8.33vw]">
+        <section className="w-full lg:h-[62.5vw] 2xl:h-[62.5vw] bg-gradient-to-br from-[#13181c] to-[#0a5060] px-[16px] lg:px-[2.78vw] py-[80px] lg:py-[8.33vw]"
+          style={{
+          background: 'linear-gradient(305deg, #13181C 35.5%, #28A0AA 75.23%, #BEEBEE 120.85%)'
+        }}
+        >
           <div className="mx-auto">
             {/* Header */}
             <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-[24px] lg:gap-[1.67vw] mb-[16px] lg:mb-[5.83vw]">
