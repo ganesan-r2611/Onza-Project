@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import { imageMap } from "@/libs/imageMap";
@@ -8,8 +8,59 @@ import NewsletterForm from "@/components/ui/NewsletterForm";
 import Link from "next/link";
 import { useInView } from "@/hooks/useInView";
 
+interface HeroSection {
+  backgroundImage: string;
+  image: string;
+  title: string;
+  heading: string;
+  description: string;
+  cta: { text: string };
+}
+
+interface FeaturedPost {
+  id: number;
+  imageKey: string;
+  category: string;
+  date: string;
+  readTime: string;
+  title: string;
+  excerpt: string;
+}
+
+interface FeaturedSection {
+  title: string;
+  description: string;
+  featuredPosts: FeaturedPost[];
+}
+
+interface DiscoverSection {
+  title: string;
+  subtitle: string;
+  categories: Array<{ id: number; name: string; isActive: boolean }>;
+  posts: {
+    id: number;
+    category: string;
+    title: string;
+    excerpt: string;
+    date: string;
+    readTime: string;
+    imageKey: string;
+    author?: string;
+    isFeatured?: boolean;
+  }[];
+  cta: { text: string };
+}
+
+interface StaticData {
+  blogData: {
+    heroSection: HeroSection;
+    featuredSection: FeaturedSection;
+    discoverSection: DiscoverSection;
+  };
+}
+
 interface BlogProps {
-  staticData: any;
+  staticData: StaticData;
 }
 
 export default function BlogClient({ staticData }: BlogProps) {
@@ -52,7 +103,7 @@ export default function BlogClient({ staticData }: BlogProps) {
           {/* Hero Image - Top on mobile, Right on desktop */}
           <div
             ref={heroImage.ref}
-            className={`transition-all duration-1000 ease-out ${
+            className={`w-full lg:w-[47.78vw] h-[53.33vw] lg:h-[24.03vw] rounded-[4.44vw] lg:rounded-[1.67vw] lg:order-2 overflow-hidden transition-all duration-1000 ease-out ${
               heroImage.isInView
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-8"
@@ -66,7 +117,7 @@ export default function BlogClient({ staticData }: BlogProps) {
               alt="Onza Wealth Journal"
               width={688}
               height={346}
-              className="w-full lg:w-[47.78vw] h-[53.33vw] lg:h-[24.03vw] rounded-[4.44vw] lg:rounded-[1.67vw] object-cover lg:order-2"
+              className="w-full h-full object-cover"
             />
           </div>
 
@@ -79,6 +130,7 @@ export default function BlogClient({ staticData }: BlogProps) {
                 : "opacity-0 translate-y-8"
             }`}
           >
+            {/* Subheading */}
             <div className="w-full text-[18px] lg:text-[1.25vw] font-regular text-[#0a0a0a] leading-[24px] lg:leading-[1.67vw]">
               {data.heroSection.title}
             </div>
@@ -322,9 +374,7 @@ export default function BlogClient({ staticData }: BlogProps) {
 
               <div className="w-full">
                 <div className="text-[clamp(2rem,5vw,3.5rem)] 2xl:text-[3.33vw]  font-light text-[#fbfbfb] leading-[8.94vw] 2xl:leading-[3.67vw]">
-                  <p className="m-0">
-                    Get More Insights Delivered Straight to
-                  </p>
+                  <p className="m-0">Get More Insights Delivered Straight to</p>
                   <p className="m-0">Your Inbox</p>
                 </div>
               </div>
