@@ -90,7 +90,8 @@ interface BlogDetailClientProps {
 }
 
 export default function BlogDetailClient({ staticData }: BlogDetailClientProps) {
-  const data = staticData.blogDetails;
+  const data = staticData;
+  console.log("BlogDetailClient staticData:", data);
 
   // Intersection observers for each section
   const bannerSection = useInView({ threshold: 0.2 });
@@ -119,11 +120,11 @@ export default function BlogDetailClient({ staticData }: BlogDetailClientProps) 
       >
         <Image
           src={
-            imageMap?.[data.banner.image] || "/fallback-image.jpg"
+            imageMap?.[data.blogDetails.banner.image] || "/fallback-image.jpg"
           }
-          alt={data.banner.alt}
-          width={data.banner.width}
-          height={data.banner.height}
+          alt={data.blogDetails.banner.alt}
+          width={data.blogDetails.banner.width}
+          height={data.blogDetails.banner.height}
           className="w-full h-full object-cover"
         />
       </div>
@@ -143,10 +144,10 @@ export default function BlogDetailClient({ staticData }: BlogDetailClientProps) 
             <div className="w-[13.89vw] lg:w-[3.47vw] 2xl:w-[3.47vw] h-[13.89vw] lg:h-[3.47vw] 2xl:h-[3.47vw] rounded-full bg-[#fbfbfb] shadow-lg overflow-hidden">
               <Image
                 src={
-                  imageMap?.[data.author.avatar] ||
+                  imageMap?.[data.blogDetails.author.avatar] ||
                   "/fallback-image.jpg"
                 }
-                alt={data.author.name}
+                alt={data.blogDetails.author.name}
                 width={46}
                 height={46}
                 className="w-full h-full object-cover"
@@ -154,23 +155,23 @@ export default function BlogDetailClient({ staticData }: BlogDetailClientProps) 
             </div>
             <div className="flex flex-col">
               <span className="text-[2.78vw] lg:text-[0.69vw] 2xl:text-[0.69vw] text-[#777] leading-[5vw] lg:leading-[1.04vw] 2xl:leading-[1.04vw]">
-                {data.author.role}
+                {data.blogDetails.author.role}
               </span>
               <span className="text-[2.78vw] lg:text-[0.83vw] 2xl:text-[0.83vw] font-medium text-[#777] leading-[6.67vw] lg:leading-[1.25vw] 2xl:leading-[1.25vw] text-nowrap">
-                {data.author.name}
+                {data.blogDetails.author.name}
               </span>
             </div>
           </div>
 
           <div className="flex flex-row justify-between items-center w-full lg:flex-col 2xl:flex-col lg:h-[51px] 2xl:h-[51px] lg:items-end 2xl:items-end lg:justify-between 2xl:justify-between">
             <span className="text-[2.78vw] lg:text-[0.83vw] 2xl:text-[0.83vw] font-medium text-[#777] leading-[3.19vw] lg:leading-[1.25vw] 2xl:leading-[1.25vw]">
-              {data.author.date}
+              {data.blogDetails.author.date}
             </span>
             <div className="flex items-center gap-[1.11vw] lg:gap-[0.56vw] 2xl:gap-[0.56vw] text-[2.78vw] lg:text-[0.83vw] 2xl:text-[0.83vw] font-regular text-[#777]">
-              <span>{data.author.share.text}</span>
+              <span>{data.blogDetails.author.share.text}</span>
               <Image
                 src={
-                  imageMap?.[data.author.share.image] ||
+                  imageMap?.[data.blogDetails.author.share.image] ||
                   "/fallback-image.jpg"
                 }
                 alt="Share"
@@ -193,16 +194,16 @@ export default function BlogDetailClient({ staticData }: BlogDetailClientProps) 
         >
           <div className="backdrop-filter backdrop-blur-[9.81vw] lg:backdrop-blur-[9.81vw] 2xl:backdrop-blur-[9.81vw] rounded-[2.22vw] lg:rounded-[0.56vw] 2xl:rounded-[0.56vw] bg-[#ffdc81] border border-[#ffeec0] px-[4.33vw] lg:px-[0.83vw] 2xl:px-[0.83vw] py-[0.11vw] lg:py-[0.28vw] 2xl:py-[0.28vw] w-max">
             <span className="text-[3.33vw] lg:text-[0.69vw] 2xl:text-[0.69vw] font-medium text-[#0a0a0a] leading-[4vw] lg:leading-[0.04vw] 2xl:leading-[0.04vw]">
-              {data.metadata.category}
+              {data.blogDetails.metadata.category}
             </span>
           </div>
 
           <span className=" relative text-[11.11vw] lg:text-[4.44vw] 2xl:text-[4.44vw] font-light text-[#0a5060] leading-[6.78vw] lg:leading-[48px] 2xl:leading-[48px]">
-            {data.metadata.mainTitle}
+            {data.blogDetails.metadata.mainTitle}
           </span>
 
           <span className="text-[11.11vw] lg:text-[4.44vw] 2xl:text-[4.44vw] font-light text-[#0a5060] leading-[12.78vw] lg:leading-[48px] 2xl:leading-[48px]">
-            {data.metadata.subtitle}
+            {data.blogDetails.metadata.subtitle}
           </span>
         </div>
 
@@ -217,7 +218,7 @@ export default function BlogDetailClient({ staticData }: BlogDetailClientProps) 
         >
           <div className="lg:pl-[24.03vw] 2xl:pl-[24.03vw] lg:pr-[18.82vw] 2xl:pr-[18.82vw]">
             <p className="lg:w-[667px] 2xl:w-[667px] text-[5vw] lg:text-[1.81vw] 2xl:text-[1.81vw] font-light text-[#0a0a0a] leading-[5.75vw] lg:leading-[2.08vw] 2xl:leading-[2.08vw] lg:text-left 2xl:text-left">
-              {data.introduction.content}
+              {data.blogDetails.introduction.content}
             </p>
           </div>
         </div>
@@ -231,7 +232,7 @@ export default function BlogDetailClient({ staticData }: BlogDetailClientProps) 
               : "opacity-0 translate-y-8"
           }`}
         >
-          {data.sections.map((section) => (
+          {data.blogDetails.sections.map((section) => (
             <div
               key={section.id}
               className="lg:px-[24.03vw] 2xl:px-[24.03vw] flex flex-col gap-[4.44vw] lg:gap-[1.11vw] 2xl:gap-[1.11vw]"
@@ -258,12 +259,12 @@ export default function BlogDetailClient({ staticData }: BlogDetailClientProps) 
           <div className="w-full h-[79.44vw] lg:h-[20.07vw] 2xl:h-[20.07vw] overflow-hidden mb-[11.11vw] lg:mb-[2.78vw] 2xl:mb-[2.78vw]">
             <Image
               src={
-                imageMap?.[data.fullWidthQuote.image] ||
+                imageMap?.[data.blogDetails.fullWidthQuote.image] ||
                 "/fallback-image.jpg"
               }
-              alt={data.fullWidthQuote.alt}
-              width={data.fullWidthQuote.width}
-              height={data.fullWidthQuote.height}
+              alt={data.blogDetails.fullWidthQuote.alt}
+              width={data.blogDetails.fullWidthQuote.width}
+              height={data.blogDetails.fullWidthQuote.height}
               className="w-full h-full object-cover scale-[2]"
             />
           </div>
@@ -272,11 +273,11 @@ export default function BlogDetailClient({ staticData }: BlogDetailClientProps) 
             <div className="border-l-[0.56vw] lg:border-l-[0.07vw] 2xl:border-l-[0.07vw] border-[#ffdc81] pl-[4.44vw] lg:pl-[1.67vw] 2xl:pl-[1.67vw]">
               <blockquote className="text-[5.56vw] lg:text-[2.22vw] 2xl:text-[2.22vw] font-light text-[#0a5060] leading-[5.39vw] lg:leading-[3.06vw] 2xl:leading-[3.06vw] mb-[4.44vw] lg:mb-[1.39vw] 2xl:mb-[1.39vw]">
                 <span className="text-[#0a5060] italic">&ldquo;</span>
-                {data.fullWidthQuote.quote}
+                {data.blogDetails.fullWidthQuote.quote}
                 <span className="text-[#0a5060] italic">&rdquo;</span>
               </blockquote>
               <cite className="text-[3.89vw] lg:text-[0.97vw] 2xl:text-[0.97vw] font-light text-[#777] leading-[5.56vw] lg:leading-[1.46vw] 2xl:leading-[1.46vw] not-italic">
-                {data.fullWidthQuote.author}
+                {data.blogDetails.fullWidthQuote.author}
               </cite>
             </div>
           </div>
@@ -292,7 +293,7 @@ export default function BlogDetailClient({ staticData }: BlogDetailClientProps) 
           }`}
         >
           <div className="flex flex-col gap-[4.44vw] lg:gap-[1.11vw] 2xl:gap-[1.11vw] lg:px-[24.03vw] 2xl:px-[24.03vw]">
-            {data.additionalContent.map((content) => (
+            {data.blogDetails.additionalContent.map((content) => (
               <p
                 key={content.id}
                 className="text-[3.89vw] lg:text-[1.11vw] 2xl:text-[1.11vw] font-regular lg:font-light 2xl:font-light text-[#606060] leading-[4.44vw] lg:leading-[1.67vw] 2xl:leading-[1.67vw]"
@@ -316,12 +317,12 @@ export default function BlogDetailClient({ staticData }: BlogDetailClientProps) 
             <div className="lg:flex-1 2xl:flex-1 h-[106.67vw] lg:h-[26.67vw] 2xl:h-[26.67vw] overflow-hidden">
               <Image
                 src={
-                  imageMap?.[data.sideBySideSection.image] ||
+                  imageMap?.[data.blogDetails.sideBySideSection.image] ||
                   "/fallback-image.jpg"
                 }
-                alt={data.sideBySideSection.alt}
-                width={data.sideBySideSection.width}
-                height={data.sideBySideSection.height}
+                alt={data.blogDetails.sideBySideSection.alt}
+                width={data.blogDetails.sideBySideSection.width}
+                height={data.blogDetails.sideBySideSection.height}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -329,12 +330,12 @@ export default function BlogDetailClient({ staticData }: BlogDetailClientProps) 
             <div className="lg:flex-1 2xl:flex-1 border-l-[0.56vw] lg:border-l-[0.07vw] 2xl:border-l-[0.07vw] border-[#ffdc81] pl-[4.44vw] lg:pl-[1.67vw] 2xl:pl-[1.67vw] gap-[4.44vw] lg:gap-0 2xl:gap-0 flex flex-col justify-between">
               <blockquote className="text-[5.56vw] lg:text-[2.22vw] 2xl:text-[2.22vw] text-left font-regular text-[#0a5060] leading-[6.39vw] lg:leading-[2.64vw] 2xl:leading-[2.64vw]">
                 <span className="text-[#0a5060] italic">&ldquo;</span>
-                {data.sideBySideSection.quote}
+                {data.blogDetails.sideBySideSection.quote}
                 <span className="text-[#0a5060] italic">&rdquo;</span>
               </blockquote>
 
               <cite className="text-[3.89vw] lg:text-[0.97vw] 2xl:text-[0.97vw] font-light text-[#777] leading-[5.56vw] lg:leading-[1.46vw] 2xl:leading-[1.46vw] not-italic">
-                {data.sideBySideSection.author}
+                {data.blogDetails.sideBySideSection.author}
               </cite>
             </div>
           </div>
@@ -350,7 +351,7 @@ export default function BlogDetailClient({ staticData }: BlogDetailClientProps) 
           }`}
         >
           <div className="flex flex-col gap-[11.11vw] lg:gap-[2.78vw] 2xl:gap-[2.78vw] lg:px-[24.03vw] 2xl:px-[24.03vw] pt-[5.56vw] lg:pt-[1.39vw] 2xl:pt-[1.39vw]">
-            {data.finalSections.map((section) => (
+            {data.blogDetails.finalSections.map((section) => (
               <div
                 key={section.id}
                 className="flex flex-col gap-[4.44vw] lg:gap-[1.11vw] 2xl:gap-[1.11vw]"
@@ -394,10 +395,10 @@ export default function BlogDetailClient({ staticData }: BlogDetailClientProps) 
             <div className="w-[13.89vw] lg:w-[3.47vw] 2xl:w-[3.47vw] h-[13.89vw] lg:h-[3.47vw] 2xl:h-[3.47vw] rounded-full bg-[#fbfbfb] shadow-lg overflow-hidden">
               <Image
                 src={
-                  imageMap?.[data.author.avatar] ||
+                  imageMap?.[data.blogDetails.author.avatar] ||
                   "/fallback-image.jpg"
                 }
-                alt={data.author.name}
+                alt={data.blogDetails.author.name}
                 width={46}
                 height={46}
                 className="w-full h-full object-cover"
@@ -405,23 +406,23 @@ export default function BlogDetailClient({ staticData }: BlogDetailClientProps) 
             </div>
             <div className="flex flex-col">
               <span className="text-[2.78vw] lg:text-[0.69vw] 2xl:text-[0.69vw] text-[#777] leading-[5vw] lg:leading-[1.04vw] 2xl:leading-[1.04vw]">
-                {data.author.role}
+                {data.blogDetails.author.role}
               </span>
               <span className="text-[2.78vw] lg:text-[0.83vw] 2xl:text-[0.83vw] font-medium text-[#777] leading-[6.67vw] lg:leading-[1.25vw] 2xl:leading-[1.25vw]">
-                {data.author.name}
+                {data.blogDetails.author.name}
               </span>
             </div>
           </div>
 
           <div className="flex flex-row justify-between items-center w-full lg:flex-col 2xl:flex-col lg:h-[51px] 2xl:h-[51px] lg:items-end 2xl:items-end lg:justify-between 2xl:justify-between">
             <span className="text-[2.78vw] lg:text-[0.83vw] 2xl:text-[0.83vw] font-medium text-[#777] leading-[3.19vw] lg:leading-[1.25vw] 2xl:leading-[1.25vw]">
-              {data.author.date}
+              {data.blogDetails.author.date}
             </span>
             <div className="flex items-center gap-[1.11vw] lg:gap-[0.56vw] 2xl:gap-[0.56vw] text-[2.78vw] lg:text-[0.83vw] 2xl:text-[0.83vw] font-regular text-[#777]">
-              <span>{data.author.share.text}</span>
+              <span>{data.blogDetails.author.share.text}</span>
               <Image
                 src={
-                  imageMap?.[data.author.share.image] ||
+                  imageMap?.[data.blogDetails.author.share.image] ||
                   "/fallback-image.jpg"
                 }
                 alt="Share"

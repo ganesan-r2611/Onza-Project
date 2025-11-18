@@ -8,6 +8,7 @@ export default async function BlogDetailPage() {
   const correctStaticData = {
     ...rest,
     blogDetails: blogDetails?.blogDetails ?? blogDetails,
+    featuredSection: blogDetails?.featuredSection
   };
 
   return <BlogDetailClient staticData={correctStaticData} />;
