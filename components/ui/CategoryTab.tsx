@@ -48,7 +48,6 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
   const desktopTabsRef = useRef<HTMLDivElement | null>(null);
   const tabsOuterRef = useRef<HTMLDivElement | null>(null);
 
-
   const filteredPosts =
     activeCategory === "All Blogs"
       ? posts
@@ -69,25 +68,41 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
       postsGridRef.current.style.transform = "translateY(20px)";
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 200));
+    await new Promise((res) => setTimeout(res, 120));
 
     setActiveCategory(categoryName);
     setVisiblePostsCount(4);
 
-    if (scrollContainerRef.current && tabRefs.current[index]) {
-      const tab = tabRefs.current[index];
-      if (tab) {
-        const container = scrollContainerRef.current;
+    const container = scrollContainerRef.current;
+    const tab = tabRefs.current[index];
+
+    if (container && tab) {
+      const prevPointer = container.style.pointerEvents;
+      container.style.pointerEvents = "none";
+
+      try {
+        tab.scrollIntoView({
+          behavior: "smooth",
+          inline: "center",
+          block: "nearest",
+        });
+      } catch (e) {
         const tabLeft = tab.offsetLeft;
         const tabWidth = tab.offsetWidth;
         const containerWidth = container.offsetWidth;
-
-        const scrollPosition = tabLeft - containerWidth / 2 + tabWidth / 2;
-        container.scrollTo({
-          left: scrollPosition,
-          behavior: "smooth",
-        });
+        let scrollPosition = tabLeft - containerWidth / 2 + tabWidth / 2;
+        const maxScroll = Math.max(
+          0,
+          container.scrollWidth - container.clientWidth
+        );
+        if (scrollPosition < 0) scrollPosition = 0;
+        if (scrollPosition > maxScroll) scrollPosition = maxScroll;
+        container.scrollTo({ left: scrollPosition, behavior: "smooth" });
       }
+
+      setTimeout(() => {
+        container.style.pointerEvents = prevPointer || "";
+      }, 400);
     }
 
     setTimeout(() => {
@@ -96,7 +111,7 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
         postsGridRef.current.style.transform = "translateY(0)";
       }
       setIsTransitioning(false);
-    }, 300);
+    }, 350);
   };
 
   const handleLoadMore = async () => {
@@ -124,9 +139,6 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
       }
     }, 200);
   };
-
-
-  tabRefs.current = [];
 
   return (
     <div className="w-full min-h-full flex flex-col items-start text-[#4a4a4a]">
