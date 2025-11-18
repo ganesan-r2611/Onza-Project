@@ -1,7 +1,7 @@
 // components/CategoryTabs.tsx
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import BlogCard from "@/components/ui/Blog_card";
 
 interface Post {
@@ -38,21 +38,24 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
   const [visiblePostsCount, setVisiblePostsCount] = useState(4);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [showEndMessage, setShowEndMessage] = useState(false);
-  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const postsGridRef = useRef<HTMLDivElement>(null);
-  const loadMoreButtonRef = useRef<HTMLButtonElement>(null);
 
-  // Filter posts based on active category
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const postsGridRef = useRef<HTMLDivElement | null>(null);
+  const loadMoreButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  const mobileTabsRef = useRef<HTMLDivElement | null>(null);
+  const desktopTabsRef = useRef<HTMLDivElement | null>(null);
+  const tabsOuterRef = useRef<HTMLDivElement | null>(null);
+
+
   const filteredPosts =
     activeCategory === "All Blogs"
       ? posts
       : posts.filter((post) => post.category === activeCategory);
 
-  // Get posts to display (limited by visiblePostsCount)
   const displayedPosts = filteredPosts.slice(0, visiblePostsCount);
 
-  // Check if there are more posts to load
   const hasMorePosts = visiblePostsCount < filteredPosts.length;
 
   const handleCategoryClick = async (categoryName: string, index: number) => {
@@ -61,18 +64,16 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
     setIsTransitioning(true);
     setShowEndMessage(false);
 
-    // Reset to 4 posts when category changes with smooth transition
     if (postsGridRef.current) {
-      postsGridRef.current.style.opacity = '0.5';
-      postsGridRef.current.style.transform = 'translateY(20px)';
+      postsGridRef.current.style.opacity = "0.5";
+      postsGridRef.current.style.transform = "translateY(20px)";
     }
 
-    await new Promise(resolve => setTimeout(resolve, 200));
+    await new Promise((resolve) => setTimeout(resolve, 200));
 
     setActiveCategory(categoryName);
     setVisiblePostsCount(4);
 
-    // Scroll to center the active tab on mobile
     if (scrollContainerRef.current && tabRefs.current[index]) {
       const tab = tabRefs.current[index];
       if (tab) {
@@ -80,20 +81,19 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
         const tabLeft = tab.offsetLeft;
         const tabWidth = tab.offsetWidth;
         const containerWidth = container.offsetWidth;
-        
-        const scrollPosition = tabLeft - (containerWidth / 2) + (tabWidth / 2);
+
+        const scrollPosition = tabLeft - containerWidth / 2 + tabWidth / 2;
         container.scrollTo({
           left: scrollPosition,
-          behavior: 'smooth'
+          behavior: "smooth",
         });
       }
     }
 
-    // Restore grid appearance
     setTimeout(() => {
       if (postsGridRef.current) {
-        postsGridRef.current.style.opacity = '1';
-        postsGridRef.current.style.transform = 'translateY(0)';
+        postsGridRef.current.style.opacity = "1";
+        postsGridRef.current.style.transform = "translateY(0)";
       }
       setIsTransitioning(false);
     }, 300);
@@ -103,62 +103,43 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
     if (isLoadingMore || !hasMorePosts) return;
 
     setIsLoadingMore(true);
-    
-    // Smooth loading animation
+
     if (loadMoreButtonRef.current) {
-      loadMoreButtonRef.current.style.transform = 'scale(0.95)';
+      loadMoreButtonRef.current.style.transform = "scale(0.95)";
     }
 
-    await new Promise(resolve => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 300));
 
     const newCount = visiblePostsCount + 4;
     setVisiblePostsCount(newCount);
 
-    // Check if we've reached the end
     if (newCount >= filteredPosts.length) {
       setShowEndMessage(true);
     }
 
-    // Reset button animation
     setTimeout(() => {
       setIsLoadingMore(false);
       if (loadMoreButtonRef.current) {
-        loadMoreButtonRef.current.style.transform = 'scale(1)';
+        loadMoreButtonRef.current.style.transform = "scale(1)";
       }
     }, 200);
   };
 
-  // Reset when category changes
-  useEffect(() => {
-    setVisiblePostsCount(4);
-    setShowEndMessage(false);
-  }, [activeCategory]);
 
-  // Auto-scroll to top when new posts load (optional)
-  useEffect(() => {
-    if (visiblePostsCount > 4 && postsGridRef.current) {
-      const gridElement = postsGridRef.current;
-      const rect = gridElement.getBoundingClientRect();
-      if (rect.bottom > window.innerHeight) {
-        gridElement.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'nearest' 
-        });
-      }
-    }
-  }, [visiblePostsCount]);
+  tabRefs.current = [];
 
   return (
     <div className="w-full min-h-full flex flex-col items-start text-[#4a4a4a]">
-      {/* Categories Navigation with Horizontal Scroll */}
-      <div className="w-full backdrop-filter backdrop-blur-[176.6px] bg-[#f2e9da] border border-[rgba(255,255,255,0.13)] relative">
-        {/* Scrollable Container for Mobile */}
-        <div 
+      <div
+        ref={tabsOuterRef}
+        className="w-full backdrop-filter backdrop-blur-[176.6px] bg-[#f2e9da] border border-[rgba(255,255,255,0.13)] relative"
+      >
+        <div
           ref={scrollContainerRef}
           className="lg:hidden overflow-x-auto scrollbar-hide whitespace-nowrap scroll-smooth"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
-          <div className="inline-flex min-w-full px-4 pt-4">
+          <div ref={mobileTabsRef} className="inline-flex min-w-full px-4 pt-4">
             {categories.map((category, index) => (
               <button
                 key={category.id}
@@ -168,7 +149,7 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
                 onClick={() => handleCategoryClick(category.name, index)}
                 className={`inline-flex rounded-tl-[4.44vw] rounded-tr-[4.44vw] items-center justify-center py-4 px-6 pt-4 pb-2 transition-all duration-300 ease-in-out cursor-pointer text-nowrap mx-1 first:ml-0 last:mr-0 flex-shrink-0 ${
                   activeCategory === category.name
-                    ? "bg-[#ffdc81] text-[#0a0a0a] shadow-lg transform scale-105"
+                    ? "bg-[#ffdc81] text-[#0a0a0a] transform scale-105"
                     : "text-[#4a4a4a] hover:bg-[#ffdc81]/50 hover:scale-102"
                 } ${isTransitioning ? "pointer-events-none opacity-70" : ""}`}
                 disabled={isTransitioning}
@@ -183,7 +164,7 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
 
         {/* Desktop Tabs (non-scrollable) */}
         <div className="hidden lg:flex items-center px-[40px] lg:px-[2.78vw] pt-4 lg:pt-[1.11vw]">
-          <div className="w-full flex items-center">
+          <div className="w-full flex items-center" ref={desktopTabsRef}>
             {categories.map((category, index) => (
               <button
                 key={category.id}
@@ -191,10 +172,10 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
                   tabRefs.current[index] = el;
                 }}
                 onClick={() => handleCategoryClick(category.name, index)}
-                className={`flex-1 rounded-tl-[4.44vw] lg:rounded-tl-[1.11vw] rounded-tr-[4.44vw] lg:rounded-tr-[1.11vw] flex items-center justify-center py-4 lg:py-[1.11vw] px-4 lg:px-[1.67vw] pt-4 lg:pt-[1.11vw] pb-2 lg:pb-[0.56vw] transition-all duration-500 ease-out cursor-pointer text-nowrap ${
+                className={`flex-1 rounded-tl-[4.44vw] lg:rounded-tl-[1.11vw] rounded-tr-[4.44vw] lg:rounded-tr-[1.11vw] flex items-center justify-center py-4 lg:py-[1.11vw] px-4 lg:px-[1.67vw] pt-4 lg:pt-[1.5vw] pb-2 lg:pb-[1.5vw] transition-all duration-500 ease-out cursor-pointer text-nowrap ${
                   activeCategory === category.name
-                    ? "bg-[#ffdc81] text-[#0a0a0a] shadow-xl transform scale-105"
-                    : "text-[#4a4a4a] hover:bg-[#ffdc81]/30 hover:scale-102"
+                    ? "bg-[#ffdc81] text-[#0a0a0a] transform scale-105 pb-4 lg:pb-[1.5vw]"
+                    : "text-[#4a4a4a] hover:bg-[#ffdc81]/30 hover:scale-105 pb-4 lg:pb-[1.5vw]"
                 } ${isTransitioning ? "pointer-events-none opacity-70" : ""}`}
                 disabled={isTransitioning}
               >
@@ -205,16 +186,39 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
             ))}
           </div>
         </div>
+
+        {/* Baseline + Yellow underline inside same outer so positions are consistent */}
+        <div
+          className="absolute left-0 right-0 top-full mt-0 pointer-events-none"
+          aria-hidden
+        >
+          <div
+            className="absolute h-[2px] transition-transform duration-300"
+            style={{
+              width: `100%`,
+              backgroundColor: "rgba(255, 220, 129, 0.4)",
+            }}
+          />
+          {/* <div
+            className="absolute h-[3px] rounded-full transition-transform duration-300"
+            style={{
+              transform: `translateX(${underline.left}px)`,
+              width: `${underline.width}px`,
+              backgroundColor: "#ffdc81",
+            }}
+          /> */}
+        </div>
       </div>
 
       {/* Blog Cards Grid */}
       <div className="w-full bg-[#f2e9da] border border-[rgba(255,255,255,0.13)] flex flex-col items-center justify-center py-10 lg:py-[2.78vw] px-4 lg:px-[2.78vw] pb-20 lg:pb-[5.56vw] gap-10 lg:gap-[2.78vw]">
-        
         {/* Blog Cards Grid with Smooth Transitions */}
         <div
           ref={postsGridRef}
           className={`w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-[1.67vw] transition-all duration-500 ease-out ${
-            isTransitioning ? "opacity-70 transform translate-y-4" : "opacity-100 transform translate-y-0"
+            isTransitioning
+              ? "opacity-70 transform translate-y-4"
+              : "opacity-100 transform translate-y-0"
           }`}
         >
           {displayedPosts.map((post, index) => (
@@ -223,7 +227,9 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
               className="transition-all duration-500 ease-out"
               style={{
                 animationDelay: `${index * 100}ms`,
-                animation: isTransitioning ? 'none' : `fadeInUp 0.6s ease-out ${index * 100}ms both`
+                animation: isTransitioning
+                  ? "none"
+                  : `fadeInUp 0.6s ease-out ${index * 100}ms both`,
               }}
             >
               <BlogCard post={post} variant="standard" />
@@ -240,7 +246,7 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
 
         {/* View More Button - Only show if there are more posts */}
         {hasMorePosts && !isLoadingMore && (
-          <button 
+          <button
             ref={loadMoreButtonRef}
             onClick={handleLoadMore}
             disabled={isLoadingMore}
@@ -263,20 +269,19 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
 
         {/* End Message with Smooth Appearance */}
         {showEndMessage && filteredPosts.length > 0 && (
-          <div 
-            className="text-center text-[#4a4a4a] text-sm lg:text-[0.97vw] font-light py-4 transition-all duration-500 ease-out animate-fadeIn"
-          >
+          <div className="text-center text-[#4a4a4a] text-sm lg:text-[0.97vw] font-light py-4 transition-all duration-500 ease-out animate-fadeIn">
             <div className="flex items-center justify-center gap-3">
-              <span className="text-[#0a5060]">✨</span>
-              <span>You&apos;ve seen all {filteredPosts.length} posts in {activeCategory.toLowerCase()}</span>
-              <span className="text-[#0a5060]">✨</span>
+              <span>
+                You&apos;ve seen all {filteredPosts.length} posts in{" "}
+                {activeCategory.toLowerCase()}
+              </span>
             </div>
             <button
               onClick={() => {
                 setVisiblePostsCount(4);
                 setShowEndMessage(false);
                 // Smooth scroll to top
-                postsGridRef.current?.scrollIntoView({ behavior: 'smooth' });
+                postsGridRef.current?.scrollIntoView({ behavior: "smooth" });
               }}
               className="mt-3 text-[#0a5060] hover:text-[#0a5060]/80 underline transition-colors duration-300 text-xs lg:text-[0.83vw]"
             >
@@ -291,7 +296,9 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
             <div className="flex flex-col items-center gap-3">
               <span className="text-4xl">📝</span>
               <p>No posts found in {activeCategory}</p>
-              <p className="text-xs lg:text-[0.69vw] opacity-70">Try selecting a different category</p>
+              <p className="text-xs lg:text-[0.69vw] opacity-70">
+                Try selecting a different category
+              </p>
             </div>
           </div>
         )}
@@ -309,7 +316,7 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
             transform: translateY(0);
           }
         }
-        
+
         @keyframes fadeIn {
           from {
             opacity: 0;
@@ -318,7 +325,7 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
             opacity: 1;
           }
         }
-        
+
         .animate-fadeIn {
           animation: fadeIn 0.6s ease-out;
         }

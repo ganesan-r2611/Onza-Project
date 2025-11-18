@@ -65,28 +65,28 @@ const BlogCard: React.FC<BlogCardProps> = ({
           </div>
 
           {/* Bottom: Content */}
-          <div
-            className="absolute inset-x-0 bottom-0 top-1/3 backdrop-blur-[2px] pointer-events-none"
+          {/* <div
+            className="absolute inset-x-0 bottom-0 top-2/4 backdrop-blur-[2px] pointer-events-none"
             style={{
               maskImage: "linear-gradient(to top, black 0%, transparent 100%)",
               WebkitMaskImage:
                 "linear-gradient(to top, black 0%, transparent 100%)",
             }}
-          />
+          /> */}
           <div
-            className="absolute inset-x-0 bottom-0 top-1/4 backdrop-blur-[4px] pointer-events-none"
+            className="absolute inset-x-0 bottom-0 top-2/4 backdrop-blur-[4px] pointer-events-none"
             style={{
               maskImage: "linear-gradient(to top, black 20%, transparent 100%)",
               WebkitMaskImage:
-                "linear-gradient(to top, black 20%, transparent 100%)",
+                "linear-gradient(to top, black 40%, transparent 100%)",
             }}
           />
           <div
-            className="absolute inset-x-0 bottom-0 top-[16.666%] backdrop-blur-[6px] pointer-events-none"
+            className="absolute inset-x-0 bottom-0 top-[50%] backdrop-blur-[6px] pointer-events-none"
             style={{
               maskImage: "linear-gradient(to top, black 40%, transparent 100%)",
               WebkitMaskImage:
-                "linear-gradient(to top, black 40%, transparent 100%)",
+                "linear-gradient(to top, black 60%, transparent 100%)",
             }}
           />
           <div className="relative flex flex-col gap-[8px] lg:gap-[1.11vw]">
@@ -140,28 +140,28 @@ const BlogCard: React.FC<BlogCardProps> = ({
           </div>
 
           {/* Bottom: Content */}
-          <div
-            className="absolute inset-x-0 bottom-0 top-1/3 backdrop-blur-[2px] pointer-events-none"
+          {/* <div
+            className="absolute inset-x-0 bottom-0 top-2/4 backdrop-blur-[2px] pointer-events-none"
             style={{
               maskImage: "linear-gradient(to top, black 0%, transparent 100%)",
               WebkitMaskImage:
                 "linear-gradient(to top, black 0%, transparent 100%)",
             }}
-          />
+          /> */}
           <div
-            className="absolute inset-x-0 bottom-0 top-1/4 backdrop-blur-[4px] pointer-events-none"
-            style={{
-              maskImage: "linear-gradient(to top, black 20%, transparent 100%)",
-              WebkitMaskImage:
-                "linear-gradient(to top, black 20%, transparent 100%)",
-            }}
-          />
-          <div
-            className="absolute inset-x-0 bottom-0 top-[16.666%] backdrop-blur-[6px] pointer-events-none"
+            className="absolute inset-x-0 bottom-0 top-2/4 backdrop-blur-[4px] pointer-events-none"
             style={{
               maskImage: "linear-gradient(to top, black 40%, transparent 100%)",
               WebkitMaskImage:
                 "linear-gradient(to top, black 40%, transparent 100%)",
+            }}
+          />
+          <div
+            className="absolute inset-x-0 bottom-0 top-[50%] backdrop-blur-[6px] pointer-events-none"
+            style={{
+              maskImage: "linear-gradient(to top, black 60%, transparent 100%)",
+              WebkitMaskImage:
+                "linear-gradient(to top, black 60%, transparent 100%)",
             }}
           />
           <div className="relative flex flex-col gap-[8px] lg:gap-[1.11vw]">
@@ -215,28 +215,28 @@ const BlogCard: React.FC<BlogCardProps> = ({
         </div>
 
         {/* Bottom: Content */}
-        <div
-          className="absolute inset-x-0 bottom-0 top-1/3 backdrop-blur-[2px] pointer-events-none"
+        {/* <div
+          className="absolute inset-x-0 bottom-0 top-2/4 backdrop-blur-[2px] pointer-events-none"
           style={{
             maskImage: "linear-gradient(to top, black 0%, transparent 100%)",
             WebkitMaskImage:
               "linear-gradient(to top, black 0%, transparent 100%)",
           }}
-        />
+        /> */}
         <div
-          className="absolute inset-x-0 bottom-0 top-1/4 backdrop-blur-[4px] pointer-events-none"
-          style={{
-            maskImage: "linear-gradient(to top, black 20%, transparent 100%)",
-            WebkitMaskImage:
-              "linear-gradient(to top, black 20%, transparent 100%)",
-          }}
-        />
-        <div
-          className="absolute inset-x-0 bottom-0 top-[16.666%] backdrop-blur-[6px] pointer-events-none"
+          className="absolute inset-x-0 bottom-0 top-2/4 backdrop-blur-[4px] pointer-events-none"
           style={{
             maskImage: "linear-gradient(to top, black 40%, transparent 100%)",
             WebkitMaskImage:
               "linear-gradient(to top, black 40%, transparent 100%)",
+          }}
+        />
+        <div
+          className="absolute inset-x-0 bottom-0 top-[50%] backdrop-blur-[6px] pointer-events-none"
+          style={{
+            maskImage: "linear-gradient(to top, black 60%, transparent 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to top, black 60%, transparent 100%)",
           }}
         />
         <div className="relative flex flex-col gap-[4.44vw] lg:gap-[1.11vw]">

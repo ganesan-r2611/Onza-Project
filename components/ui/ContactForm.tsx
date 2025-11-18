@@ -101,7 +101,7 @@ export default function ContactForm({
               className="peer w-full h-[70px] 2xl:h-[4.86vw] bg-transparent text-[16px] 2xl:text-[1.11vw] font-light text-[#F2E9DA] focus:outline-none py-3 2xl:py-[0.21vw] px-0 border-b-2 border-[#0A5060] transition-all duration-300 focus:border-[#3CC2CC] hover:border-[#3CC2CC]"
               placeholder=" "
             />
-            <label className="absolute left-0 top-1/2 -translate-y-1/2 text-[16px] 2xl:text-[1.11vw] font-light text-[#F2E9DA] transition-all duration-300 pointer-events-none peer-focus:top-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-[#3CC2CC] peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:-translate-y-6 peer-[:not(:placeholder-shown)]:text-[#ffdc81] origin-left">
+            <label className="absolute left-0 top-1/2 -translate-y-1/2 text-[16px] 2xl:text-[1.11vw] font-light text-[#F2E9DA] transition-all duration-300 pointer-events-none peer-focus:top-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-[#ffdc81] peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:-translate-y-6 peer-[:not(:placeholder-shown)]:text-[#ffdc81] origin-left">
               {data.namePlaceholder}
             </label>
             <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#3CC2CC] transition-all duration-300 peer-focus:w-full group-hover:w-full"></div>
@@ -117,7 +117,7 @@ export default function ContactForm({
               className="peer w-full h-[70px] 2xl:h-[4.86vw] bg-transparent text-[16px] 2xl:text-[1.11vw] font-light text-[#F2E9DA] focus:outline-none py-3 2xl:py-[0.21vw] px-0 border-b-2 border-[#0A5060] transition-all duration-300 focus:border-[#3CC2CC] hover:border-[#3CC2CC]"
               placeholder=" "
             />
-            <label className="absolute left-0 top-1/2 -translate-y-1/2 text-[16px] 2xl:text-[1.11vw] font-light text-[#F2E9DA] transition-all duration-300 pointer-events-none peer-focus:top-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-[#3CC2CC] peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:-translate-y-6 peer-[:not(:placeholder-shown)]:text-[#ffdc81] origin-left">
+            <label className="absolute left-0 top-1/2 -translate-y-1/2 text-[16px] 2xl:text-[1.11vw] font-light text-[#F2E9DA] transition-all duration-300 pointer-events-none peer-focus:top-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-[#ffdc81] peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:-translate-y-6 peer-[:not(:placeholder-shown)]:text-[#ffdc81] origin-left">
               {data.contactNumberPlaceholder}
             </label>
             <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#3CC2CC] transition-all duration-300 peer-focus:w-full group-hover:w-full"></div>
@@ -135,7 +135,7 @@ export default function ContactForm({
               className="peer w-full h-[70px] 2xl:h-[4.86vw] bg-transparent text-[16px] 2xl:text-[1.11vw] font-light text-[#F2E9DA] focus:outline-none py-3 2xl:py-[0.21vw] px-0 border-b-2 border-[#0A5060] transition-all duration-300 focus:border-[#3CC2CC] hover:border-[#3CC2CC]"
               placeholder=" "
             />
-            <label className="absolute left-0 top-1/2 -translate-y-1/2 text-[16px] 2xl:text-[1.11vw] font-light text-[#F2E9DA] transition-all duration-300 pointer-events-none peer-focus:top-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-[#3CC2CC] peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:-translate-y-6 peer-[:not(:placeholder-shown)]:text-[#ffdc81] origin-left">
+            <label className="absolute left-0 top-1/2 -translate-y-1/2 text-[16px] 2xl:text-[1.11vw] font-light text-[#F2E9DA] transition-all duration-300 pointer-events-none peer-focus:top-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-[#ffdc81] peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:-translate-y-6 peer-[:not(:placeholder-shown)]:text-[#ffdc81] origin-left">
               {data.emailPlaceholder}
             </label>
             <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#3CC2CC] transition-all duration-300 peer-focus:w-full group-hover:w-full"></div>
@@ -143,116 +143,18 @@ export default function ContactForm({
 
           {/* City Dropdown */}
           <div className="relative group">
-            <FormControl
-              variant="standard"
-              fullWidth
-              sx={{
-                marginTop: "0px",
-                "& .MuiInputBase-root": {
-                  marginTop: "0px",
-                },
-              }}
-            >
-              <InputLabel
-                id="city-select-label"
-                sx={{
-                  color: "#F2E9DA",
-                  fontSize: { xs: "16px", lg: "1.11vw" },
-                  fontFamily: "inherit",
-                  fontWeight: 300,
-                  "&.Mui-focused": {
-                    color: "#F2E9DA",
-                  },
-                }}
-              >
-                {data.cityPlaceholder}
-              </InputLabel>
-              <Select
-                labelId="city-select-label"
-                id="city-select"
-                name="city"
-                value={formData.city}
-                onChange={(e) => onChange("city", e.target.value)}
-                label={data.cityPlaceholder}
-                IconComponent={(props) => (
-                  <svg
-                    {...props}
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    style={{
-                      right: "8px",
-                      position: "absolute",
-                      pointerEvents: "none",
-                    }}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                )}
-                sx={{
-                  color: "#F2E9DA",
-                  fontSize: { xs: "16px", lg: "1.11vw" },
-                  fontFamily: "inherit",
-                  fontWeight: 300,
-                  height: { xs: "70px", lg: "4.86vw" },
-                  "&:before": {
-                    borderBottomColor: "#0A5060",
-                    borderBottomWidth: "2px",
-                  },
-                  "&:after": {
-                    borderBottomColor: "#3CC2CC",
-                  },
-                  "&:hover:not(.Mui-disabled):before": {
-                    borderBottomColor: "#3CC2CC",
-                  },
-                  "& .MuiSelect-icon": {
-                    color: "#A4A4A4",
-                    transition: "color 0.3s ease",
-                  },
-                  "&.Mui-focused .MuiSelect-icon": {
-                    color: "#3CC2CC",
-                  },
-                  "&:hover .MuiSelect-icon": {
-                    color: "#3CC2CC",
-                  },
-                }}
-                MenuProps={{
-                  PaperProps: {
-                    sx: {
-                      bgcolor: "#0A5060",
-                      "& .MuiMenuItem-root": {
-                        color: "#F2E9DA",
-                        fontSize: { xs: "16px", lg: "1.11vw" },
-                        "&:hover": {
-                          bgcolor: "#ffdc81",
-                          color: "#000000",
-                        },
-                        "&.Mui-selected": {
-                          bgcolor: "#ffdc81",
-                          color: "#000000",
-                        },
-                        "&.Mui-selected:hover": {
-                          bgcolor: "#ffdc81",
-                          color: "#000000",
-                        },
-                      },
-                    },
-                  },
-                }}
-              >
-                <MenuItem value="Bengaluru">Bengaluru</MenuItem>
-                <MenuItem value="Delhi">Delhi</MenuItem>
-                <MenuItem value="Mumbai">Mumbai</MenuItem>
-                <MenuItem value="Chennai">Chennai</MenuItem>
-              </Select>
-            </FormControl>
+            <input
+              type="city"
+              name="city"
+              value={formData.email}
+              onChange={(e) => onChange("city", e.target.value)}
+              className="peer w-full h-[70px] 2xl:h-[4.86vw] bg-transparent text-[16px] 2xl:text-[1.11vw] font-light text-[#F2E9DA] focus:outline-none py-3 2xl:py-[0.21vw] px-0 border-b-2 border-[#0A5060] transition-all duration-300 focus:border-[#3CC2CC] hover:border-[#3CC2CC]"
+              placeholder=" "
+            />
+            <label className="absolute left-0 top-1/2 -translate-y-1/2 text-[16px] 2xl:text-[1.11vw] font-light text-[#F2E9DA] transition-all duration-300 pointer-events-none peer-focus:top-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-[#ffdc81] peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:-translate-y-6 peer-[:not(:placeholder-shown)]:text-[#ffdc81] origin-left">
+              {data.cityPlaceholder}
+            </label>
+            <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#3CC2CC] transition-all duration-300 peer-focus:w-full group-hover:w-full"></div>
           </div>
         </div>
       </div>
@@ -320,7 +222,7 @@ export default function ContactForm({
                 fontFamily: "inherit",
                 fontWeight: 300,
                 "&.Mui-focused": {
-                  color: "#3CC2CC",
+                  color: "#ffdc81",
                 },
                 "&.MuiInputLabel-shrink": {
                   transform: "translate(0, -1.5px) scale(0.75)",
@@ -364,7 +266,8 @@ export default function ContactForm({
                 fontSize: { xs: "16px", lg: "1.11vw" },
                 fontFamily: "inherit",
                 fontWeight: 300,
-                height: { xs: "70px", lg: "4.86vw" },
+                height: { xs: "70px", lg: "4.24vw" },
+
                 "&:before": {
                   borderBottomColor: "#0A5060",
                   borderBottomWidth: "2px",
@@ -396,11 +299,37 @@ export default function ContactForm({
                 PaperProps: {
                   sx: {
                     bgcolor: "#0A5060",
-                    maxHeight: { xs: "300px", lg: "20.833vw" },
+                    overflow: "hidden",
+
+                    borderBottomLeftRadius: "0.56vw",
+                    borderBottomRightRadius: "0.56vw",
+                    "& .MuiMenu-list": {
+                      maxHeight: { xs: "190px", lg: "13.19vw" },
+                      overflowY: "auto",
+
+                      backgroundColor: "transparent",
+                      padding: 0,
+
+                      scrollbarWidth: "thin",
+                      scrollbarColor: "#ffdc81 #0A5060",
+                    },
+
+                    "& .MuiMenu-list::-webkit-scrollbar": {
+                      width: "8px",
+                    },
+                    "& .MuiMenu-list::-webkit-scrollbar-track": {
+                      background: "#0A5060",
+                    },
+                    "& .MuiMenu-list::-webkit-scrollbar-thumb": {
+                      background: "#ffdc81",
+                      borderRadius: "4px",
+                    },
+
+                    // style individual menu items
                     "& .MuiMenuItem-root": {
                       color: "#A4A4A4",
                       fontSize: { xs: "16px", lg: "1.11vw" },
-                      padding: { xs: "12px 16px", lg: "0.833vw 1.111vw" },
+                      padding: { xs: "16px 24px", lg: "1.111vw 1.67vw" },
                       "&:hover": {
                         bgcolor: "#ffdc81",
                         color: "#000000",
@@ -414,17 +343,16 @@ export default function ContactForm({
                         color: "#000000",
                       },
                     },
-                    "&::-webkit-scrollbar": {
-                      width: "8px",
-                    },
-                    "&::-webkit-scrollbar-track": {
-                      background: "#0A5060",
-                    },
-                    "&::-webkit-scrollbar-thumb": {
-                      background: "#ffdc81",
-                      borderRadius: "4px",
-                    },
                   },
+                },
+
+                anchorOrigin: {
+                  vertical: "bottom",
+                  horizontal: "left",
+                },
+                transformOrigin: {
+                  vertical: "top",
+                  horizontal: "left",
                 },
               }}
             >
@@ -459,7 +387,7 @@ export default function ContactForm({
         ></button>
         {/* Privacy Policy */}
         <p className="text-[12px] 2xl:text-[0.833vw] font-medium text-left leading-[18px] 2xl:leading-[1.25vw] text-[#F2E9DA] mt-2 2xl:mt-[0.69vw]">
-          By submitting this form you agree to our friendly {" "}
+          By submitting this form you agree to our friendly{" "}
           <a
             href="#"
             className="underline hover:no-underline transition-all duration-200 text-[#ffdc81] hover:text-[#ffeec0]"

@@ -4,5 +4,11 @@ import BlogDetailClient from "./BlogDetailClient";
 export default async function BlogDetailPage() {
   const staticData = await getStaticData();
 
-  return <BlogDetailClient staticData={staticData} />;
+  const { blogDetails, ...rest } = staticData;
+  const correctStaticData = {
+    ...rest,
+    blogDetails: blogDetails?.blogDetails ?? blogDetails,
+  };
+
+  return <BlogDetailClient staticData={correctStaticData} />;
 }
