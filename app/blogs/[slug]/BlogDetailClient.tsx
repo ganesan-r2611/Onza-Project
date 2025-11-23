@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import { imageMap } from "@/libs/imageMap";
 import BlogCard from "@/components/ui/Blog_card";
 import NewsletterForm from "@/components/ui/NewsletterForm";
 import { useInView } from "@/hooks/useInView";
+import SharePopUp from "@/components/ui/SharePopUp";
 
 interface BlogDetails {
   banner: {
@@ -89,9 +90,10 @@ interface BlogDetailClientProps {
   staticData: StaticData;
 }
 
-export default function BlogDetailClient({ staticData }: BlogDetailClientProps) {
+export default function BlogDetailClient({
+  staticData,
+}: BlogDetailClientProps) {
   const data = staticData;
-  console.log("BlogDetailClient staticData:", data);
 
   // Intersection observers for each section
   const bannerSection = useInView({ threshold: 0.2 });
@@ -167,18 +169,8 @@ export default function BlogDetailClient({ staticData }: BlogDetailClientProps) 
             <span className="text-[2.78vw] lg:text-[0.83vw] 2xl:text-[0.83vw] font-medium text-[#777] leading-[3.19vw] lg:leading-[1.25vw] 2xl:leading-[1.25vw]">
               {data.blogDetails.author.date}
             </span>
-            <div className="flex items-center gap-[1.11vw] lg:gap-[0.56vw] 2xl:gap-[0.56vw] text-[2.78vw] lg:text-[0.83vw] 2xl:text-[0.83vw] font-regular text-[#777]">
-              <span>{data.blogDetails.author.share.text}</span>
-              <Image
-                src={
-                  imageMap?.[data.blogDetails.author.share.image] ||
-                  "/fallback-image.jpg"
-                }
-                alt="Share"
-                width={16}
-                height={16}
-                className="w-[4.44vw] lg:w-[1.11vw] 2xl:w-[1.11vw] h-[4.44vw] lg:h-[1.11vw] 2xl:h-[1.11vw]"
-              />
+            <div className="flex items-center gap-[1.11vw] lg:gap-[0.56vw] 2xl:gap-[0.56vw] text-[2.78vw] lg:text-[0.83vw] 2xl:text-[0.83vw] font-regular text-[#777] relative z-50">
+              <SharePopUp />
             </div>
           </div>
         </div>

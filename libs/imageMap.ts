@@ -2,6 +2,7 @@
 import { StaticImageData } from "next/image";
 
 import logo from "@/assets/onza-logo.png";
+import logo_dark from "@/assets/onza-logo-dark.png";
 import bannerContact from "@/assets/banner-contact.png";
 import profile from "@/assets/profile.png";
 
@@ -35,6 +36,7 @@ import twitter from "@/assets/twitter.png";
 // import location from "@/assets/location.png";
 
 import onzaLgBG from "@/assets/onza-lg-bg.png";
+import onzaLgBgOld from "@/assets/onza-lg-bg-old.png";
 import backgroundOZ from "@/assets/backgroundoz.png";
 import footerlogo from "@/assets/footerlogo.png";
 
@@ -65,6 +67,15 @@ import blog_details_banner from "@/assets/blog_details_banner.png" ;
 import export_img from "@/assets/export.png" ;
 import blog_btn_bg from "@/assets/blog_btn_bg.png" ;
 import our_service_btn from "@/assets/ourService_btn.png" ;
+
+import serviceDropDownBg from "@/assets/service_drop_down_bg.png" ;
+import menu from "@/assets/menu.png" ;
+import navBtnCta from "@/assets/nav_button_cta.png" ;
+import insigtBgBtn from "@/assets/insight_bg_btn.png" ;
+import copy_btn from "@/assets/copy.png" ;
+import twitter_black_btn from "@/assets/twitter_black_btn.png";
+import linkedin_black_btn from "@/assets/lin_black_btn.png";
+import facebook_black_btn from "@/assets/facebook_black_btn.png";
 
 
 export const imageMap: Record<string, StaticImageData> = {
@@ -120,5 +131,15 @@ export const imageMap: Record<string, StaticImageData> = {
   blog_details_banner,
   export_img,
   blog_btn_bg,
-  our_service_btn
+  our_service_btn,
+  logo_dark,
+  serviceDropDownBg,
+  menu,
+  navBtnCta,
+  insigtBgBtn,
+  copy_btn,
+  twitter_black_btn,
+  linkedin_black_btn,
+  facebook_black_btn,
+  onzaLgBgOld,
 };
