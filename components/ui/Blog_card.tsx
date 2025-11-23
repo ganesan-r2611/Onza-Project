@@ -4,13 +4,13 @@ import Link from "next/link";
 
 interface BlogCardProps {
   post?: {
-    id: number;
-    category: string;
-    title: string;
-    excerpt: string;
-    date: string;
-    readTime: string;
-    imageKey: string;
+    id?: number;
+    category?: string;
+    title?: string;
+    excerpt?: string;
+    date?: string;
+    readTime?: string;
+    imageKey?: string;
     author?: string;
     isFeatured?: boolean;
   };

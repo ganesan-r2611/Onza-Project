@@ -2,7 +2,7 @@
   "sectionTitle": "Insights Unlocked",
   "sectionSubtitle": "Fresh ideas, sharp strategies, and stories that move brands forward. Lorem ipsum dolor sit amet consectetur. Blandit morbi ultricies",
   "cta": {
-    "label": "View All Blogs",
+    "label": "See All Blogs",
     "href": "/blogs"
   },
   "posts": [
@@ -14,7 +14,8 @@
       "author": "Onza Team",
       "date": "Apr 21, 2025",
       "readTime": "7 min read",
-      "imageKey": "blog1" 
+      "imageKey": "blog1" ,
+      "href" : "/blogs/1"
     },
     { 
       "id": 2, 
@@ -24,7 +25,8 @@
       "author": "Onza Team",
       "date": "Apr 18, 2025", 
       "readTime": "5 min read",
-      "imageKey": "blog2" 
+      "imageKey": "blog2" ,
+      "href" : "/blogs/1"
     },
     { 
       "id": 3, 
@@ -34,7 +36,8 @@
       "author": "Onza Team",
       "date": "Apr 15, 2025",
       "readTime": "6 min read", 
-      "imageKey": "blog3" 
+      "imageKey": "blog3" ,
+      "href" : "/blogs/1"
     },
     { 
       "id": 4, 
@@ -44,7 +47,8 @@
       "author": "Onza Team",
       "date": "Apr 12, 2025",
       "readTime": "8 min read",
-      "imageKey": "blog4" 
+      "imageKey": "blog4" ,
+      "href" : "/blogs/1"
     },
     { 
       "id": 5, 
@@ -54,7 +58,8 @@
       "author": "Onza Team",
       "date": "Apr 10, 2025",
       "readTime": "4 min read",
-      "imageKey": "blog5" 
+      "imageKey": "blog5" ,
+      "href" : "/blogs/1"
     },
     { 
       "id": 6, 
@@ -64,7 +69,8 @@
       "author": "Onza Team",
       "date": "Apr 8, 2025",
       "readTime": "9 min read",
-      "imageKey": "blog6" 
+      "imageKey": "blog6" ,
+      "href" : "/blogs/1"
     }
   ]
 }

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { imageMap } from "@/libs/imageMap";
+import GlobalButton from "./ui/GlobalButton";
 
 type Pillar = { title: string; desc: string; imageKey: keyof typeof imageMap };
 type Props = {
@@ -40,62 +41,71 @@ export default function ServicesCarouselSection({
               <p className="text-[32px] lg:text-[38px] 2xl:text-[2.639vw] leading-[1.2] font-light mb-8 2xl:mb-[2.78vw]">
                 {eyebrow}
               </p>
-              <Link
-                href={""}
-                onClick={(e) => e.preventDefault()}
-                className="inline-block"
+              <GlobalButton
+                href={data.cta.href}
+                width='16.67vw'
+                height='5.56vw'
+                paddingX='2.22vw'
+                paddingY='1.11vw'
+                fontSize='24px'
+                lineHeight='2.08vw'
+                variant="primary"
               >
-                <button className="glass-border-button px-8 py-4 text-[16px] text-white hover:bg-white/10 transition-colors">
-                  {cta.label}
-                </button>
-              </Link>
+                {cta.label}
+              </GlobalButton>
             </div>
           )}
 
           {/* Carousel - full width on mobile, right side on desktop */}
-          <div className={`${showIntro ? 'lg:col-span-10 lg:pt-24 2xl:pt-[8.33vw] lg:-mr-[20px] 2xl:-mr-[1.389vw]' : 'w-full overflow-x-auto no-scrollbar'} overflow-hidden`}>
-              <div
-                className={`identifier flex ${ 'transition-transform duration-[600ms] ease-out'}`}
-                style={{
-                  transform: showIntro 
-                    ? `translateX(calc(-${horizontalProgress}px - 1.95vw))` 
-                    : `translateX(-${horizontalProgress}px)`,
-                   willChange: 'transform',
-                }}
-              >
-                {items.map((item, i) => (
-                  <div
-                    key={i}
-                    className={[
-                      "shrink-0",
-                      "w-[272px] xs:w-[272px] sm:w-[272px] md:w-[322px] lg:w-[322px] 2xl:w-[22.361vw]",
-                      i === 0 ? "ml-2 sm:ml-8 lg:ml-10 2xl:ml-[3.47vw]" : "",
-                      "mr-4 sm:mr-6 2xl:mr-[2.08vw] last:mr-2 sm:last:mr-0",
-                    ].join(" ")}
-                  >
-                    <div className="rounded-2xl 2xl:rounded-[1.39vw] overflow-hidden shadow-md">
-                      <div className="relative h-[393px] xs:h-[393px] sm:h-[393px] md:h-[438px] lg:h-[438px] 2xl:h-[30.417vw]">
-                        <Image
-                          src={imageMap[item.imageKey]}
-                          alt={item.title}
-                          fill
-                          priority={i < 2}
-                          className="object-cover"
-                          sizes="(max-width: 480px) 260px, (max-width: 640px) 300px, (max-width: 1024px) 320px, (max-width: 1440px) 322px, 22.361vw"
-                        />
-                      </div>
+          <div
+            className={`${
+              showIntro
+                ? "lg:col-span-10 lg:pt-24 2xl:pt-[8.33vw] lg:-mr-[20px] 2xl:-mr-[1.389vw]"
+                : "w-full overflow-x-auto no-scrollbar"
+            } overflow-hidden`}
+          >
+            <div
+              className={`identifier flex ${"transition-transform duration-[600ms] ease-out"}`}
+              style={{
+                transform: showIntro
+                  ? `translateX(calc(-${horizontalProgress}px - 1.95vw))`
+                  : `translateX(-${horizontalProgress}px)`,
+                willChange: "transform",
+              }}
+            >
+              {items.map((item, i) => (
+                <div
+                  key={i}
+                  className={[
+                    "shrink-0",
+                    "w-[272px] xs:w-[272px] sm:w-[272px] md:w-[322px] lg:w-[322px] 2xl:w-[22.361vw]",
+                    i === 0 ? "ml-2 sm:ml-8 lg:ml-10 2xl:ml-[3.47vw]" : "",
+                    "mr-4 sm:mr-6 2xl:mr-[2.08vw] last:mr-2 sm:last:mr-0",
+                  ].join(" ")}
+                >
+                  <div className="rounded-2xl 2xl:rounded-[1.39vw] overflow-hidden shadow-md">
+                    <div className="relative h-[393px] xs:h-[393px] sm:h-[393px] md:h-[438px] lg:h-[438px] 2xl:h-[30.417vw]">
+                      <Image
+                        src={imageMap[item.imageKey]}
+                        alt={item.title}
+                        fill
+                        priority={i < 2}
+                        className="object-cover"
+                        sizes="(max-width: 480px) 260px, (max-width: 640px) 300px, (max-width: 1024px) 320px, (max-width: 1440px) 322px, 22.361vw"
+                      />
                     </div>
-
-                    <h4 className="pt-3 2xl:pt-[1.11vw] text-[20px] sm:text-[20px] md:text-[30px] lg:text-[32px] 2xl:text-[2.222vw] font-regular leading-none 2xl:leading-[2.64vw]">
-                      {item.title}
-                    </h4>
-                    <p className="pt-3 2xl:pt-[1.11vw] text-[18px] sm:text-[18px] md:text-[18px] lg:text-[20px] 2xl:text-[1.389vw] leading-[20px] sm:leading-[22px] 2xl:leading-[1.94vw] font-light">
-                      {item.desc}
-                    </p>
                   </div>
-                ))}
-              </div>
+
+                  <h4 className="pt-3 2xl:pt-[1.11vw] text-[20px] sm:text-[20px] md:text-[30px] lg:text-[32px] 2xl:text-[2.222vw] font-regular leading-none 2xl:leading-[2.64vw]">
+                    {item.title}
+                  </h4>
+                  <p className="pt-3 2xl:pt-[1.11vw] text-[18px] sm:text-[18px] md:text-[18px] lg:text-[20px] 2xl:text-[1.389vw] leading-[20px] sm:leading-[22px] 2xl:leading-[1.94vw] font-light">
+                    {item.desc}
+                  </p>
+                </div>
+              ))}
             </div>
+          </div>
         </div>
       </div>
     </div>

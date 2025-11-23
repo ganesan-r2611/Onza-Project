@@ -2,6 +2,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { imageMap } from "@/libs/imageMap";
+import GlobalButton from "./ui/GlobalButton";
+import { b } from "framer-motion/client";
 
 export interface BlogPost {
   id: number;
@@ -12,6 +14,7 @@ export interface BlogPost {
   date: string;
   readTime: string;
   imageKey: keyof typeof imageMap;
+  href?: string;
 }
 export interface BlogsData {
   sectionTitle: string;
@@ -20,7 +23,6 @@ export interface BlogsData {
   posts: BlogPost[];
 }
 
-/** FIXED CARD: clip + content locked inside the image box, safe truncation */
 function Card({ post }: { post: BlogPost }) {
   const img = imageMap[post.imageKey];
   return (
@@ -28,43 +30,38 @@ function Card({ post }: { post: BlogPost }) {
       <div
         className={`
     relative isolate rounded-[18px] 2xl:rounded-[1.25vw] overflow-hidden box-border
-    w-full aspect-[472/450]               
-    max-w-[412.92px]                      
-    md:max-w-[437.33px]
-    lg:max-w-[437.33px]
-    2xl:w-[30.37vw] 2xl:max-w-none         
+    w-full aspect-[472/450]
+    
+    /* Tablet: 2 columns */
+    md:max-w-none md:w-full
+    
+    /* Desktop: 3 columns with fractional width */
+    lg:w-full
+    
+    /* 2xl: viewport-based sizing */
+    2xl:w-[30.37vw] 2xl:max-w-none
     2xl:aspect-[472/450]
   `}
       >
         <Image src={img} alt={post.title} fill className="object-cover" />
 
         <div className="card-overlay pointer-events-none" />
-        {/* <div className="card-highlight pointer-events-none" /> */}
-
         <div
-          className="absolute inset-x-0 bottom-0 top-1/3 backdrop-blur-[2px] 2xl:backdrop-blur-[0.14vw] pointer-events-none"
-          style={{
-            maskImage: "linear-gradient(to top, black 0%, transparent 100%)",
-            WebkitMaskImage:
-              "linear-gradient(to top, black 0%, transparent 100%)",
-          }}
-        />
-        <div
-          className="absolute inset-x-0 bottom-0 top-1/4 backdrop-blur-[4px] 2xl:backdrop-blur-[0.28vw] pointer-events-none"
-          style={{
-            maskImage: "linear-gradient(to top, black 20%, transparent 100%)",
-            WebkitMaskImage:
-              "linear-gradient(to top, black 20%, transparent 100%)",
-          }}
-        />
-        <div
-          className="absolute inset-x-0 bottom-0 top-[16.666%] backdrop-blur-[6px] 2xl:backdrop-blur-[0.42vw] pointer-events-none"
-          style={{
-            maskImage: "linear-gradient(to top, black 40%, transparent 100%)",
-            WebkitMaskImage:
-              "linear-gradient(to top, black 40%, transparent 100%)",
-          }}
-        />
+            className="absolute inset-x-0 bottom-0 top-2/4 backdrop-blur-[4px] pointer-events-none"
+            style={{
+              maskImage: "linear-gradient(to top, black 20%, transparent 100%)",
+              WebkitMaskImage:
+                "linear-gradient(to top, black 40%, transparent 100%)",
+            }}
+          />
+          <div
+            className="absolute inset-x-0 bottom-0 top-[50%] backdrop-blur-[6px] pointer-events-none"
+            style={{
+              maskImage: "linear-gradient(to top, black 40%, transparent 100%)",
+              WebkitMaskImage:
+                "linear-gradient(to top, black 60%, transparent 100%)",
+            }}
+          />
 
         <div className="absolute inset-0 flex flex-col justify-between p-4 md:p-4 2xl:p-[1.39vw] box-border overflow-hidden">
           <div className="flex justify-between items-start z-10 gap-3 2xl:gap-[1.04vw] w-full min-w-0">
@@ -85,8 +82,7 @@ function Card({ post }: { post: BlogPost }) {
                 {post.excerpt}
               </p>
               <Link
-                href={""}
-                onClick={(e) => e.preventDefault()}
+                href={post.href || "#"}
                 className="inline-block underline underline-offset-4 decoration-2 text-[12px] md:text-[13px] lg:text-[14px] 2xl:text-[0.97vw] font-light text-[#F2E9DA] hover:text-[#ffdc81] whitespace-nowrap"
               >
                 Read More
@@ -99,7 +95,6 @@ function Card({ post }: { post: BlogPost }) {
   );
 }
 
-/** SECTION: adds min-w-0 on columns/containers to prevent overflow, keeps content fixed */
 export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
   const posts = blogs.posts || [];
   const p = (i: number) => posts[i] ?? null;
@@ -114,7 +109,7 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
                    max-w-[1440px] xl:max-w-[1536px] 2xl:max-w-[100vw]
                    min-w-0"
       >
-        {/* Mobile */}
+        {/* Mobile - Show 3 cards */}
         <div className="flex flex-col gap-4 sm:gap-6 2xl:gap-[2.08vw] md:hidden min-w-0">
           <h2 className="text-[24px] sm:text-[28px] 2xl:text-[1.94vw] font-light text-[#FBFBFB] leading-tight">
             Insights <br /> Unlocked
@@ -122,7 +117,7 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
           <p className="text-[16px] sm:text-[18px] 2xl:text-[1.25vw] text-[#bbbbbb] max-w-full sm:max-w-[362px] 2xl:max-w-[25.14vw]">
             {blogs.sectionSubtitle}
           </p>
-          {[0, 1, 2, 3, 4, 5].map(
+          {[0, 1, 2].map(
             (i) => p(i) && <Card key={p(i)!.id ?? i} post={p(i)!} />
           )}
           <div
@@ -142,19 +137,18 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
               </div>
 
               <Link
-                href={""}
-                onClick={(e) => e.preventDefault()}
+                href={blogs.cta?.href || "#"}
                 className="w-full relative z-10"
               >
-                <button className="w-full rounded-[24px] py-3 text-sm text-white/95 bg-black/30 backdrop-blur-sm border border-white/20 hover:bg-black/40 hover:border-white/30 transition-all duration-300">
+                <GlobalButton>
                   {blogs.cta?.label || "View All Blogs"}
-                </button>
+                </GlobalButton>
               </Link>
             </div>
           </div>
         </div>
 
-        {/* Tablet */}
+        {/* Tablet - Show only 3 cards total */}
         <div className="hidden md:grid lg:hidden grid-cols-2 gap-4 lg:gap-6 mx-auto min-w-0">
           <div className="flex flex-col gap-4 lg:gap-6 min-w-0">
             <div className="flex flex-col gap-3 lg:gap-4 mb-4 min-w-0">
@@ -168,13 +162,11 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
             </div>
             {p(0) && <Card post={p(0)!} />}
             {p(1) && <Card post={p(1)!} />}
-            {p(2) && <Card post={p(2)!} />}
           </div>
 
           <div className="flex flex-col gap-6 lg:gap-8 min-w-0">
-            {p(3) && <Card post={p(3)!} />}
+            {p(2) && <Card post={p(2)!} />}
             {p(4) && <Card post={p(4)!} />}
-            {p(5) && <Card post={p(5)!} />}
             <div
               className="items-center pt-1 mt-3"
               style={{
@@ -192,20 +184,19 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
                 </div>
 
                 <Link
-                  href={""}
-                  onClick={(e) => e.preventDefault()}
+                  href={blogs.cta?.href || "#"}
                   className="w-full relative z-10"
                 >
-                  <button className="w-full rounded-[24px] py-3 text-sm text-white/95 bg-black/30 backdrop-blur-sm border border-white/20 hover:bg-black/40 hover:border-white/30 transition-all duration-300">
+                  <GlobalButton height={75}>
                     {blogs.cta?.label || "View All Blogs"}
-                  </button>
+                  </GlobalButton>
                 </Link>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Desktop */}
+        {/* Desktop - Show 3 cards */}
         <div className="hidden lg:grid grid-cols-3 gap-6 2xl:gap-[2.08vw] mx-auto min-w-0 items-start">
           <div className="flex flex-col gap-6 2xl:gap-[2.08vw] min-w-0">
             <h2
@@ -217,19 +208,12 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
               <span className="block">Unlocked</span>
             </h2>
             {p(0) && <Card post={p(0)!} />}
-            {p(1) && <Card post={p(1)!} />}
           </div>
 
           <div className="flex flex-col gap-6 2xl:gap-[2.08vw] min-w-0">
-            {p(2) && <Card post={p(2)!} />}
-            {p(3) && <Card post={p(3)!} />}
-            <div
-              className="items-center pt-1 2xl:pt-[0.35vw] mt-3 2xl:mt-[1.04vw]"
-              style={{
-                backgroundImage: `url${imageMap?.blog_btn_bg}`,
-              }}
-            >
-              <div className="w-full rounded-[16px] p-4 flex flex-col items-center relative overflow-hidden bg-gradient-to-br from-white/6 to-black/10">
+            {p(1) && <Card post={p(1)!} />}
+            <div className="items-center pt-1 2xl:pt-[0.35vw] mt-3 2xl:mt-[1.04vw]">
+              <div className="w-full rounded-[16px] p-[1.11vw] flex flex-col items-center relative overflow-hidden bg-gradient-to-br from-white/6 to-black/10">
                 {/* Gradient Background Colors */}
                 <div className="absolute w-[161.2px] h-[244px] top-[-105px] left-[114px] filter blur-[167.36px]">
                   <div className="absolute top-[153px] left-0 rounded-[5103.6px] bg-[#37ffdc] w-[63px] h-[91px]" />
@@ -240,13 +224,12 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
                 </div>
 
                 <Link
-                  href={""}
-                  onClick={(e) => e.preventDefault()}
-                  className="w-full h-[75px] rounded-[3733.11px] border-[3.7px] border-white/40 flex items-center justify-center px-[93.4px] relative z-10 bg-transparent hover:border-white/60 transition-all duration-300"
+                  href={blogs.cta?.href || "#"}
+                  className="w-full flex items-center justify-center px-[93.4px] relative z-10 bg-transparent hover:border-white/60 transition-all duration-300"
                 >
-                  <span className="text-[20px] leading-[24px] text-white font-regular">
-                    {blogs.cta?.label || "View All Blogs"}
-                  </span>
+                  <GlobalButton width={"28.13vw"} height={75}>
+                    {blogs.cta?.label || "All Blogs"}
+                  </GlobalButton>
                 </Link>
               </div>
             </div>
@@ -256,8 +239,7 @@ export default function InsightsSection({ blogs }: { blogs: BlogsData }) {
             <p className="text-[18px] xl:text-[20px] 2xl:text-[1.39vw] text-[#bbbbbb] max-w-full xl:max-w-[362px] leading-[2.08vw] self-end text-left">
               {blogs.sectionSubtitle}
             </p>
-            {p(4) && <Card post={p(4)!} />}
-            {p(5) && <Card post={p(5)!} />}
+            {p(2) && <Card post={p(2)!} />}
           </div>
         </div>
       </div>

@@ -1,7 +1,12 @@
 {
-  "description": "Lorem ipsum dolor sit amet consectetur. Dui felis lacus ut egestas sit at nunc ultrices netus.",
-  "contactText": "Contact Us",
-  "address": "753 Joshua Pines, Tatum borough 68760-9731",
+  "description": "Sem nam vulputate viverra cursus et nulla posuere.",
+  "contactInfo": {
+    "registeredOffice": "Registered Office",
+    "companyName": "Onza Private Limited",
+    "address": "118, Okhla Industrial Estate Phase-III",
+    "city": "Bengaluru 560033",
+    "phone": "+91 123-486-8423"
+  },
   "socials": [
     { "icon": "facebook", "href": "#" },
     { "icon": "linkedin", "href": "#" },
@@ -39,12 +44,12 @@
       "cin": "CIN NO: U123456NHA7/9P/FTC1234564"
     },
     {
-      "name": "Onza International IFSc PVT LTD",
+      "name": "Onza International IFSC PVT LTD",
       "registration": "SEBI REGISTRATION NO: NAM000017234",
       "cin": "CIN NO: U123456NHA7/9P/FTC1234564"
     },
     {
-      "name": "Onza International IFSc PVT LTD",
+      "name": "Onza International IFSC PVT LTD",
       "registration": "SEBI REGISTRATION NO: NAM000017234",
       "cin": "CIN NO: U123456NHA7/9P/FTC1234564"
     }
