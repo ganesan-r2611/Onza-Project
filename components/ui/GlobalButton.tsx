@@ -85,8 +85,6 @@ const GlobalButton: React.FC<GlobalButtonProps> = ({
   // Primary inner button
   const primaryInnerButton = `
     rounded-[163px]
-    bg-[#0a5060]
-    shadow-[0px_-3px_3.3px_1px_#3cc2cc_inset]
     flex items-center justify-center
     text-[#F2E9DA] font-normal font-['Hanken_Grotesk']
     text-center
@@ -131,12 +129,44 @@ const GlobalButton: React.FC<GlobalButtonProps> = ({
   };
 
   const content = (
-    <div 
-      className={getWrapperClass()} 
-      style={{
-        ...wrapperStyle,
-        ...getBackgroundStyle(),
-      }}
+<div 
+  // className={getWrapperClass()} 
+  style={{
+    ...wrapperStyle,
+    borderRadius: '1.67vw',
+    background: `
+      radial-gradient(204.35% 175.67% at 117.4% 119.32%, 
+        rgba(255, 220, 129, 0.20) 0%, 
+        rgba(255, 220, 129, 0.20) 10.81%, 
+        rgba(255, 220, 129, 0.20) 17.22%, 
+        rgba(10, 80, 96, 0.20) 30.84%, 
+        rgba(40, 160, 170, 0.20) 42.1%, 
+        rgba(10, 80, 96, 0.20) 50.04%, 
+        rgba(10, 80, 96, 0.20) 58.36%, 
+        rgba(10, 80, 96, 0.20) 67.44%, 
+        rgba(10, 80, 96, 0.20) 75.14%, 
+        rgba(10, 80, 96, 0.20) 82.91%, 
+        rgba(255, 220, 129, 0.06) 89.86%, 
+        rgba(255, 220, 129, 0.06) 97.12%),
+      radial-gradient(118.91% 149.58% at -5.8% 90.91%, 
+        rgba(255, 220, 129, 0.20) 0%, 
+        rgba(10, 80, 96, 0.20) 18.12%, 
+        rgba(10, 80, 96, 0.20) 29.81%, 
+        rgba(10, 80, 96, 0.20) 38.46%, 
+        rgba(10, 80, 96, 0.20) 47.6%, 
+        rgba(10, 80, 96, 0.20) 55.29%, 
+        rgba(10, 80, 96, 0.20) 62.98%, 
+        rgba(10, 80, 96, 0.20) 69.71%, 
+        rgba(40, 160, 170, 0.20) 76.92%, 
+        rgba(40, 160, 170, 0.20) 83.65%, 
+        rgba(40, 160, 170, 0.20) 90.38%, 
+        rgba(255, 220, 129, 0.20) 97.12%),
+      #0A5060
+    `,
+    boxShadow: '0 -3px 3.3px 1px #3CC2CC inset',
+  }}
+  
+
     >
       <div className={getInnerClass()} style={innerStyle}>
         {children}

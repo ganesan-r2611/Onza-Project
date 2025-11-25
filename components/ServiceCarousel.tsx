@@ -50,6 +50,7 @@ export default function ServicesCarouselSection({
                 fontSize='24px'
                 lineHeight='2.08vw'
                 variant="primary"
+                className="px-[32px] lg:px-[2.22vw] py-8 lg:py-[1.11vw] text-[16px] lg:text-[1.11vw] font-light font-['Hanken_Grotesk'] leading-[19px] lg:leading-[1.32vw]"
               >
                 {cta.label}
               </GlobalButton>

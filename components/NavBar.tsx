@@ -63,11 +63,11 @@ export default function NavBar({ data }: { data: NavbarData }) {
       {/* Desktop Navigation */}
       <div className="hidden md:block mx-auto backdrop-blur-[25.20px]">
         <nav
-          className={`${navBackground} ${borderColor} px-10 transition-all duration-300`}
+          className={`${navBackground} ${borderColor} px-10 lg:px-[2.08vw] 2xl:px-[2.78vw] transition-all duration-300`}
         >
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
             {/* Logo */}
-            <div className="w-[174px] lg:w-[12.08vw] py-4 2xl:py-[1.11vw] flex-shrink-0">
+            <div className="w-[174px] lg:w-[12.08vw] py-4 lg:py-[1.11vw] flex-shrink-0">
               <div className="h-12 lg:h-[3.33vw] 2xl:h-[3.33vw] py-2 lg:py-[0.56vw] bg-transparent rounded-[40px]">
                 <Link href="/" className="flex">
                   <Image
@@ -225,15 +225,16 @@ export default function NavBar({ data }: { data: NavbarData }) {
             </div>
 
             {/* Desktop CTA Button */}
-            <div className="flex items-center py-4 flex-shrink-0">
+            <div className="flex items-center w-[190px] lg:w-[13.92vw]  flex-shrink-0">
               <GlobalButton
                 href={data.cta.href}
-                width={200}
-                height={48}
-                paddingX={32}
-                paddingY={16}
-                fontSize={16}
+                width={''}
+                height={''}
+                paddingX={""}
+                paddingY={""}
+                fontSize={""}
                 variant={isLight ? "secondary" : "primary"}
+                className="px-[32px] lg:px-[2.22vw] py-8 lg:py-[1.11vw] text-[16px] lg:text-[0.97vw] 2xl:text-[1.11vw] font-light font-['Hanken_Grotesk'] leading-[19px] lg:leading-[1.18vw] 2xl:leading-[1.32vw]"
               >
                 {data.cta.label}
               </GlobalButton>
@@ -295,7 +296,7 @@ export default function NavBar({ data }: { data: NavbarData }) {
         {/* Mobile Navigation Panel */}
         <div
           className={`transition-all duration-300 ease-in-out ${
-            open ? "opacity-100 visible" : "opacity-0 invisible"
+            open ? "opacity-100 visible" : "hidden"
           }`}
         >
           <div
