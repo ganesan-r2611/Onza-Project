@@ -19,7 +19,7 @@ export default async function RootLayout({
 }) {
   // Fetch the static data that contains navbar and footer data
   const staticData = await getStaticData();
-  const { navbarData, footerData } = staticData;
+  const { navbarData, footerData } = staticData as any;
 
   return (
     <html lang="en" className={hanken.className}>
