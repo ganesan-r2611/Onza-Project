@@ -1,3 +1,4 @@
+'use server'
 import ContactForm from "@/components/ui/ContactForm";
 import NewsletterForm from "@/components/ui/NewsletterForm";
 import { getStaticData } from "@/libs/getStaticData";
